@@ -25,7 +25,7 @@ jobs:
     - name: Install Node Dependencies
       run: npm install
     - name: Run Build
-      run: npm run bild
+      run: npm run build
     - name: Generate key
       run: php artisan key:generate
     - name: Directory Permissions
