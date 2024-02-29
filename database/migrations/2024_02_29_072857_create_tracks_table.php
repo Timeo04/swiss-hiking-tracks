@@ -13,7 +13,19 @@ return new class extends Migration
     {
         Schema::create('tracks', function (Blueprint $table) {
             $table->id();
+
+            $table->unsignedBigInteger('user_id');
+            $table->string('title');
+            $table->string('starting_location')->nullable()->default(null);
+            $table->string('destination_location')->nullable()->default(null);
+            // $table->text('description')->nullable()->default(null);
+            $table->string('gpx_file')->nullable()->default(null);
+            $table->boolean('public')->default(false);
+            
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users')
+                ->onDelete('cascade')->onUpdate('cascade');
         });
     }
 
