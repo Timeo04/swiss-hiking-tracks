@@ -200,29 +200,29 @@
                 >
                     <HomeSolid
                         class="{route().current('dashboard')
-                            ? 'text-blue-600 dark:text-blue-500'
-                            : 'text-gray-500 dark:text-gray-400'} w-5 h-5 mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-500"
+                            ? 'text-primary-600 dark:text-primary-500'
+                            : 'text-gray-500 dark:text-gray-400'} w-5 h-5 mb-2 group-hover:text-primary-600 dark:group-hover:text-primary-500"
                     />
                     <span
                         class="text-sm {route().current('dashboard')
-                            ? 'text-blue-600 dark:text-blue-500'
-                            : 'text-gray-500 dark:text-gray-400'} group-hover:text-blue-600 dark:group-hover:text-blue-500"
+                            ? 'text-primary-600 dark:text-primary-500'
+                            : 'text-gray-500 dark:text-gray-400'} group-hover:text-primary-600 dark:group-hover:text-primary-500"
                         >Home</span
                     >
                 </button>
                 <button
-                    on:click={() => router.visit(route("routes.index"))}
+                    on:click={() => router.visit(route("tracks.index"))}
                     type="button"
                     class="inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-800 group"
                 >
                     <MapLocationOutline
                         size="xl"
-                        class=" {route().current('routes.index')
-                            ? 'text-blue-600 dark:text-blue-500'
-                            : 'text-gray-500 dark:text-gray-400'} w-6 h-6 mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-500"
+                        class=" {route().current('tracks.*')
+                            ? 'text-primary-600 dark:text-primary-500'
+                            : 'text-gray-500 dark:text-gray-400'} w-6 h-6 mb-2 group-hover:text-primary-600 dark:group-hover:text-primary-500"
                     />
                     <!-- <svg
-                        class="w-5 h-5 mb-2 text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500"
+                        class="w-5 h-5 mb-2 text-gray-500 dark:text-gray-400 group-hover:text-primary-600 dark:group-hover:text-primary-500"
                         aria-hidden="true"
                         xmlns="http://www.w3.org/2000/svg"
                         fill="currentColor"
@@ -236,9 +236,9 @@
                         />
                     </svg> -->
                     <span
-                        class="text-sm {route().current('routes.index')
-                            ? 'text-blue-600 dark:text-blue-500'
-                            : 'text-gray-500 dark:text-gray-400'} group-hover:text-blue-600 dark:group-hover:text-blue-500"
+                        class="text-sm {route().current('tracks.*')
+                            ? 'text-primary-600 dark:text-primary-500'
+                            : 'text-gray-500 dark:text-gray-400'} group-hover:text-primary-600 dark:group-hover:text-primary-500"
                         >Routen</span
                     >
                 </button>
@@ -250,11 +250,11 @@
                     <UserSettingsOutline
                         size="xl"
                         class=" {route().current('profile.edit')
-                            ? 'text-blue-600 dark:text-blue-500'
-                            : 'text-gray-500 dark:text-gray-400'} w-6 h-6 mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-500"
+                            ? 'text-primary-600 dark:text-primary-500'
+                            : 'text-gray-500 dark:text-gray-400'} w-6 h-6 mb-2 group-hover:text-primary-600 dark:group-hover:text-primary-500"
                     />
                     <!-- <svg
-                        class="w-5 h-5 mb-2 text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500"
+                        class="w-5 h-5 mb-2 text-gray-500 dark:text-gray-400 group-hover:text-primary-600 dark:group-hover:text-primary-500"
                         aria-hidden="true"
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
@@ -270,8 +270,8 @@
                     </svg> -->
                     <span
                         class="text-sm {route().current('profile.edit')
-                            ? 'text-blue-600 dark:text-blue-500'
-                            : 'text-gray-500 dark:text-gray-400'}  group-hover:text-blue-600 dark:group-hover:text-blue-500"
+                            ? 'text-primary-600 dark:text-primary-500'
+                            : 'text-gray-500 dark:text-gray-400'}  group-hover:text-primary-600 dark:group-hover:text-primary-500"
                         >Einstellungen</span
                     >
                 </button>
@@ -280,7 +280,7 @@
                     class="inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-800 group"
                 >
                     <svg
-                        class="w-5 h-5 mb-2 text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500"
+                        class="w-5 h-5 mb-2 text-gray-500 dark:text-gray-400 group-hover:text-primary-600 dark:group-hover:text-primary-500"
                         aria-hidden="true"
                         xmlns="http://www.w3.org/2000/svg"
                         fill="currentColor"
@@ -291,7 +291,7 @@
                         />
                     </svg>
                     <span
-                        class="text-sm text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500"
+                        class="text-sm text-gray-500 dark:text-gray-400 group-hover:text-primary-600 dark:group-hover:text-primary-500"
                         >Profile</span
                     >
                 </button> -->
