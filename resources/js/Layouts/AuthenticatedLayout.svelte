@@ -28,12 +28,10 @@
 
 <div>
     <div class="min-h-screen bg-gray-100">
-        <nav class="bg-white border-b border-gray-100">
-            <!-- Primary Navigation Menu -->
+        <!-- <nav class="bg-white border-b border-gray-100">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between h-16">
                     <div class="flex">
-                        <!-- Logo -->
                         <div class="shrink-0 flex items-center">
                             <a use:inertia href={route("dashboard")}>
                                 <ApplicationLogo
@@ -42,7 +40,6 @@
                             </a>
                         </div>
 
-                        <!-- Navigation Links -->
                         <div
                             class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex"
                         >
@@ -56,7 +53,6 @@
                     </div>
 
                     <div class="hidden sm:flex sm:items-center sm:ms-6">
-                        <!-- Settings Dropdown -->
                         <div class="ms-3 relative">
                             <Dropdown align="right" width="48">
                                 <div slot="trigger">
@@ -99,7 +95,6 @@
                         </div>
                     </div>
 
-                    <!-- Hamburger -->
                     <div class="-me-2 flex items-center sm:hidden">
                         <button
                             on:click={() =>
@@ -135,7 +130,6 @@
                 </div>
             </div>
 
-            <!-- Responsive Navigation Menu -->
             <div
                 class:block={showingNavigationDropdown}
                 hidden={!showingNavigationDropdown}
@@ -150,7 +144,6 @@
                     </ResponsiveNavLink>
                 </div>
 
-                <!-- Responsive Settings Options -->
                 <div class="pt-4 pb-1 border-t border-gray-200">
                     <div class="px-4">
                         <div class="font-medium text-base text-gray-800">
@@ -177,12 +170,11 @@
             </div>
         </nav>
 
-        <!-- Page Heading -->
         <header class="bg-white shadow" v-if="$slots.header">
             <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                 <slot name="header" />
             </div>
-        </header>
+        </header> -->
 
         <!-- Page Content -->
         <main>
@@ -200,9 +192,11 @@
                     class="inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-800 group"
                 >
                     <HomeSolid
+                        tabindex="-1"
+                        size="xl"
                         class="{route().current('dashboard')
                             ? 'text-primary-600 dark:text-primary-500'
-                            : 'text-gray-500 dark:text-gray-400'} w-5 h-5 mb-2 group-hover:text-primary-600 dark:group-hover:text-primary-500"
+                            : 'text-gray-500 dark:text-gray-400'} w-6 h-6 mb-2 group-hover:text-primary-600 dark:group-hover:text-primary-500"
                     />
                     <span
                         class="text-sm {route().current('dashboard')
@@ -217,6 +211,7 @@
                     class="inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-800 group"
                 >
                     <MapLocationOutline
+                        tabindex="-1"
                         size="xl"
                         class=" {route().current('tracks.*')
                             ? 'text-primary-600 dark:text-primary-500'
@@ -249,6 +244,7 @@
                     class="inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-800 group"
                 >
                     <UserSettingsOutline
+                        tabindex="-1"
                         size="xl"
                         class=" {route().current('profile.edit')
                             ? 'text-primary-600 dark:text-primary-500'
@@ -297,7 +293,7 @@
                         btnClass="p-0 mb-2 h-6 w-6 text-gray-500 dark:text-gray-400 group-hover:text-primary-600 dark:group-hover:text-primary-500"
                     />
                     <span
-                        class="text-smtext-gray-500 dark:text-gray-400  group-hover:text-primary-600 dark:group-hover:text-primary-500"
+                        class="text-smtext-gray-500 dark:text-gray-400 group-hover:text-primary-600 dark:group-hover:text-primary-500"
                         >Darkmode</span
                     >
                 </div>
