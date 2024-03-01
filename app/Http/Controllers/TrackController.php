@@ -51,16 +51,16 @@ class TrackController extends Controller
             'user_id' => auth()->id(),
         ]);
 
-        return redirect()->route('tracks.show', $track->id);
+        to_route('tracks.show', $track);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(int $id)
+    public function show(Track $track)
     {
         return Inertia::render('Tracks/Show', [
-            'track' => Track::findOrFail($id)
+            'track' => $track
         ]);
     }
 
