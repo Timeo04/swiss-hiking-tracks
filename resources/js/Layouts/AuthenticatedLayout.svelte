@@ -7,13 +7,14 @@
     import { inertia } from "@inertiajs/svelte";
     import { router } from "@inertiajs/svelte";
 
-    import { BottomNav, BottomNavItem } from "flowbite-svelte";
+    import { BottomNav, BottomNavItem, DarkMode } from "flowbite-svelte";
     import {
         HomeSolid,
         WalletSolid,
         UserSettingsOutline,
         UserCircleSolid,
         MapLocationOutline,
+        ArrowRightToBracketOutline,
     } from "flowbite-svelte-icons";
 
     // export let page;
@@ -192,7 +193,7 @@
         <div
             class="fixed bottom-0 left-0 z-50 w-full h-16 bg-white border-t border-gray-200 dark:bg-gray-700 dark:border-gray-600"
         >
-            <div class="grid h-full max-w-lg grid-cols-3 mx-auto font-medium">
+            <div class="grid h-full max-w-lg grid-cols-4 mx-auto font-medium">
                 <button
                     on:click={() => router.visit(route("dashboard"))}
                     type="button"
@@ -275,6 +276,31 @@
                         >Einstellungen</span
                     >
                 </button>
+                <!-- <button
+                    on:click={() => router.post(route("logout"))}
+                    type="button"
+                    class="inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-800 group"
+                >
+                    <ArrowRightToBracketOutline
+                        size="xl"
+                        class="text-gray-500 dark:text-gray-400 w-6 h-6 mb-2 group-hover:text-primary-600 dark:group-hover:text-primary-500"
+                    />
+                    <span
+                        class="text-sm text-gray-500 dark:text-gray-400 group-hover:text-primary-600 dark:group-hover:text-primary-500"
+                        >Abmelden</span
+                    >
+                </button> -->
+                <div
+                    class="inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-800 group"
+                >
+                    <DarkMode
+                        btnClass="p-0 mb-2 h-6 w-6 text-gray-500 dark:text-gray-400 group-hover:text-primary-600 dark:group-hover:text-primary-500"
+                    />
+                    <span
+                        class="text-smtext-gray-500 dark:text-gray-400  group-hover:text-primary-600 dark:group-hover:text-primary-500"
+                        >Darkmode</span
+                    >
+                </div>
                 <!-- <button
                     type="button"
                     class="inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-800 group"
