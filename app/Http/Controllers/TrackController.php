@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Track;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -32,7 +33,25 @@ class TrackController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'title' => ['required', 'max:255'],
+            'starting_location' => ['string', 'max:255'],
+            'destination_location' => ['string', 'max:255'],
+            'gpx_file' => ['required', 'file'],
+        ]);
+
+        // $track = auth()->user()->tracks()->create($request->all());
+
+        $track = Track::create([
+            'title' => $request->input('title'),
+            'starting_location' => $request->input('starting_location'),
+            'destination_location' => $request->input('destination_location'),
+            // 'gpx_file' => $request->file('gpx_file')->store('gpx_files'),
+            'gpx_file' => "test.gpx",
+            'user_id' => auth()->id(),
+        ]);
+
+        return redirect()->route('tracks.show', $track->id);
     }
 
     /**
