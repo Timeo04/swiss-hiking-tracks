@@ -8,6 +8,7 @@
 </script>
 
 <AuthenticatedLayout {auth}>
+    <h1 class="py-10 text-2xl font-semibold text-center">Einstellungen</h1>
     <div
         class="p-4 sm:p-8 bg-white shadow sm:rounded-lg flex gap-2 justify-start items-center"
     >
@@ -31,6 +32,7 @@
         <Button
             outline
             color="primary"
+            class="w-full"
             on:click={() => router.visit(route("profile.edit"))}
         >
             Profil bearbeiten
