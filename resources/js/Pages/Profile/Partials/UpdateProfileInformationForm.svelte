@@ -31,7 +31,9 @@
     </header>
 
     <form
-        on:submit|preventDefault={$form.patch(route("profile.update"))}
+        on:submit|preventDefault={$form.patch(route("profile.update"), {
+            preserveScroll: true,
+        })}
         class="mt-6 space-y-6"
     >
         <div>
