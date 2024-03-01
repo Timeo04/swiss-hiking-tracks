@@ -1,7 +1,7 @@
 <script>
     import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.svelte";
     import { router } from "@inertiajs/svelte";
-    import { Button } from "flowbite-svelte";
+    import { inertia } from "@inertiajs/svelte";
     export let auth;
     export let tracks;
     console.log(tracks);
@@ -36,8 +36,8 @@
                         </div>
                     </div>
                     <button
-                        on:click={() =>
-                            router.visit(route("tracks.show", { track }))}
+                        use:inertia={{ href: route("tracks.show", { track }) }}
+                        
                         class="px-4 py-2 text-white bg-primary-600 rounded-lg"
                     >
                         Öffnen
