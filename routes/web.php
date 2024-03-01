@@ -30,11 +30,11 @@ Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware('auth')->group(function () {
+Route::prefix('/settings')->middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::get('/settings', fn () => Inertia::render('Profile/Settings'))->name('settings')->middleware('auth');
+    Route::get('/', fn () => Inertia::render('Profile/Settings'))->name('settings')->middleware('auth');
 });
 
 Route::resource('tracks', TrackController::class);
