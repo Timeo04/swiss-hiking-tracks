@@ -51,7 +51,7 @@ class TrackController extends Controller
             'user_id' => auth()->id(),
         ]);
 
-        to_route('tracks.show', $track);
+        return to_route('tracks.show', $track);
     }
 
     /**
