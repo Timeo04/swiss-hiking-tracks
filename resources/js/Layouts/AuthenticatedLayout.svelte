@@ -27,7 +27,7 @@
 </script>
 
 <div>
-    <div class="min-h-screen bg-gray-100">
+    <div class="min-h-screen bg-gray-100 flex flex-col justify-start items-center">
         <!-- <nav class="bg-white border-b border-gray-100">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between h-16">
@@ -177,7 +177,7 @@
         </header> -->
 
         <!-- Page Content -->
-        <main>
+        <main class="flex flex-col gap-2 p-2 max-w-5xl w-full">
             <slot />
         </main>
         <div class="h-10"></div>
@@ -185,7 +185,7 @@
         <div
             class="fixed bottom-0 left-0 z-50 w-full h-16 bg-white border-t border-gray-200 dark:bg-gray-700 dark:border-gray-600"
         >
-            <div class="grid h-full max-w-lg grid-cols-4 mx-auto font-medium">
+            <div class="grid h-full max-w-lg grid-cols-3 mx-auto font-medium">
                 <button
                     on:click={() => router.visit(route("dashboard"))}
                     type="button"
@@ -239,14 +239,14 @@
                     >
                 </button>
                 <button
-                    on:click={() => router.visit(route("profile.edit"))}
+                    on:click={() => router.visit(route("settings"))}
                     type="button"
                     class="inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-800 group"
                 >
                     <UserSettingsOutline
                         tabindex="-1"
                         size="xl"
-                        class=" {route().current('profile.edit')
+                        class=" {route().current('settings')
                             ? 'text-primary-600 dark:text-primary-500'
                             : 'text-gray-500 dark:text-gray-400'} w-6 h-6 mb-2 group-hover:text-primary-600 dark:group-hover:text-primary-500"
                     />
@@ -266,7 +266,7 @@
                         />
                     </svg> -->
                     <span
-                        class="text-sm {route().current('profile.edit')
+                        class="text-sm {route().current('settings')
                             ? 'text-primary-600 dark:text-primary-500'
                             : 'text-gray-500 dark:text-gray-400'}  group-hover:text-primary-600 dark:group-hover:text-primary-500"
                         >Einstellungen</span
@@ -286,7 +286,7 @@
                         >Abmelden</span
                     >
                 </button> -->
-                <div
+                <!-- <div
                     class="inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-800 group"
                 >
                     <DarkMode
@@ -296,7 +296,7 @@
                         class="text-smtext-gray-500 dark:text-gray-400 group-hover:text-primary-600 dark:group-hover:text-primary-500"
                         >Darkmode</span
                     >
-                </div>
+                </div> -->
                 <!-- <button
                     type="button"
                     class="inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-800 group"
