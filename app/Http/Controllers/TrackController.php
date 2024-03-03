@@ -83,6 +83,7 @@ class TrackController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $track = Track::find($id);
+        $track->delete();
     }
 }
