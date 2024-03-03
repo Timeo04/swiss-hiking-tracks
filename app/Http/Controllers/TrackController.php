@@ -51,21 +51,23 @@ class TrackController extends Controller
             'user_id' => auth()->id(),
         ]);
 
-        return redirect()->route('tracks.show', $track->id);
+        return to_route('tracks.show', $track);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Track $track)
     {
-        //
+        return Inertia::render('Tracks/Show', [
+            'track' => $track
+        ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(int $id)
     {
         //
     }
@@ -73,7 +75,7 @@ class TrackController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, int $id)
     {
         //
     }
@@ -81,7 +83,7 @@ class TrackController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(int $id)
     {
         $track = Track::find($id);
         $track->delete();
