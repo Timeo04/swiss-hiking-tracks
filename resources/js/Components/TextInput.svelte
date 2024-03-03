@@ -32,7 +32,7 @@
 {#if type === "text"}
     <input
         {id}
-        class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm {className}"
+        class="border-gray-300 focus:border-primary-500 focus:ring-primary-500 rounded-md shadow-sm {className}"
         type="text"
         bind:value
         bind:this={input}
@@ -43,7 +43,7 @@
 {:else if type === "number"}
     <input
         {id}
-        class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm {className}"
+        class="border-gray-300 focus:border-primary-500 focus:ring-primary-500 rounded-md shadow-sm {className}"
         type="number"
         bind:value
         bind:this={input}
@@ -54,7 +54,7 @@
 {:else if type === "password"}
     <input
         {id}
-        class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm {className}"
+        class="border-gray-300 focus:border-primary-500 focus:ring-primary-500 rounded-md shadow-sm {className}"
         type="password"
         bind:value
         bind:this={input}
@@ -65,7 +65,7 @@
 {:else if type === "email"}
     <input
         {id}
-        class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm {className}"
+        class="border-gray-300 focus:border-primary-500 focus:ring-primary-500 rounded-md shadow-sm {className}"
         type="email"
         bind:value
         bind:this={input}

@@ -20,34 +20,22 @@
 </svelte:head>
 
 <AuthenticatedLayout {auth}>
-    <h2 slot="header" class="font-semibold text-xl text-gray-800 leading-tight">
+    <!-- <h2 slot="header" class="font-semibold text-xl text-gray-800 leading-tight">
         Profile
-    </h2>
-
+    </h2> -->
+    <h1 class="py-10 text-2xl font-semibold text-center">Profil bearbeiten</h1>
+    <div>
+        <Button
+            outline
+            color="primary"
+            class="w-full"
+            on:click={() => router.visit(route("settings"))}
+        >
+            zurück
+        </Button>
+    </div>
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-            <div
-                class="p-4 sm:p-8 bg-white shadow sm:rounded-lg flex gap-2 justify-start items-center"
-            >
-                <div class="shrink-0">
-                    <Avatar
-                        >{auth.user.name[0] +
-                            auth.user.name.split(" ")[1][0]}</Avatar
-                    >
-                </div>
-                <div class="grow truncate">
-                    <p class="truncate"><strong>{auth.user.name}</strong></p>
-                    <p class="truncate">{auth.user.email}</p>
-                </div>
-                <div>
-                    <Button
-                        color="primary"
-                        on:click={() => router.post(route("logout"))}
-                    >
-                        <ArrowRightToBracketOutline />
-                    </Button>
-                </div>
-            </div>
             <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                 <UpdateProfileInformationForm
                     {mustVerifyEmail}

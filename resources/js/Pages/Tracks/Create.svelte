@@ -35,14 +35,20 @@
 </svelte:head>
 
 <AuthenticatedLayout {auth}>
-    <div slot="header">
+    <!-- <div slot="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             Route erstellen
         </h2>
-    </div>
+    </div> -->
     <!-- <h1 class="text-2xl font-semibold">Route erstellen</h1> -->
-    <Card>
-        <form on:submit|preventDefault={submit}>
+    <h1 class="py-10 text-2xl font-semibold text-center">Wanderung erstellen</h1>
+    
+
+    <div
+        class="flex items-center justify-between p-4 bg-white rounded-lg shadow-md"
+    >
+        <!-- <Card> -->
+        <form on:submit|preventDefault={submit} class="w-full">
             <div class="flex flex-col gap-4 mb-6">
                 <div>
                     <FloatingLabelInput
@@ -135,7 +141,8 @@
                 >
             </div>
         </form>
-    </Card>
+        <!-- </Card> -->
+    </div>
     <!-- <Button
         color="primary"
         on:click={() => router.visit(route("tracks.create"))}
