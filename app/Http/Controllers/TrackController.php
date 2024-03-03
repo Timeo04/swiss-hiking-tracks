@@ -103,6 +103,6 @@ class TrackController extends Controller
         $track = Track::find($id);
         $track->delete();
 
-        return to_route('tracks.show', $track);
+        return to_route('tracks.index');
     }
 }
