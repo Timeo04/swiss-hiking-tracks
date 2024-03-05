@@ -1,6 +1,6 @@
 # Swiss Hiking Tracks
 
-Dieses Projekt ist eine Webanwendung zur Verwaltung von Wanderwegen in der Schweiz.
+Dieses Projekt ist eine Webanwendung zur Verwaltung von Wanderrouten in der Schweiz.
 
 ## Installation
 
