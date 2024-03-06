@@ -2,8 +2,19 @@
 
 Dieses Projekt ist eine Webanwendung zur Verwaltung von Wanderrouten in der Schweiz.
 
-## Installation
+Zum Planen von Wanderrouten gibt es bereits verschiedene bestehende Tools und Hilfsmittel. So beispielsweise der Kartenviewer des Bundes, das kostenpflichtige Tool «SchweizMobil Plus», sowie die App des Bundesamts für Landestopografie swisstopo, welche von Ubique entwickelt wurde. Die Funktionalitäten dieser Tools (Einzeichnen von Wanderrouten auf einer Karte, Darstellen des öffentlichen Wanderwegs-Netz, …) wird nicht ersetzt, sondern ergänzt. Alle zuvor erwähnten Tools besitzen unserer Meinung nach keine überzeugende Funktionalität, um eine grosse Anzahl an Wanderrouten zu verwalten und den Überblick darüber zu behalten, und dabei noch ein ansprechendes Design zu besitzen, welches auch motiviert, die Wanderungen tatsächlich auszuprobieren und durchzuführen.
 
+## Lokale Installation
+Zur lokalen Installation sind verschiedene Schritte notwendig.
+
+### Vorbereitungen
+Stellen Sie sicher, dass Sie die folgenden Tools bereits installiert haben:
+* (git)[https://git-scm.com/book/en/v2/Getting-Started-Installing-Git]
+* (Node.js und npm)[https://docs.npmjs.com/downloading-and-installing-node-js-and-npm]
+* php (unter Windows beispielsweise mit XAMPP)
+* (composer)[https://getcomposer.org/download/]
+
+### Installation
 Folgen Sie diesen Schritten, um das Projekt lokal zu installieren:
 
 1. Klonen Sie das Repository:
