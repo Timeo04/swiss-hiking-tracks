@@ -22,31 +22,42 @@ Starten Sie Ihr Gerät nach der Installation neu.
 Folgen Sie diesen Schritten, um das Projekt lokal zu installieren:
 
 1. Klonen Sie das Repository:
-
 ```bash
 git clone https://github.com/Timeo04/swiss-hiking-tracks.git
 ```
+
 2. Installieren Sie die PHP-Abhängigkeiten:
 ```bash
 composer install
 ```
+
 3. Installieren Sie die Node.js-Abhängigkeiten:
 ```bash
 npm install
 ```
+
 4. Kopieren Sie die .env.example Datei und benennen Sie sie in .env um:
 ```bash
 cp .env.example .env
 ```
+
 5. Generieren Sie einen Anwendungsschlüssel:
 ```bash
 php artisan key:generate
 ```
+
 6. Führen Sie die Datenbankmigrationen aus:
 ```bash
 php artisan migrate
 ``` 
-7. Starten Sie den Entwicklungsserver: (in zwei verschiedenen Terminals)
+
+7. Erstellen Sie einen symbolischen Link für das `storage` Verzeichnis:
+```bash
+php artisan storage:link
+```
+> Dieser Befehl erstellt einen symbolischen Link vom public/storage Verzeichnis zu storage/app/public, was es ermöglicht, auf Dateien im storage/app/public Verzeichnis über die URL http://localhost:8000/storage zuzugreifen. Dies ist nützlich, wenn Ihre Anwendung Dateien im storage Verzeichnis speichert, die öffentlich zugänglich sein müssen.
+
+8. Starten Sie den Entwicklungsserver: (in zwei verschiedenen Terminals)
 ```bash
 php artisan serve
 npm run dev
