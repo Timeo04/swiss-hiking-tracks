@@ -84,7 +84,7 @@ class TrackController extends Controller
             //'gpx_file' => ['required', 'file'],
         ]);
 
-        $track = Track::find($id);
+        $track = Track::findOrFail($id);
         $track->title=$request->input('title');
         $track->starting_location=$request->input('starting_location');
         $track->destination_location=$request->input('destination_location');
@@ -100,7 +100,7 @@ class TrackController extends Controller
      */
     public function destroy(int $id)
     {
-        $track = Track::find($id);
+        $track = Track::findOrFail($id);
         $track->delete();
 
         return to_route('tracks.index');
