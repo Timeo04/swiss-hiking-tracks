@@ -11,8 +11,12 @@ Zur lokalen Installation sind verschiedene Schritte notwendig.
 Stellen Sie sicher, dass Sie die folgenden Tools bereits installiert haben:
 * [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 * [Node.js und npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
-* php (unter Windows beispielsweise mit XAMPP)
+* php (unter Windows beispielsweise mit [XAMPP](https://www.apachefriends.org/de/index.html))
 * [composer](https://getcomposer.org/download/)
+
+#### Windows
+Stellen Sie sicher, dass git, npm, php und composer in den Umgebungsvariablen (PATH) eingetragen und somit in allen Terminals aufrufbar sind.
+Starten Sie Ihr Gerät nach der Installation neu.
 
 ### Installation
 Folgen Sie diesen Schritten, um das Projekt lokal zu installieren:
