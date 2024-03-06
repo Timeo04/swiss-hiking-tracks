@@ -21,7 +21,7 @@ Starten Sie Ihr Gerät nach der Installation neu.
 ### Installation
 Folgen Sie diesen Schritten, um das Projekt lokal zu installieren:
 
-1. Klonen Sie das Repository: (oder kopieren Sie alle Dateien in einen Ordner)
+1. Klonen Sie das Repository: (oder kopieren Sie alternativ alle Dateien in einen Ordner)
 ```bash
 git clone https://github.com/Timeo04/swiss-hiking-tracks.git
 ```
