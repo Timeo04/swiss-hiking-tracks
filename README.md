@@ -21,7 +21,7 @@ Starten Sie Ihr Gerät nach der Installation neu.
 ### Installation
 Folgen Sie diesen Schritten, um das Projekt lokal zu installieren:
 
-1. Klonen Sie das Repository:
+1. Klonen Sie das Repository: (oder kopieren Sie alle Dateien in einen Ordner)
 ```bash
 git clone https://github.com/Timeo04/swiss-hiking-tracks.git
 ```
@@ -63,6 +63,8 @@ php artisan storage:link
 8. Starten Sie den Entwicklungsserver: (in zwei verschiedenen Terminals)
 ```bash
 php artisan serve
+```
+```bash
 npm run dev
 ``` 
 Jetzt sollten Sie in der Lage sein, die Anwendung in Ihrem Webbrowser unter ```http://localhost:8000``` zu öffnen.
