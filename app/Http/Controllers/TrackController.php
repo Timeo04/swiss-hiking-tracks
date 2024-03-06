@@ -77,7 +77,22 @@ class TrackController extends Controller
      */
     public function update(Request $request, int $id)
     {
-        //
+        $request->validate([
+            'title' => ['required', 'max:255'],
+            'starting_location' => ['string', 'max:255'],
+            'destination_location' => ['string', 'max:255'],
+            //'gpx_file' => ['required', 'file'],
+        ]);
+
+        $track = Track::findOrFail($id);
+        $track->title=$request->input('title');
+        $track->starting_location=$request->input('starting_location');
+        $track->destination_location=$request->input('destination_location');
+        
+        $track->save();
+
+        return to_route('tracks.show', $track);
+
     }
 
     /**
@@ -85,7 +100,9 @@ class TrackController extends Controller
      */
     public function destroy(int $id)
     {
-        $track = Track::find($id);
+        $track = Track::findOrFail($id);
         $track->delete();
+
+        return to_route('tracks.index');
     }
 }
