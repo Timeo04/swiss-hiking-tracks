@@ -52,7 +52,7 @@ php artisan key:generate
 ```bash
 php artisan migrate
 ``` 
-> Dieser Befehl erstellt die Datenbanktabellen für die Applikation.s
+> Dieser Befehl erstellt die Datenbanktabellen für die Applikation.
 
 7. Erstellen Sie einen symbolischen Link für das `storage` Verzeichnis:
 ```bash
