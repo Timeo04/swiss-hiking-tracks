@@ -40,22 +40,25 @@ npm install
 ```bash
 cp .env.example .env
 ```
+> Die .env-Datei beinhaltet die Umgebungsvariabeln (bspw. Datenbank-Zugangsdaten) für die Applikation.
 
 5. Generieren Sie einen Anwendungsschlüssel:
 ```bash
 php artisan key:generate
 ```
+> Dieser Befehl erstellt einen Anwendungsschlüssel und fügt diesen in die .env-Datei ein. Dieser Anwendungsschlüssel dient zur Verschlüsselung, ...
 
 6. Führen Sie die Datenbankmigrationen aus:
 ```bash
 php artisan migrate
 ``` 
+> Dieser Befehl erstellt die Datenbanktabellen für die Applikation.s
 
 7. Erstellen Sie einen symbolischen Link für das `storage` Verzeichnis:
 ```bash
 php artisan storage:link
 ```
-> Dieser Befehl erstellt einen symbolischen Link vom public/storage Verzeichnis zu storage/app/public, was es ermöglicht, auf Dateien im storage/app/public Verzeichnis über die URL http://localhost:8000/storage zuzugreifen. Dies ist nützlich, wenn Ihre Anwendung Dateien im storage Verzeichnis speichert, die öffentlich zugänglich sein müssen.
+> Dieser Befehl erstellt einen symbolischen Link vom public/storage Verzeichnis zu storage/app/public, was es ermöglicht, auf Dateien im storage/app/public Verzeichnis über die URL `http://localhost:8000/storage` zuzugreifen. Dies ist notwendig, da die Anwendung in diesem Verzeichnis von den Nutzer*innen hochgeladene Dateien abspeichert.
 
 8. Starten Sie den Entwicklungsserver: (in zwei verschiedenen Terminals)
 ```bash
