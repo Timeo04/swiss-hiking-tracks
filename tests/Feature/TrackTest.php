@@ -39,6 +39,29 @@ class TrackTest extends TestCase
     }
 
     /**
+     * Test the track is displayed
+     * @return void
+     */
+    public function test_track_is_displayed(): void
+    {
+        $user = User::factory()->create();
+
+        $track = Track::factory()->create([
+            'user_id' => $user->id,
+        ]);
+
+        $response = $this
+            ->actingAs($user)
+            ->get(route('tracks.show', $track));
+
+        $response->assertInertia(
+            fn ($assert) => $assert
+                ->component('Tracks/Show')
+                ->has('track')
+        );
+    }
+
+    /**
      * Test the track creation form is displayed.
      * @return void
      */
@@ -91,4 +114,58 @@ class TrackTest extends TestCase
             'user_id' => $user->id,
         ]);
     }
+
+    /**
+     * Test a track can be deleted.
+     * @return void
+     */
+    public function test_track_can_be_deleted(): void
+    {
+        $user = User::factory()->create();
+
+        $track = Track::factory()->create([
+            'user_id' => $user->id,
+        ]);
+
+        $response = $this
+            ->actingAs($user)
+            ->delete(route('tracks.destroy', $track));
+
+        $response->assertRedirect(route('tracks.index'));
+
+        $this->assertDatabaseMissing('tracks', [
+            'id' => $track->id,
+        ]);
+    }
+
+    /**
+     * Test a track can be updated.
+     * @return void
+     */
+    public function test_track_can_be_updated(): void
+    {
+        $user = User::factory()->create();
+
+        $track = Track::factory()->create([
+            'user_id' => $user->id,
+        ]);
+
+        $response = $this
+            ->actingAs($user)
+            ->put(route('tracks.update', $track), [
+                'title' => 'Updated Track',
+                'starting_location' => 'Updated City',
+                'destination_location' => 'Updated City',
+            ]);
+
+        $response->assertRedirect(route('tracks.show', $track));
+
+        $this->assertDatabaseHas('tracks', [
+            'id' => $track->id,
+            'title' => 'Updated Track',
+            'starting_location' => 'Updated City',
+            'destination_location' => 'Updated City',
+        ]);
+    }
+
 }
