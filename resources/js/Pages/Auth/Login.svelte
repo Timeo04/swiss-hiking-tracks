@@ -23,7 +23,7 @@
 </script>
 
 <svelte:head>
-    <title>Log in</title>
+    <title>Anmelden</title>
 </svelte:head>
 
 <GuestLayout>

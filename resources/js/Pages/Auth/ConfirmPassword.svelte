@@ -5,6 +5,7 @@
     import PrimaryButton from "@/Components/PrimaryButton.svelte";
     import TextInput from "@/Components/TextInput.svelte";
     import { useForm } from "@inertiajs/svelte";
+    import { FloatingLabelInput } from "flowbite-svelte";
 
     let form = useForm({
         password: "",
@@ -18,27 +19,29 @@
 </script>
 
 <svelte:head>
-    <title>Confirm Password</title>
+    <title>Passwort bestätigen</title>
 </svelte:head>
 
 <GuestLayout>
     <div class="mb-4 text-sm text-gray-600">
-        This is a secure area of the application. Please confirm your password
-        before continuing.
+        Dies ist ein sicherer Bereich der Anwendung. Bitte bestätigen Sie Ihr
+        Passwort, bevor Sie fortfahren.
     </div>
 
     <form on:submit|preventDefault={submit}>
         <div>
-            <InputLabel forValue="password" value="Password" />
-            <TextInput
+            <FloatingLabelInput
+                style="outlined"
                 id="password"
+                name="password"
                 type="password"
-                className="mt-1 block w-full"
-                bind:value={$form.password}
                 required
-                autocomplete="current-password"
+                bind:value={$form.password}
                 autofocus
-            />
+                autocomplete="current-password"
+            >
+                Passwort
+            </FloatingLabelInput>
             {#if $form.errors.password}
                 <InputError className="mt-2" message={$form.errors.password} />
             {/if}
@@ -49,7 +52,7 @@
                 className="ms-4 {$form.processing ? 'opacity-25' : ''}"
                 disabled={$form.processing}
             >
-                Confirm
+                Bestätigen
             </PrimaryButton>
         </div>
     </form>
