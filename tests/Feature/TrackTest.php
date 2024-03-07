@@ -13,6 +13,8 @@ use Tests\TestCase;
 
 class TrackTest extends TestCase
 {
+    use RefreshDatabase;
+    
     /**
      * Test the track overview is displayed.
      * @return void
