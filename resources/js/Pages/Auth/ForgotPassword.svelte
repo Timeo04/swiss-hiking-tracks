@@ -5,6 +5,7 @@
     import PrimaryButton from "@/Components/PrimaryButton.svelte";
     import TextInput from "@/Components/TextInput.svelte";
     import { useForm } from "@inertiajs/svelte";
+    import { FloatingLabelInput } from "flowbite-svelte";
 
     export let status;
 
@@ -18,14 +19,14 @@
 </script>
 
 <svelte:head>
-    <title>Forgot Password</title>
+    <title>Passwort vergessen</title>
 </svelte:head>
 
 <GuestLayout>
     <div class="mb-4 text-sm text-gray-600">
-        Forgot your password? No problem. Just let us know your email address
-        and we will email you a password reset link that will allow you to
-        choose a new one.
+        Passwort vergessen? Kein Problem. Lassen Sie uns einfach Ihre
+        E-Mail-Adresse wissen und wir senden Ihnen einen Link zum Zurücksetzen
+        des Passworts, mit dem Sie ein neues wählen können.
     </div>
 
     {#if status}
@@ -36,18 +37,18 @@
 
     <form on:submit|preventDefault={submit}>
         <div>
-            <InputLabel forValue="email" value="Email" />
-
-            <TextInput
+            <FloatingLabelInput
+                style="outlined"
                 id="email"
+                name="email"
                 type="email"
-                className="mt-1 block w-full"
-                bind:value={$form.email}
                 required
-                autofocus={true}
+                bind:value={$form.email}
+                autofocus
                 autocomplete="username"
-            />
-
+            >
+                E-Mail
+            </FloatingLabelInput>
             {#if $form.errors.email}
                 <InputError className="mt-2" message={$form.errors.email} />
             {/if}
@@ -58,7 +59,7 @@
                 className={$form.processing ? "opacity-25" : ""}
                 disabled={$form.processing}
             >
-                Email Password Reset Link
+                Passwort Reset-Link zusenden
             </PrimaryButton>
         </div>
     </form>

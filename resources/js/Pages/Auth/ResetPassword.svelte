@@ -5,6 +5,7 @@
     import PrimaryButton from "@/Components/PrimaryButton.svelte";
     import TextInput from "@/Components/TextInput.svelte";
     import { useForm } from "@inertiajs/svelte";
+    import { FloatingLabelInput } from "flowbite-svelte";
 
     export let email;
     export let token;
@@ -35,61 +36,56 @@
 </script>
 
 <svelte:head>
-    <title>Reset Password</title>
+    <title>Passwort zurücksetzen</title>
 </svelte:head>
 
 <GuestLayout>
     <form on:submit|preventDefault={submit}>
         <div>
-            <InputLabel forValue="email" value="Email" />
-
-            <TextInput
+            <FloatingLabelInput
+                style="outlined"
                 id="email"
+                name="email"
                 type="email"
-                className="mt-1 block w-full"
-                bind:value={$form.email}
                 required
+                bind:value={$form.email}
                 autofocus
                 autocomplete="username"
-            />
-
+            >
+                E-Mail
+            </FloatingLabelInput>
             {#if $form.errors.email}
                 <InputError className="mt-2" message={$form.errors.email} />
             {/if}
         </div>
 
         <div class="mt-4">
-            <InputLabel forValue="password" value="Password" />
-
-            <TextInput
+            <FloatingLabelInput
+                style="outlined"
                 id="password"
                 type="password"
-                className="mt-1 block w-full"
-                bind:value={$form.password}
                 required
+                bind:value={$form.password}
                 autocomplete="new-password"
-            />
-
+            >
+                Passwort
+            </FloatingLabelInput>
             {#if $form.errors.password}
                 <InputError className="mt-2" message={$form.errors.password} />
             {/if}
         </div>
 
         <div class="mt-4">
-            <InputLabel
-                forValue="password_confirmation"
-                value="Confirm Password"
-            />
-
-            <TextInput
+            <FloatingLabelInput
+                style="outlined"
                 id="password_confirmation"
                 type="password"
-                className="mt-1 block w-full"
-                bind:value={$form.password_confirmation}
                 required
+                bind:value={$form.password_confirmation}
                 autocomplete="new-password"
-            />
-
+            >
+                Passwort bestätigen
+            </FloatingLabelInput>
             {#if $form.errors.password_confirmation}
                 <InputError
                     className="mt-2"
@@ -103,7 +99,7 @@
                 className={$form.processing ? "opacity-25" : ""}
                 disabled={$form.processing}
             >
-                Reset Password
+                Passwort zurücksetzen
             </PrimaryButton>
         </div>
     </form>

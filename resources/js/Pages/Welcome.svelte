@@ -11,7 +11,7 @@
 </script>
 
 <svelte:head>
-    <title>Welcome</title>
+    <title>Willkommen</title>
 </svelte:head>
 
 <div
@@ -32,7 +32,7 @@
                     use:inertia
                     href={route("login")}
                     class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500"
-                    >Log in</a
+                    >Anmelden</a
                 >
             {/if}
             {#if canRegister}
@@ -40,7 +40,7 @@
                     use:inertia
                     href={route("register")}
                     class="ms-4 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500"
-                    >Register</a
+                    >Registrieren</a
                 >
             {/if}
         {/if}
@@ -60,6 +60,12 @@
                 />
             </svg>
         </div>
+
+        <h2
+            class="mt-6 text-xl font-semibold text-gray-900 dark:text-white text-center"
+        >
+            swiss-hiking-tracks
+        </h2>
 
         <div class="mt-16">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">

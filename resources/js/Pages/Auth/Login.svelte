@@ -2,10 +2,9 @@
     import Checkbox from "@/Components/Checkbox.svelte";
     import GuestLayout from "@/Layouts/GuestLayout.svelte";
     import InputError from "@/Components/InputError.svelte";
-    import InputLabel from "@/Components/InputLabel.svelte";
     import PrimaryButton from "@/Components/PrimaryButton.svelte";
-    import TextInput from "@/Components/TextInput.svelte";
     import { inertia, useForm } from "@inertiajs/svelte";
+    import { FloatingLabelInput } from "flowbite-svelte";
 
     export let status;
     export let canResetPassword;
@@ -24,7 +23,7 @@
 </script>
 
 <svelte:head>
-    <title>Log in</title>
+    <title>Anmelden</title>
 </svelte:head>
 
 <GuestLayout>
@@ -36,34 +35,35 @@
 
     <form on:submit|preventDefault={submit}>
         <div>
-            <InputLabel forValue="email" value="Email" />
-
-            <TextInput
-                bind:value={$form.email}
+            <FloatingLabelInput
+                style="outlined"
                 id="email"
+                name="email"
                 type="email"
-                className="mt-1 block w-full"
-                required={true}
-                autofocus={true}
+                required
+                bind:value={$form.email}
                 autocomplete="username"
-            />
+                autofocus={true}
+            >
+                E-Mail
+            </FloatingLabelInput>
             {#if $form.errors.email}
                 <InputError className="mt-2" message={$form.errors.email} />
             {/if}
         </div>
 
         <div class="mt-4">
-            <InputLabel forValue="password" value="Password" />
-
-            <TextInput
+            <FloatingLabelInput
+                style="outlined"
                 id="password"
+                name="password"
                 type="password"
-                className="mt-1 block w-full"
-                required={true}
-                autocomplete="current-password"
+                required
                 bind:value={$form.password}
-            />
-
+                autocomplete="current-password"
+            >
+                Passwort
+            </FloatingLabelInput>
             {#if $form.errors.password}
                 <InputError className="mt-2" message={$form.errors.password} />
             {/if}
@@ -71,8 +71,12 @@
 
         <div class="block mt-4">
             <label for="remember" class="flex items-center">
-                <Checkbox id="remember" name="remember" bind:checked={$form.remember} />
-                <span class="ms-2 text-sm text-gray-600">Remember me</span>
+                <Checkbox
+                    id="remember"
+                    name="remember"
+                    bind:checked={$form.remember}
+                />
+                <span class="ms-2 text-sm text-gray-600">angemeldet bleiben</span>
             </label>
         </div>
 
@@ -81,9 +85,9 @@
                 <a
                     use:inertia
                     href={route("password.request")}
-                    class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
                 >
-                    Forgot your password?
+                    Passwort vergessen?
                 </a>
             {/if}
 
@@ -91,7 +95,7 @@
                 className="ms-4 {$form.processing ? 'opacity-25' : ''}"
                 disabled={$form.processing}
             >
-                Log in
+                anmelden
             </PrimaryButton>
         </div>
     </form>
