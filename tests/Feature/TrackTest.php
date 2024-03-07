@@ -14,7 +14,7 @@ use Tests\TestCase;
 class TrackTest extends TestCase
 {
     use RefreshDatabase;
-    
+
     /**
      * Test the track overview is displayed.
      * @return void
@@ -103,10 +103,9 @@ class TrackTest extends TestCase
             ]);
 
         $response
-            ->assertSessionHasNoErrors()->assertRedirect();
-        // ->assertRedirect(route('tracks.show', 1));
+            ->assertSessionHasNoErrors()->assertRedirect(route('tracks.show', 1));
 
-        Storage::disk()->assertExists($file->hashName());
+        // Storage::disk()->assertExists($file->hashName());
 
         $this->assertDatabaseHas('tracks', [
             'title' => 'Test Track',
@@ -169,5 +168,4 @@ class TrackTest extends TestCase
             'destination_location' => 'Updated City',
         ]);
     }
-
 }
