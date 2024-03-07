@@ -69,6 +69,8 @@ npm run dev
 ``` 
 Jetzt sollten Sie in der Lage sein, die Anwendung in Ihrem Webbrowser unter ```http://localhost:8000``` zu öffnen.
 
+Sie können mit "Registrieren" einen User-Account erstellen und sich mit diesem in der Applikation anmelden.
+
 ## Tests
 Um die Tests auszuführen, verwenden Sie den folgenden Befehl:
 ```bash
