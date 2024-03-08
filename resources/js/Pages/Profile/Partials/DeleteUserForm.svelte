@@ -1,11 +1,10 @@
 <script>
     import DangerButton from "@/Components/DangerButton.svelte";
     import InputError from "@/Components/InputError.svelte";
-    import InputLabel from "@/Components/InputLabel.svelte";
     import Modal from "@/Components/Modal.svelte";
     import SecondaryButton from "@/Components/SecondaryButton.svelte";
-    import TextInput from "@/Components/TextInput.svelte";
     import { useForm } from "@inertiajs/svelte";
+    import { FloatingLabelInput } from "flowbite-svelte";
 
     export let className = "";
 
@@ -17,10 +16,11 @@
     });
 
     function deleteUser() {
+        // DELETE-Request an die Route "profile.destroy" senden
         $form.delete(route("profile.destroy"), {
             preserveScroll: true,
-            onSuccess: () => closeModal(),
-            onError: () => passwordInput.input.focus(),
+            onSuccess: () => closeModal(), // Bei Erfolg Modal schließen
+            onError: () => passwordInput.input.focus(), // Bei Fehler Passwort-Feld fokussieren
             onFinish: () => $form.reset(),
         });
     }
@@ -34,63 +34,64 @@
 
 <section class="space-y-6 {className}">
     <header>
-        <h2 class="text-lg font-medium text-gray-900">Delete Account</h2>
+        <h2 class="text-lg font-medium text-gray-900">Account löschen</h2>
 
         <p class="mt-1 text-sm text-gray-600">
-            Once your account is deleted, all of its resources and data will be
-            permanently deleted. Before deleting your account, please download
-            any data or information that you wish to retain.
+            Wenn Sie Ihr Konto löschen, werden alle Ressourcen und Daten
+            dauerhaft gelöscht. Bevor Sie Ihr Konto löschen, laden Sie bitte
+            alle Daten oder Informationen herunter, die Sie behalten möchten.
         </p>
     </header>
 
     <DangerButton on:click={() => (confirmUserDeletionModal = true)}
-        >Delete Account</DangerButton
+        >Account löschen</DangerButton
     >
 
     <Modal bind:open={confirmUserDeletionModal} on:close={closeModal}>
         <div class="p-6">
             <h2 class="text-lg font-medium text-gray-900">
-                Are you sure you want to delete your account?
+                Sind Sie sicher, dass Sie Ihr Konto löschen möchten?
             </h2>
 
             <p class="mt-1 text-sm text-gray-600">
-                Once your account is deleted, all of its resources and data will
-                be permanently deleted. Please enter your password to confirm
-                you would like to permanently delete your account.
+                Wenn Ihr Konto gelöscht wird, werden alle Ressourcen und Daten
+                dauerhaft gelöscht. Bitte geben Sie Ihr Passwort ein, um zu
+                bestätigen, dass Sie Ihr Konto dauerhaft löschen möchten.
             </p>
 
             <div class="mt-6">
-                <InputLabel
-                    forValue="password"
-                    value="Password"
-                    className="sr-only"
-                />
-
-                <TextInput
+                <FloatingLabelInput
+                    style="outlined"
                     id="password"
+                    type="password"
+                    required
                     bind:value={$form.password}
                     bind:this={passwordInput}
-                    type="password"
-                    className="mt-1 block w-3/4"
-                    placeholder="Password"
-                    required
-                    autofocus={true}
-                />
+                    autocomplete="current-password"
+                    autofocus
+                >
+                    Passwort
+                </FloatingLabelInput>
 
                 {#if $form.errors.password}
-                    <InputError message={$form.errors.password} className="mt-2" />
+                    <InputError
+                        message={$form.errors.password}
+                        className="mt-2"
+                    />
                 {/if}
             </div>
 
             <div class="mt-6 flex justify-end">
-                <SecondaryButton on:click={closeModal}>Cancel</SecondaryButton>
+                <SecondaryButton on:click={closeModal}
+                    >Abbrechen</SecondaryButton
+                >
 
                 <DangerButton
                     className="ms-3 {$form.processing ? 'opacity-25' : ''}"
                     disabled={$form.processing}
                     on:click={deleteUser}
                 >
-                    Delete Account
+                    Account löschen
                 </DangerButton>
             </div>
         </div>
