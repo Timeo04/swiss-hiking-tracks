@@ -1,9 +1,8 @@
 <script>
     import InputError from "@/Components/InputError.svelte";
-    import InputLabel from "@/Components/InputLabel.svelte";
     import PrimaryButton from "@/Components/PrimaryButton.svelte";
-    import TextInput from "@/Components/TextInput.svelte";
     import { useForm, inertia } from "@inertiajs/svelte";
+    import { FloatingLabelInput } from "flowbite-svelte";
     import { sineInOut } from "svelte/easing";
     import { fade } from "svelte/transition";
 
@@ -23,13 +22,14 @@
 
 <section class={className}>
     <header>
-        <h2 class="text-lg font-medium text-gray-900">Profile Information</h2>
+        <h2 class="text-lg font-medium text-gray-900">Profilinformationen</h2>
 
         <p class="mt-1 text-sm text-gray-600">
-            Update your account's profile information and email address.
+            Aktualisieren Sie die Profilinformationen und die E-Mail-Adresse.
         </p>
     </header>
 
+    <!-- svelte-ignore missing-declaration -->
     <form
         on:submit|preventDefault={$form.patch(route("profile.update"), {
             preserveScroll: true,
@@ -37,17 +37,17 @@
         class="mt-6 space-y-6"
     >
         <div>
-            <InputLabel forValue="name" value="Name" />
-
-            <TextInput
+            <FloatingLabelInput
+                style="outlined"
                 id="name"
                 type="text"
-                className="mt-1 block w-full"
-                bind:value={$form.name}
                 required
+                bind:value={$form.name}
                 autofocus
                 autocomplete="name"
-            />
+            >
+                Name
+            </FloatingLabelInput>
 
             {#if $form.errors.name}
                 <InputError className="mt-2" message={$form.errors.name} />
@@ -55,16 +55,16 @@
         </div>
 
         <div>
-            <InputLabel forValue="email" value="Email" />
-
-            <TextInput
+            <FloatingLabelInput
+                style="outlined"
                 id="email"
                 type="email"
-                className="mt-1 block w-full"
-                bind:value={$form.email}
                 required
+                bind:value={$form.email}
                 autocomplete="username"
-            />
+            >
+                E-Mail
+            </FloatingLabelInput>
 
             {#if $form.errors.email}
                 <InputError className="mt-2" message={$form.errors.email} />
@@ -74,7 +74,7 @@
         {#if mustVerifyEmail && user.email_verified_at === null}
             <div>
                 <p class="text-sm mt-2 text-gray-800">
-                    Your email address is unverified.
+                    Ihre E-Mail-Adresse wurde noch nicht bestätigt.
                     <!-- svelte-ignore a11y-missing-attribute -->
                     <a
                         use:inertia={{
@@ -84,28 +84,28 @@
                         }}
                         class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
                     >
-                        Click here to re-send the verification email.
+                        Hier klicken, um die Bestätigungsmail erneut zu senden.
                     </a>
                 </p>
 
                 {#if status === "verification-link-sent"}
                     <div class="mt-2 font-medium text-sm text-green-600">
-                        A new verification link has been sent to your email
-                        address.
+                        Ein neuer Bestätigungslink wurde an Ihre E-Mail-Adresse
+                        gesendet.
                     </div>
                 {/if}
             </div>
         {/if}
 
         <div class="flex items-center gap-4">
-            <PrimaryButton disabled={$form.processing}>Save</PrimaryButton>
+            <PrimaryButton disabled={$form.processing}>Speichern</PrimaryButton>
 
             {#if $form.recentlySuccessful}
                 <p
                     transition:fade={{ easing: sineInOut }}
                     class="text-sm text-gray-600"
                 >
-                    Saved.
+                    Gespeichert.
                 </p>
             {/if}
         </div>
