@@ -43,6 +43,7 @@
                 E-Mail-Bestätigungslink erneut senden
             </PrimaryButton>
 
+            <!-- svelte-ignore missing-declaration -->
             <button
                 use:inertia={{ href: route("logout"), method: "post" }}
                 type="button"

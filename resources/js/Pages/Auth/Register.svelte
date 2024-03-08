@@ -95,6 +95,7 @@
         </div>
 
         <div class="flex items-center justify-end mt-4">
+            <!-- svelte-ignore missing-declaration -->
             <a
                 use:inertia
                 href={route("login")}

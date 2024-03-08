@@ -82,6 +82,7 @@
 
         <div class="flex flex-row items-center justify-end mt-4">
             {#if canResetPassword}
+                <!-- svelte-ignore missing-declaration -->
                 <a
                     use:inertia
                     href={route("password.request")}
