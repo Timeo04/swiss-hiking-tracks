@@ -1,13 +1,9 @@
-<script setup>
+<script>
     import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.svelte";
     import DeleteUserForm from "./Partials/DeleteUserForm.svelte";
     import UpdatePasswordForm from "./Partials/UpdatePasswordForm.svelte";
     import UpdateProfileInformationForm from "./Partials/UpdateProfileInformationForm.svelte";
-    import { Avatar, Button } from "flowbite-svelte";
-    import {
-        ArrowRightToBracketOutline,
-        ArrowRightToBracketSolid,
-    } from "flowbite-svelte-icons";
+    import { Button } from "flowbite-svelte";
     import { router } from "@inertiajs/core";
 
     export let mustVerifyEmail;
@@ -20,9 +16,6 @@
 </svelte:head>
 
 <AuthenticatedLayout {auth}>
-    <!-- <h2 slot="header" class="font-semibold text-xl text-gray-800 leading-tight">
-        Profile
-    </h2> -->
     <h1 class="py-10 text-2xl font-semibold text-center">Profil bearbeiten</h1>
     <div>
         <Button
