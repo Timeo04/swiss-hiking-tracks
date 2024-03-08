@@ -1,4 +1,4 @@
-<script setup>
+<script>
     import GuestLayout from "@/Layouts/GuestLayout.svelte";
     import PrimaryButton from "@/Components/PrimaryButton.svelte";
     import { useForm } from "@inertiajs/svelte";

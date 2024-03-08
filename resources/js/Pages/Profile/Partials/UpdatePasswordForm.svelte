@@ -1,4 +1,4 @@
-<script setup>
+<script>
     import InputError from "@/Components/InputError.svelte";
     import InputLabel from "@/Components/InputLabel.svelte";
     import PrimaryButton from "@/Components/PrimaryButton.svelte";
