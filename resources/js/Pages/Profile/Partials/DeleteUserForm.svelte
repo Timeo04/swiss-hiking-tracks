@@ -1,4 +1,4 @@
-<script setup>
+<script>
     import DangerButton from "@/Components/DangerButton.svelte";
     import InputError from "@/Components/InputError.svelte";
     import InputLabel from "@/Components/InputLabel.svelte";
