@@ -1,25 +1,12 @@
 <script>
     import GuestLayout from "@/Layouts/GuestLayout.svelte";
     import InputError from "@/Components/InputError.svelte";
-    import InputLabel from "@/Components/InputLabel.svelte";
     import PrimaryButton from "@/Components/PrimaryButton.svelte";
-    import TextInput from "@/Components/TextInput.svelte";
     import { useForm } from "@inertiajs/svelte";
     import { FloatingLabelInput } from "flowbite-svelte";
 
     export let email;
     export let token;
-
-    // const props = defineProps({
-    //     email: {
-    //         type: String,
-    //         required: true,
-    //     },
-    //     token: {
-    //         type: String,
-    //         required: true,
-    //     },
-    // });
 
     let form = useForm({
         token: token,
