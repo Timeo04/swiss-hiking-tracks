@@ -20,6 +20,7 @@
             <p class="truncate">{auth.user.email}</p>
         </div>
         <div>
+            <!-- svelte-ignore missing-declaration -->
             <Button
                 color="primary"
                 on:click={() => router.post(route("logout"))}
@@ -29,6 +30,8 @@
         </div>
     </div>
     <div>
+        <!-- Add Link to Edit.svelte-Page -->
+        <!-- svelte-ignore missing-declaration -->
         <Button
             outline
             color="primary"

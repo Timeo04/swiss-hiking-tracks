@@ -1,15 +1,7 @@
 <script>
     import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.svelte";
     import { router, useForm } from "@inertiajs/svelte";
-    import {
-        Button,
-        Card,
-        Fileupload,
-        FloatingLabelInput,
-        Helper,
-        Input,
-        Label,
-    } from "flowbite-svelte";
+    import { Button, FloatingLabelInput, Helper } from "flowbite-svelte";
     import { ArrowDownOutline } from "flowbite-svelte-icons";
     export let auth;
 
@@ -35,19 +27,12 @@
 </svelte:head>
 
 <AuthenticatedLayout {auth}>
-    <!-- <div slot="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            Route erstellen
-        </h2>
-    </div> -->
-    <!-- <h1 class="text-2xl font-semibold">Route erstellen</h1> -->
-    <h1 class="py-10 text-2xl font-semibold text-center">Wanderung erstellen</h1>
-    
+    <h1 class="py-10 text-2xl font-semibold text-center">Route erstellen</h1>
 
     <div
         class="flex items-center justify-between p-4 bg-white rounded-lg shadow-md"
     >
-        <!-- <Card> -->
+        <!-- Display form to create a new Track -->
         <form on:submit|preventDefault={submit} class="w-full">
             <div class="flex flex-col gap-4 mb-6">
                 <div>
@@ -101,7 +86,6 @@
                     {/if}
                 </div>
                 <div>
-                    <!-- <Label for="gpx_file" class="mb-2">GPX-Datei</Label> -->
                     <input
                         class="file:bg-primary-700 file:hover:bg-primary-800 file:text-white file:border-none file:cursor-pointer file:font-medium
                         file:px-5 file:py-2.5 file:dark:bg-primary-600 file:dark:hover:bg-primary-700 file:mr-2
@@ -114,12 +98,6 @@
                         accept=".gpx"
                         bind:files={$form.gpx_file}
                     />
-                    <!-- <Fileupload
-                        placeholder="Datei auswählen"
-                        id="gpx_file"
-                        required
-                        bind:files={$form.gpx_file}
-                    /> -->
                     {#if $form.errors.gpx_file}
                         <Helper color="red">{$form.errors.gpx_file}</Helper>
                     {:else}
@@ -132,6 +110,7 @@
                     color="primary"
                     disabled={$form.processing}>Wanderung erstellen</Button
                 >
+                <!-- svelte-ignore missing-declaration -->
                 <Button
                     outline
                     on:click={() => {
@@ -141,11 +120,5 @@
                 >
             </div>
         </form>
-        <!-- </Card> -->
     </div>
-    <!-- <Button
-        color="primary"
-        on:click={() => router.visit(route("tracks.create"))}
-        >Route erstellen</Button
-    > -->
 </AuthenticatedLayout>

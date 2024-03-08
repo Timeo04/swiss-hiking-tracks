@@ -43,10 +43,12 @@
         </p>
     </header>
 
+    <!-- Button, um Modal zu öffnen -->
     <DangerButton on:click={() => (confirmUserDeletionModal = true)}
         >Account löschen</DangerButton
     >
 
+    <!-- Modal, um User-Account zu löschen -->
     <Modal bind:open={confirmUserDeletionModal} on:close={closeModal}>
         <div class="p-6">
             <h2 class="text-lg font-medium text-gray-900">
@@ -86,6 +88,7 @@
                     >Abbrechen</SecondaryButton
                 >
 
+                <!-- Bei Klick Lösch-Funktion aufrufen -->
                 <DangerButton
                     className="ms-3 {$form.processing ? 'opacity-25' : ''}"
                     disabled={$form.processing}
