@@ -1,9 +1,7 @@
 <script>
     import GuestLayout from "@/Layouts/GuestLayout.svelte";
     import InputError from "@/Components/InputError.svelte";
-    import InputLabel from "@/Components/InputLabel.svelte";
     import PrimaryButton from "@/Components/PrimaryButton.svelte";
-    import TextInput from "@/Components/TextInput.svelte";
     import { inertia, useForm } from "@inertiajs/svelte";
     import { FloatingLabelInput } from "flowbite-svelte";
 
@@ -97,6 +95,7 @@
         </div>
 
         <div class="flex items-center justify-end mt-4">
+            <!-- svelte-ignore missing-declaration -->
             <a
                 use:inertia
                 href={route("login")}

@@ -13,20 +13,11 @@
 
     export let input;
 
-    // const model = defineModel({
-    //     type: String,
-    //     required: true,
-    // });
-
-    // const input = ref(null);
-
     onMount(() => {
         if (autofocus) {
             input.focus();
         }
     });
-
-    // defineExpose({ focus: () => input.value.focus() });
 </script>
 
 {#if type === "text"}

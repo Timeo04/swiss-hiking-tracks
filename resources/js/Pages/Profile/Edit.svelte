@@ -12,12 +12,14 @@
 </script>
 
 <svelte:head>
-    <title>Profile</title>
+    <title>Profil</title>
 </svelte:head>
 
 <AuthenticatedLayout {auth}>
     <h1 class="py-10 text-2xl font-semibold text-center">Profil bearbeiten</h1>
     <div>
+        <!-- Go to Settings page -->
+        <!-- svelte-ignore missing-declaration -->
         <Button
             outline
             color="primary"
