@@ -58,6 +58,7 @@
             console.error(error);
             // Fehlermeldung anzeigen
             geofileError = error.message;
+            $form.processing = false;
         }
     }
 
