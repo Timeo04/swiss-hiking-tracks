@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // Create the tracks table
+        // Tracks-Tabelle erstellen
         Schema::create('tracks', function (Blueprint $table) {
             $table->id();
 
@@ -24,7 +24,7 @@ return new class extends Migration
             
             $table->timestamps();
 
-            // Add foreign key constraints
+            // Foreign key constraint hinzufügen
             $table->foreign('user_id')->references('id')->on('users')
                 ->onDelete('cascade')->onUpdate('cascade');
         });

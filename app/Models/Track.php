@@ -31,6 +31,7 @@ class Track extends Model
      */
     public function user(): BelongsTo
     {
+        // Ein Track gehört zu einem User
         return $this->belongsTo(User::class);
     }
 }
