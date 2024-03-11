@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Track;
 use Illuminate\Http\Request;
+
+// Track-Model importieren
+use App\Models\Track;
+// Inertia importieren
 use Inertia\Inertia;
 
 class TrackController extends Controller
@@ -40,7 +43,7 @@ class TrackController extends Controller
             'title' => ['required', 'max:255'],
             'starting_location' => ['string', 'max:255'],
             'destination_location' => ['string', 'max:255'],
-            'gpx_file' => ['required', 'file'],
+            // 'gpx_file' => ['required', 'file'],
         ]);
 
         // Create a new track with the validated data
@@ -48,7 +51,6 @@ class TrackController extends Controller
             'title' => $request->input('title'),
             'starting_location' => $request->input('starting_location'),
             'destination_location' => $request->input('destination_location'),
-            // 'gpx_file' => $request->file('gpx_file')->store('gpx_files'),
             'gpx_file' => "test.gpx",
             'user_id' => auth()->id(),
         ]);
@@ -90,7 +92,6 @@ class TrackController extends Controller
             'title' => ['required', 'max:255'],
             'starting_location' => ['string', 'max:255'],
             'destination_location' => ['string', 'max:255'],
-            //'gpx_file' => ['required', 'file'],
         ]);
 
         // Update the track with the validated data
