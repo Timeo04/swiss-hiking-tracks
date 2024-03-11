@@ -1,5 +1,7 @@
 <script>
+    // Inertia für Links importieren
     import { inertia } from "@inertiajs/svelte";
+
     export let href;
     export let as = "button";
     export let method = "get";

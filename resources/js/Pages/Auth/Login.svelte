@@ -1,22 +1,29 @@
 <script>
-    import Checkbox from "@/Components/Checkbox.svelte";
+    // Layout importieren
     import GuestLayout from "@/Layouts/GuestLayout.svelte";
+    // UI-Komponenten importieren
+    import Checkbox from "@/Components/Checkbox.svelte";
     import InputError from "@/Components/InputError.svelte";
     import PrimaryButton from "@/Components/PrimaryButton.svelte";
-    import { inertia, useForm } from "@inertiajs/svelte";
     import { FloatingLabelInput } from "flowbite-svelte";
+    // Funktion für Formular-Netzwerk-Requests importieren
+    import { inertia, useForm } from "@inertiajs/svelte";
 
     export let status;
     export let canResetPassword;
 
+    // Formular initialisieren
     let form = useForm({
         email: "",
         password: "",
         remember: false,
     });
 
+    // Funktion, die aufgerufen wird, wenn das Formular abgeschickt wird
     function submit() {
+        // Netzwerk-Request an den Server senden
         $form.post(route("login"), {
+            // Passwort-Feld nach dem Abschicken leeren
             onFinish: () => $form.reset("password"),
         });
     }
@@ -27,6 +34,7 @@
 </svelte:head>
 
 <GuestLayout>
+    <!-- Status-Meldung anzeigen, falls vorhanden -->
     {#if status}
         <div class="mb-4 font-medium text-sm text-green-600">
             {status}
@@ -76,7 +84,9 @@
                     name="remember"
                     bind:checked={$form.remember}
                 />
-                <span class="ms-2 text-sm text-gray-600">angemeldet bleiben</span>
+                <span class="ms-2 text-sm text-gray-600"
+                    >angemeldet bleiben</span
+                >
             </label>
         </div>
 

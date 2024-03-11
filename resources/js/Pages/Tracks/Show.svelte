@@ -1,16 +1,21 @@
 <script>
+    // Layout importieren
     import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.svelte";
-    import { router } from "@inertiajs/svelte";
-    import { ArrowLeftOutline } from "flowbite-svelte-icons";
+    // UI-Komponenten importieren
     import Modal from "@/Components/Modal.svelte";
     import DangerButton from "@/Components/DangerButton.svelte";
     import SecondaryButton from "@/Components/SecondaryButton.svelte";
+    // Icon importieren
+    import { ArrowLeftOutline } from "flowbite-svelte-icons";
+    // Funktion für Netzwerk-Requests importieren
+    import { router } from "@inertiajs/svelte";
 
     export let track;
     export let auth;
 
     let confirmTrackDeletionModal = false;
 
+    // Modal schliessen
     function closeModal() {
         confirmTrackDeletionModal = false;
     }

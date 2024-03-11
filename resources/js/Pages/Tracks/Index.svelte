@@ -1,7 +1,9 @@
 <script>
+    // Layout importieren
     import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.svelte";
-    import { router } from "@inertiajs/svelte";
-    import { inertia } from "@inertiajs/svelte";
+    // Funktionen für Netzwerk-Requests importieren
+    import { router, inertia } from "@inertiajs/svelte";
+    
     export let auth;
     export let tracks;
 </script>

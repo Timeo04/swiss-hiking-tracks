@@ -1,9 +1,13 @@
 <script>
+    // UI-Komponenten importieren
     import Avatar from "@/Components/Avatar.svelte";
     import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.svelte";
-    import { router } from "@inertiajs/svelte";
     import { Button } from "flowbite-svelte";
+    // Icon importieren
     import { ArrowRightToBracketOutline } from "flowbite-svelte-icons";
+    // Funktion für Netzwerk-Requests importieren
+    import { router } from "@inertiajs/svelte";
+    
     export let auth;
 </script>
 

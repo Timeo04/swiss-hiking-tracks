@@ -1,14 +1,19 @@
 <script>
+    // Layout importieren
     import GuestLayout from "@/Layouts/GuestLayout.svelte";
+    // UI-Komponenten importieren
     import PrimaryButton from "@/Components/PrimaryButton.svelte";
-    import { useForm } from "@inertiajs/svelte";
-    import { inertia } from "@inertiajs/svelte";
+    // Funktionen für Netzwerk-Requests importieren
+    import { useForm, inertia } from "@inertiajs/svelte";
 
     export let status;
 
+    // Formular initialisieren
     let form = useForm({});
 
+    // Funktion, die aufgerufen wird, wenn das Formular abgeschickt wird
     function submit() {
+        // Netzwerk-Request an den Server senden
         $form.post(route("verification.send"));
     }
 

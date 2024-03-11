@@ -1,5 +1,7 @@
 <script>
+    // Layout importieren
     import { inertia } from "@inertiajs/svelte";
+    
     const route = window.route;
     export let canLogin;
     export let canRegister;

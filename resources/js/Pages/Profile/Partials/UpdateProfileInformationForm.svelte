@@ -1,8 +1,11 @@
 <script>
+    // UI-Komponenten importieren
     import InputError from "@/Components/InputError.svelte";
     import PrimaryButton from "@/Components/PrimaryButton.svelte";
-    import { useForm, inertia } from "@inertiajs/svelte";
     import { FloatingLabelInput } from "flowbite-svelte";
+    // Funktionen für Netzwerk-Requests importieren
+    import { useForm, inertia } from "@inertiajs/svelte";
+    // Transitions- und Easing-Funktionen importieren
     import { sineInOut } from "svelte/easing";
     import { fade } from "svelte/transition";
 
@@ -14,6 +17,7 @@
     let user = auth.user;
     $: user = auth.user;
 
+    // Formular initialisieren
     let form = useForm({
         name: user.name,
         email: user.email,

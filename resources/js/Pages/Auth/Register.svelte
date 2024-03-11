@@ -1,10 +1,14 @@
 <script>
+    // Layout importieren
     import GuestLayout from "@/Layouts/GuestLayout.svelte";
+    // UI-Komponenten importieren
     import InputError from "@/Components/InputError.svelte";
     import PrimaryButton from "@/Components/PrimaryButton.svelte";
-    import { inertia, useForm } from "@inertiajs/svelte";
     import { FloatingLabelInput } from "flowbite-svelte";
+    // Funktion für Netzwerk-Requests importieren
+    import { inertia, useForm } from "@inertiajs/svelte";
 
+    // Formular initialisieren
     let form = useForm({
         name: "",
         email: "",
@@ -12,8 +16,11 @@
         password_confirmation: "",
     });
 
+    // Funktion, die aufgerufen wird, wenn das Formular abgeschickt wird
     function submit() {
+        // Netzwerk-Request an den Server senden
         $form.post(route("register"), {
+            // Passwort-Felder nach dem Abschicken leeren
             onFinish: () => $form.reset("password", "password_confirmation"),
         });
     }
@@ -90,7 +97,10 @@
                 Passwort bestätigen
             </FloatingLabelInput>
             {#if $form.errors.password_confirmation}
-                <InputError className="mt-2" message={$form.errors.password_confirmation} />
+                <InputError
+                    className="mt-2"
+                    message={$form.errors.password_confirmation}
+                />
             {/if}
         </div>
 

@@ -1,9 +1,13 @@
 <script>
+    // Lifecycle-Methoden importieren
     import { onDestroy, onMount } from "svelte";
+    // Event-Dispatcher importieren
     import { createEventDispatcher } from "svelte";
+    // Transitions importieren
     import { fade } from "svelte/transition";
     import { sineOut, sineIn } from "svelte/easing";
 
+    // Event-Dispatcher erstellen
     const dispatch = createEventDispatcher();
 
     export let open = false;
@@ -18,6 +22,7 @@
         }
     }
 
+    // Funktion, um das Modal zu schliessen
     function close() {
         if (closeable) {
             open = false;
@@ -25,14 +30,17 @@
         }
     }
 
+    // Funktion, um das Modal bei Drücken der Escape-Taste zu schliessen
     const closeOnEscape = (e) => {
         if (e.key === "Escape" && open) {
             close();
         }
     };
 
+    // Event-Listener für das Schliessen des Modals hinzufügen
     onMount(() => document.addEventListener("keydown", closeOnEscape));
 
+    // Event-Listener für das Schliessen des Modals entfernen
     onDestroy(() => {
         document.removeEventListener("keydown", closeOnEscape);
         document.body.style.overflow = null;

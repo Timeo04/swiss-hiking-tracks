@@ -1,20 +1,24 @@
 <script>
+    // UI-Komponenten importieren
     import DangerButton from "@/Components/DangerButton.svelte";
     import InputError from "@/Components/InputError.svelte";
     import Modal from "@/Components/Modal.svelte";
     import SecondaryButton from "@/Components/SecondaryButton.svelte";
-    import { useForm } from "@inertiajs/svelte";
     import { FloatingLabelInput } from "flowbite-svelte";
+    // Funktion für Formular-Netzwerk-Requests importieren
+    import { useForm } from "@inertiajs/svelte";
 
     export let className = "";
 
     let confirmUserDeletionModal = false;
     let passwordInput = null;
 
+    // Formular initialisieren
     let form = useForm({
         password: "",
     });
 
+    // Funktion, die aufgerufen wird, wenn das Formular abgeschickt wird
     function deleteUser() {
         // DELETE-Request an die Route "profile.destroy" senden
         $form.delete(route("profile.destroy"), {
@@ -25,6 +29,7 @@
         });
     }
 
+    // Funktion, um Modal zu schließen
     function closeModal() {
         confirmUserDeletionModal = false;
 

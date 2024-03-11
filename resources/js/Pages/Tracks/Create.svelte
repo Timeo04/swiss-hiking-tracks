@@ -11,6 +11,7 @@
     // Authentifizierungs-Informationen laden
     export let auth;
 
+    // Formular initialisieren
     let form = useForm({
         title: "",
         starting_location: null,

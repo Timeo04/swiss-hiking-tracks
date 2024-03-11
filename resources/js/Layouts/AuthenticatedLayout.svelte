@@ -1,6 +1,8 @@
 <script>
+    // Router für Buttons importieren
     import { router } from "@inertiajs/svelte";
 
+    // Icons für Bottom Navigation importieren
     import {
         HomeSolid,
         UserSettingsOutline,

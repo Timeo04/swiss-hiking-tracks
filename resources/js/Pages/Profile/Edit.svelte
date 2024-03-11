@@ -1,9 +1,13 @@
 <script>
+    // Layout importieren
     import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.svelte";
+    // Komponenten importieren
     import DeleteUserForm from "./Partials/DeleteUserForm.svelte";
     import UpdatePasswordForm from "./Partials/UpdatePasswordForm.svelte";
     import UpdateProfileInformationForm from "./Partials/UpdateProfileInformationForm.svelte";
+    // UI-Komponenten importieren
     import { Button } from "flowbite-svelte";
+    // Funktionen für Netzwerk-Requests importieren
     import { router } from "@inertiajs/core";
 
     export let mustVerifyEmail;

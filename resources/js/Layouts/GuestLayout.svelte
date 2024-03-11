@@ -1,5 +1,7 @@
 <script>
+    // Inertia für Links importieren
     import { inertia } from "@inertiajs/svelte";
+    // Logo importieren
     import ApplicationLogo from "@/Components/ApplicationLogo.svelte";
 </script>
 

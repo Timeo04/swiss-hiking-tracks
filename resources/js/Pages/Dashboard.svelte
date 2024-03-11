@@ -1,5 +1,7 @@
 <script>
+    // Layout importieren
     import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.svelte";
+    
     export let auth;
 </script>
 

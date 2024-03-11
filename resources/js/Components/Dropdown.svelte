@@ -1,5 +1,7 @@
 <script>
+    // Lifecycle-Methoden importieren
     import { onDestroy, onMount } from "svelte";
+    // Transitions importieren
     import { sineIn, sineOut } from "svelte/easing";
     import { fade } from "svelte/transition";
 
@@ -8,13 +10,16 @@
     export let contentClasses = "py-1 bg-white";
     export let open = false;
 
+    // Funktion, um das Dropdown bei Drücken von Escape zu schliessen
     const closeOnEscape = (e) => {
         if (open && e.key === "Escape") {
             open = false;
         }
     };
 
+    // Event-Listener für das Schliessen des Dropdowns hinzufügen
     onMount(() => document.addEventListener("keydown", closeOnEscape));
+    // Event-Listener für das Schliessen des Dropdowns entfernen
     onDestroy(() => document.removeEventListener("keydown", closeOnEscape));
 
     const widthClass = {

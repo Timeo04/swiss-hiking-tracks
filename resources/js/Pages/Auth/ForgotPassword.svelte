@@ -1,17 +1,23 @@
 <script>
+    // Gast-Layout importieren
     import GuestLayout from "@/Layouts/GuestLayout.svelte";
+    // UI-Komponenten importieren
     import InputError from "@/Components/InputError.svelte";
     import PrimaryButton from "@/Components/PrimaryButton.svelte";
-    import { useForm } from "@inertiajs/svelte";
     import { FloatingLabelInput } from "flowbite-svelte";
+    // Funktion für Formular-Netzwerk-Requests importieren
+    import { useForm } from "@inertiajs/svelte";
 
     export let status;
 
+    // Formular initialisieren
     let form = useForm({
         email: "",
     });
 
+    // Funktion, die aufgerufen wird, wenn das Formular abgeschickt wird
     function submit() {
+        // Netzwerk-Request an den Server senden
         $form.post(route("password.email"));
     }
 </script>

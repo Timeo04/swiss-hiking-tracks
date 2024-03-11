@@ -1,8 +1,11 @@
 <script>
+    // UI-Komponenten importieren
     import InputError from "@/Components/InputError.svelte";
     import PrimaryButton from "@/Components/PrimaryButton.svelte";
-    import { useForm } from "@inertiajs/svelte";
     import { FloatingLabelInput } from "flowbite-svelte";
+    // Funktion für Formular-Netzwerk-Requests importieren
+    import { useForm } from "@inertiajs/svelte";
+    // Transitions und Easing-Funktionen importieren
     import { sineInOut } from "svelte/easing";
     import { fade } from "svelte/transition";
 
@@ -11,12 +14,14 @@
     let passwordInput = null;
     let currentPasswordInput = null;
 
+    // Formular initialisieren
     let form = useForm({
         current_password: "",
         password: "",
         password_confirmation: "",
     });
 
+    // Funktion, die aufgerufen wird, wenn das Formular abgeschickt wird
     function updatePassword() {
         // PUT-Request an die Route "password.update" senden
         $form.put(route("password.update"), {
