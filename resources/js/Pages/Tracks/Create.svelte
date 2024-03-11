@@ -1,8 +1,14 @@
 <script>
+    // Layout importieren
     import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.svelte";
+    // Funktionen für Netzwerk-Requests importieren
     import { router, useForm } from "@inertiajs/svelte";
+    // UI-Komponenten aus Library flowbite-svelte importieren
     import { Button, FloatingLabelInput, Helper } from "flowbite-svelte";
+    // Icon importieren
     import { ArrowDownOutline } from "flowbite-svelte-icons";
+
+    // Authentifizierungs-Informationen laden
     export let auth;
 
     let form = useForm({
@@ -12,9 +18,11 @@
         gpx_file: null,
     });
 
+    // Funktion, die aufgerufen wird, wenn das Formular abgeschickt wird
     function submit() {
         $form
             .transform((data) => ({
+                // Nur die erste Datei auswählen
                 ...data,
                 gpx_file: data.gpx_file[0],
             }))
