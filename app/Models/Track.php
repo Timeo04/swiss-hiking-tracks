@@ -20,7 +20,8 @@ class Track extends Model
         'title',
         'starting_location',
         'destination_location',
-        'gpx_file',
+        // 'gpx_file',
+        'geojson',
         'public'
     ];
 

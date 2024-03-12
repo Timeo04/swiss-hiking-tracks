@@ -3,6 +3,14 @@
     import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.svelte";
     // Funktionen für Netzwerk-Requests importieren
     import { router, useForm } from "@inertiajs/svelte";
+    // Funktionen für GeoJSON-Dateien (und das Konvertieren von .gpx und .kml) importieren
+    import {
+        parseGeofile,
+        filterGeoJson,
+        getLineString,
+    } from "@/utils/geofile";
+    // Funktionen für die Berechnung der minimalen Distanz importieren
+    import { getMinDistance } from "@/utils/geojson/linestring";
     // UI-Komponenten aus Library flowbite-svelte importieren
     import { Button, FloatingLabelInput, Helper } from "flowbite-svelte";
     // Icon importieren
@@ -11,23 +19,72 @@
     // Authentifizierungs-Informationen laden
     export let auth;
 
+    // Datei-Variable initialisieren
+    let geofile = null;
+    // Variable für Fehlermeldung initialisieren
+    let geofileError = null;
+
     // Formular initialisieren
     let form = useForm({
         title: "",
         starting_location: null,
         destination_location: null,
-        gpx_file: null,
+        geojson: null,
     });
 
     // Funktion, die aufgerufen wird, wenn das Formular abgeschickt wird
-    function submit() {
-        $form
-            .transform((data) => ({
-                // Nur die erste Datei auswählen
-                ...data,
-                gpx_file: data.gpx_file[0],
-            }))
-            .post(route("tracks.store"));
+    async function submit() {
+        try {
+            $form.processing = true;
+            // Nur die erste Datei auswählen
+            let geoJson = await parseGeofile(geofile[0]);
+            // Falls die Datei nicht geparst werden kann, wird ein Fehler geworfen
+            if (!geoJson) {
+                throw new Error("Die Datei konnte nicht geladen werden.");
+            }
+            // GeoJSON-Objekt filtern nach LineString-Objekten
+            geoJson = filterGeoJson(geoJson);
+            // Nur LineString-Objekt auswählen
+            let geoJsonLineString = getLineString(geoJson);
+
+            let minDistance = getMinDistance(geoJsonLineString);
+            // console.log("min-Distance", minDistance);
+
+            // Netzwerk-Request an den Server senden
+            $form
+                .transform((data) => ({
+                    ...data,
+                    // GeoJSON-Objekt in einen String umwandeln und anfügen
+                    geojson: JSON.stringify(geoJsonLineString),
+                }))
+                .post(route("tracks.store"));
+        } catch (error) {
+            // Fehlermeldung in der Konsole anzeigen
+            console.error(error);
+            // Fehlermeldung anzeigen
+            geofileError = error.message;
+            $form.processing = false;
+        }
+    }
+
+    // Funktion, die aufgerufen wird, wenn sich die Datei ändert
+    function changeTitle(event) {
+        if (
+            // Titel-Feld ist leer und Datei wurde ausgewählt
+            ($form.title == "" || $form.title == null) &&
+            event.target.files[0] != null
+        ) {
+            // Dateiname auslesen
+            let fileName = event.target.files[0].name;
+            // Dateiendung entfernen
+            fileName = fileName.substring(0, fileName.lastIndexOf("."));
+            // Alle Unterstriche und Bindestriche durch Leerzeichen ersetzen
+            fileName = fileName.replace(/(_|-)/g, " ");
+            // Leerzeichen am Anfang und Ende entfernen
+            fileName = fileName.trim();
+            // Dateiname als Titel setzen
+            $form.title = fileName;
+        }
     }
 </script>
 
@@ -44,6 +101,30 @@
         <!-- Display form to create a new Track -->
         <form on:submit|preventDefault={submit} class="w-full">
             <div class="flex flex-col gap-4 mb-6">
+                <div>
+                    <input
+                        class="file:bg-primary-700 file:hover:bg-primary-800 file:text-white file:border-none file:cursor-pointer file:font-medium
+                        file:px-5 file:py-2.5 file:dark:bg-primary-600 file:dark:hover:bg-primary-700 file:mr-2
+                        block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
+                        dark:focus:border-primary-500 focus:border-primary-600"
+                        aria-describedby="file_input_help"
+                        id="geofile"
+                        required
+                        type="file"
+                        accept=".gpx, .geojson, .kml"
+                        on:change={changeTitle}
+                        bind:files={geofile}
+                    />
+                    {#if $form.errors.geojson}
+                        <Helper color="red">{$form.errors.geojson}</Helper>
+                    {:else if geofileError != null}
+                        <Helper color="red">{geofileError}</Helper>
+                    {:else}
+                        <Helper
+                            >Wählen Sie eine GPX-, KML- oder GeoJSON-Datei.</Helper
+                        >
+                    {/if}
+                </div>
                 <div>
                     <FloatingLabelInput
                         style="outlined"
@@ -92,25 +173,6 @@
                         <Helper color="red"
                             >{$form.errors.destination_location}</Helper
                         >
-                    {/if}
-                </div>
-                <div>
-                    <input
-                        class="file:bg-primary-700 file:hover:bg-primary-800 file:text-white file:border-none file:cursor-pointer file:font-medium
-                        file:px-5 file:py-2.5 file:dark:bg-primary-600 file:dark:hover:bg-primary-700 file:mr-2
-                        block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
-                        dark:focus:border-primary-500 focus:border-primary-600"
-                        aria-describedby="file_input_help"
-                        id="gpx_file"
-                        required
-                        type="file"
-                        accept=".gpx"
-                        bind:files={$form.gpx_file}
-                    />
-                    {#if $form.errors.gpx_file}
-                        <Helper color="red">{$form.errors.gpx_file}</Helper>
-                    {:else}
-                        <Helper>Wählen Sie eine GPX-Datei.</Helper>
                     {/if}
                 </div>
                 <Button

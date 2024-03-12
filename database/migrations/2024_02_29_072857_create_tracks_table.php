@@ -19,7 +19,8 @@ return new class extends Migration
             $table->string('title');
             $table->string('starting_location')->nullable()->default(null);
             $table->string('destination_location')->nullable()->default(null);
-            $table->string('gpx_file')->nullable()->default(null);
+            // $table->string('gpx_file')->nullable()->default(null);
+            $table->json('geojson');
             $table->boolean('public')->default(false);
             
             $table->timestamps();

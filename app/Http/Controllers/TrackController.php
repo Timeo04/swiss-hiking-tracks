@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 use App\Models\Track;
 // Inertia importieren
 use Inertia\Inertia;
+// GeoJsonRule für Validation importieren
+use YucaDoo\LaravelGeoJsonRule\GeoJsonRule;
+use GeoJson\Geometry\LineString;
 
 class TrackController extends Controller
 {
@@ -41,8 +44,9 @@ class TrackController extends Controller
         // Validate the request data
         $request->validate([
             'title' => ['required', 'max:255'],
-            'starting_location' => ['string', 'max:255'],
-            'destination_location' => ['string', 'max:255'],
+            'starting_location' => ['nullable', 'string', 'max:255'],
+            'destination_location' => ['nullable', 'string', 'max:255'],
+            'geojson' => ['required', new GeoJsonRule(LineString::class)],
             // 'gpx_file' => ['required', 'file'],
         ]);
 
@@ -51,7 +55,8 @@ class TrackController extends Controller
             'title' => $request->input('title'),
             'starting_location' => $request->input('starting_location'),
             'destination_location' => $request->input('destination_location'),
-            'gpx_file' => "test.gpx",
+            // 'gpx_file' => "test.gpx",
+            'geojson' => $request->input('geojson'),
             'user_id' => auth()->id(),
         ]);
 
