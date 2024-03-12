@@ -9,6 +9,8 @@
         filterGeoJson,
         getLineString,
     } from "@/utils/geofile";
+    // Funktionen für die Berechnung der minimalen Distanz importieren
+    import { getMinDistance } from "@/utils/geojson/linestring";
     // UI-Komponenten aus Library flowbite-svelte importieren
     import { Button, FloatingLabelInput, Helper } from "flowbite-svelte";
     // Icon importieren
@@ -44,6 +46,9 @@
             geoJson = filterGeoJson(geoJson);
             // Nur LineString-Objekt auswählen
             let geoJsonLineString = getLineString(geoJson);
+
+            let minDistance = getMinDistance(geoJsonLineString);
+            // console.log("min-Distance", minDistance);
 
             // Netzwerk-Request an den Server senden
             $form
