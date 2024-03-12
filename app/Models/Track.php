@@ -24,6 +24,15 @@ class Track extends Model
         'geojson',
         'public'
     ];
+    
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'geojson' => 'object',
+    ];
 
     /**
      * Get the user that owns the track.
