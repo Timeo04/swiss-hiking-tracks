@@ -59,5 +59,4 @@ Route::prefix('/settings')->middleware('auth')->group(function () {
 // Tracks-Resource-Route-Gruppe, die nur eingeloggten Usern zur Verfügung steht
 Route::resource('tracks', TrackController::class)->middleware('auth');
 
-
 require __DIR__ . '/auth.php';
