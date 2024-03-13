@@ -47,7 +47,7 @@
     <div class="h-96 w-full bg-white"></div>
     <div class="h-80 w-full bg-white"></div>
 
-    <div class="w-4/5 h-fit flex flex-col justify-center items-center gap-6">
+    <div class="w-full h-fit flex flex-col justify-center items-center gap-6">
         <!-- Track info, StartLocation, EndLocation, Length, estimatedDuration, HeightDifference -->
         <div class="w-full h-20 grid grid-cols-3">
             <!-- <div class="w-full h-20 flex flex-col justify-around "> -->
@@ -63,33 +63,27 @@
                     ? track.destination_location
                     : ""}
             </p>
-            <!-- </div>
-            <div class="flex justify-around"> -->
             <p class="text-gray-500 m-auto">
-                <!-- {track.length != null
-                        ? track.length + " km"
-                        : "? km"} -->
                 {Math.round(distance / 10) / 100} km
             </p>
-            <p class="text-gray-500 m-auto">
+            <p class="m-auto text-red-400">
                 <!-- {track.estimated_duration != null
                         ? track.estimated_duration + " h"
                         : "? h"} -->
                 3h
             </p>
-            <p class="text-gray-500 m-auto">
+            <p class="m-auto text-red-400">
                 <!-- {track.height_difference != null
                         ? track.height_difference + " m"
                         : "? / ? m"} -->
-                100/120
+                100 m / 120 m
             </p>
-            <!-- </div> -->
         </div>
 
         <div class="flex flex-col gap-2 justify-start items-center">
             <button
                 type="button"
-                class="w-1/2 bg-primary-700 hover:bg-primary-500 flex justify-center items-center text-black border border-red-500 bg-transparent shadow-md font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none"
+                class="w-full bg-primary-700 hover:bg-primary-500 flex justify-center items-center text-black border border-red-500 bg-transparent shadow-md font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none"
                 on:click={() => (confirmTrackDeletionModal = true)}
             >
                 Löschen
@@ -98,7 +92,7 @@
             <!-- svelte-ignore missing-declaration -->
             <button
                 type="button"
-                class="w-1/2 bg-primary-700 hover:bg-primary-500 flex justify-center items-center text-black border border-red-500 bg-transparent shadow-md font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none"
+                class="w-full bg-primary-700 hover:bg-primary-500 flex justify-center items-center text-black border border-red-500 bg-transparent shadow-md font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none"
                 on:click={router.visit(route("tracks.edit", { track }))}
             >
                 Bearbeiten
