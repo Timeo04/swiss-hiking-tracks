@@ -1,30 +1,30 @@
 <script>
+    // Layout importieren
     import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.svelte";
+    // Funktionen für Netzwerk-Requests importieren
     import { router, useForm } from "@inertiajs/svelte";
-    import {
-        Button,
-        Card,
-        Fileupload,
-        FloatingLabelInput,
-        Helper,
-        Input,
-        Label,
-    } from "flowbite-svelte";
+    // UI-Komponenten aus Library flowbite-svelte importieren
+    import { Button, FloatingLabelInput, Helper } from "flowbite-svelte";
+
+    // Icon importieren
     import { ArrowDownOutline } from "flowbite-svelte-icons";
 
+    // Authentifizierungs-Informationen laden
     export let auth;
-    export let track;
-    console.log(track);
 
+    // Track-Informationen laden
+    export let track;
+
+    // Formular initialisieren
     let form = useForm({
         title: track.title,
         starting_location: track.starting_location,
         destination_location: track.destination_location,
     });
 
+    //Funktion, die aufgerufen wird, wenn das Formular abgeschickt wird
     function submit() {
-        $form
-            .put(route("tracks.update", {track}));
+        $form.put(route("tracks.update", { track }));
     }
 </script>
 
@@ -39,8 +39,9 @@
         </h2>
     </div> -->
     <!-- <h1 class="text-2xl font-semibold">Route erstellen</h1> -->
-    <h1 class="py-10 text-2xl font-semibold text-center">Wanderung bearbeiten</h1>
-    
+    <h1 class="py-10 text-2xl font-semibold text-center">
+        Wanderung bearbeiten
+    </h1>
 
     <div
         class="flex items-center justify-between p-4 bg-white rounded-lg shadow-md"
@@ -98,7 +99,7 @@
                         >
                     {/if}
                 </div>
-                
+
                 <Button
                     class="mt-2"
                     type="submit"
@@ -109,7 +110,7 @@
                     outline
                     on:click={() => {
                         $form.cancel();
-                        router.visit(route("tracks.show", {track}));
+                        router.visit(route("tracks.show", { track }));
                     }}>Abbrechen</Button
                 >
             </div>
