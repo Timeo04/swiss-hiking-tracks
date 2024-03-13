@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Track extends Model
 {
@@ -43,5 +44,15 @@ class Track extends Model
     {
         // Ein Track gehört zu einem User
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Return the tracks which belong to a tag
+     *
+     * @return BelongsToMany
+     */
+    public function tags(): BelongsToMany
+    {
+        return $this->belongsToMany(Tag::class);
     }
 }
