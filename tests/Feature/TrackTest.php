@@ -99,7 +99,24 @@ class TrackTest extends TestCase
                 'title' => 'Test Track',
                 'starting_location' => 'Test City',
                 'destination_location' => 'Test City',
-                'gpx_file' => $file,
+                // 'gpx_file' => $file,
+                'geojson' => '{
+                    "type": "LineString",
+                    "coordinates": [
+                        [
+                            8.04331,
+                            47.36773
+                        ],
+                        [
+                            8.18147,
+                            47.38487
+                        ],
+                        [
+                            8.08007,
+                            47.40025
+                        ]
+                    ]
+                }',
             ]);
 
         $response
@@ -113,6 +130,23 @@ class TrackTest extends TestCase
             'destination_location' => 'Test City',
             // 'gpx_file' => 'test.gpx',
             'user_id' => $user->id,
+            // 'geojson' => '{
+            //     "type": "LineString",
+            //     "coordinates": [
+            //         [
+            //             8.04331,
+            //             47.36773
+            //         ],
+            //         [
+            //             8.18147,
+            //             47.38487
+            //         ],
+            //         [
+            //             8.08007,
+            //             47.40025
+            //         ]
+            //     ]
+            // }',
         ]);
     }
 

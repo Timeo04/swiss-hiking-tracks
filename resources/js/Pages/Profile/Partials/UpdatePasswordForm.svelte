@@ -1,9 +1,11 @@
-<script setup>
+<script>
+    // UI-Komponenten importieren
     import InputError from "@/Components/InputError.svelte";
-    import InputLabel from "@/Components/InputLabel.svelte";
     import PrimaryButton from "@/Components/PrimaryButton.svelte";
-    import TextInput from "@/Components/TextInput.svelte";
+    import { FloatingLabelInput } from "flowbite-svelte";
+    // Funktion für Formular-Netzwerk-Requests importieren
     import { useForm } from "@inertiajs/svelte";
+    // Transitions und Easing-Funktionen importieren
     import { sineInOut } from "svelte/easing";
     import { fade } from "svelte/transition";
 
@@ -12,16 +14,19 @@
     let passwordInput = null;
     let currentPasswordInput = null;
 
+    // Formular initialisieren
     let form = useForm({
         current_password: "",
         password: "",
         password_confirmation: "",
     });
 
+    // Funktion, die aufgerufen wird, wenn das Formular abgeschickt wird
     function updatePassword() {
+        // PUT-Request an die Route "password.update" senden
         $form.put(route("password.update"), {
             preserveScroll: true,
-            onSuccess: () => $form.reset(),
+            onSuccess: () => $form.reset(), // Bei Erfolg Formular zurücksetzen
             onError: () => {
                 if ($form.errors.password) {
                     $form.reset("password", "password_confirmation");
@@ -38,25 +43,28 @@
 
 <section class={className}>
     <header>
-        <h2 class="text-lg font-medium text-gray-900">Update Password</h2>
+        <h2 class="text-lg font-medium text-gray-900">Passwort ändern</h2>
 
         <p class="mt-1 text-sm text-gray-600">
-            Ensure your account is using a long, random password to stay secure.
+            Stellen Sie sicher, dass Ihr Konto ein langes, zufälliges Passwort
+            verwendet, um sicher zu bleiben.
         </p>
     </header>
 
+    <!-- Um Passwort zu ändern altes Passwort und neues Passwort abfragen -->
     <form on:submit|preventDefault={updatePassword} class="mt-6 space-y-6">
         <div>
-            <InputLabel forValue="current_password" value="Current Password" />
-
-            <TextInput
+            <FloatingLabelInput
+                style="outlined"
                 id="current_password"
-                bind:this={currentPasswordInput}
-                bind:value={$form.current_password}
                 type="password"
-                className="mt-1 block w-full"
+                required
+                bind:value={$form.current_password}
+                bind:this={currentPasswordInput}
                 autocomplete="current-password"
-            />
+            >
+                Aktuelles Passwort
+            </FloatingLabelInput>
 
             {#if $form.errors.current_password}
                 <InputError
@@ -67,16 +75,17 @@
         </div>
 
         <div>
-            <InputLabel forValue="password" value="New Password" />
-
-            <TextInput
+            <FloatingLabelInput
+                style="outlined"
                 id="password"
+                type="password"
+                required
                 bind:this={passwordInput}
                 bind:value={$form.password}
-                type="password"
-                className="mt-1 block w-full"
                 autocomplete="new-password"
-            />
+            >
+                Neues Passwort
+            </FloatingLabelInput>
 
             {#if $form.errors.password}
                 <InputError message={$form.errors.password} className="mt-2" />
@@ -84,18 +93,16 @@
         </div>
 
         <div>
-            <InputLabel
-                forValue="password_confirmation"
-                value="Confirm Password"
-            />
-
-            <TextInput
+            <FloatingLabelInput
+                style="outlined"
                 id="password_confirmation"
-                bind:value={$form.password_confirmation}
                 type="password"
-                className="mt-1 block w-full"
+                required
+                bind:value={$form.password_confirmation}
                 autocomplete="new-password"
-            />
+            >
+                Passwort bestätigen
+            </FloatingLabelInput>
 
             {#if $form.errors.password_confirmation}
                 <InputError
@@ -106,14 +113,14 @@
         </div>
 
         <div class="flex items-center gap-4">
-            <PrimaryButton disabled={$form.processing}>Save</PrimaryButton>
+            <PrimaryButton disabled={$form.processing}>Speichern</PrimaryButton>
 
             {#if $form.recentlySuccessful}
                 <p
                     transition:fade={{ easing: sineInOut }}
                     class="text-sm text-gray-600"
                 >
-                    Saved.
+                    Gespeichert.
                 </p>
             {/if}
         </div>

@@ -11,7 +11,7 @@ Zur lokalen Installation sind verschiedene Schritte notwendig.
 Stellen Sie sicher, dass Sie die folgenden Tools bereits installiert haben:
 * [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 * [Node.js und npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
-* php (unter Windows beispielsweise mit [XAMPP](https://www.apachefriends.org/de/index.html))
+* php (mindestens Version 8.2, unter Windows beispielsweise mit [XAMPP](https://www.apachefriends.org/de/index.html))
 * [composer](https://getcomposer.org/download/)
 
 #### Windows

@@ -51,6 +51,7 @@ class User extends Authenticatable
      */
     public function tracks(): HasMany
     {
+        // Ein User hat viele Tracks
         return $this->hasMany(Track::class);
     }
 }

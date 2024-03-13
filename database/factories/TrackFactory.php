@@ -20,7 +20,24 @@ class TrackFactory extends Factory
             'title' => fake()->sentence(3),
             'starting_location' => fake()->city(),
             'destination_location' => fake()->city(),
-            'gpx_file' => 'test.gpx',
+            // 'geojson' => "{'type': 'LineString', 'coordinates': []}",
+            'geojson' => '{
+                "type": "LineString",
+                "coordinates": [
+                    [
+                        8.04331,
+                        47.36773
+                    ],
+                    [
+                        8.18147,
+                        47.38487
+                    ],
+                    [
+                        8.08007,
+                        47.40025
+                    ]
+                ]
+            }',
         ];
     }
 }
