@@ -1,9 +1,13 @@
 <script>
+    // Layout importieren
     import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.svelte";
+    // Komponenten importieren
     import DeleteUserForm from "./Partials/DeleteUserForm.svelte";
     import UpdatePasswordForm from "./Partials/UpdatePasswordForm.svelte";
     import UpdateProfileInformationForm from "./Partials/UpdateProfileInformationForm.svelte";
+    // UI-Komponenten importieren
     import { Button } from "flowbite-svelte";
+    // Funktionen für Netzwerk-Requests importieren
     import { router } from "@inertiajs/core";
 
     export let mustVerifyEmail;
@@ -12,12 +16,14 @@
 </script>
 
 <svelte:head>
-    <title>Profile</title>
+    <title>Profil</title>
 </svelte:head>
 
 <AuthenticatedLayout {auth}>
     <h1 class="py-10 text-2xl font-semibold text-center">Profil bearbeiten</h1>
     <div>
+        <!-- Go to Settings page -->
+        <!-- svelte-ignore missing-declaration -->
         <Button
             outline
             color="primary"

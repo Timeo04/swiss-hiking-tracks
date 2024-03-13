@@ -20,8 +20,18 @@ class Track extends Model
         'title',
         'starting_location',
         'destination_location',
-        'gpx_file',
+        // 'gpx_file',
+        'geojson',
         'public'
+    ];
+    
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'geojson' => 'object',
     ];
 
     /**
@@ -31,6 +41,7 @@ class Track extends Model
      */
     public function user(): BelongsTo
     {
+        // Ein Track gehört zu einem User
         return $this->belongsTo(User::class);
     }
 }

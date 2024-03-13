@@ -2,7 +2,7 @@
 
 /*
 * Projektname: SwissHikingTracks
-* Datum: 07.03.2024
+* Datum: 13.03.2024
 * Autor*innen: Lea Geissmann, Yannis Bontempi, Cedric Bolleter
 * Hauptquellen:
 * - https://laravel.com/docs/
@@ -11,9 +11,9 @@
 * - https://tailwindcss.com/docs
 * 
 * Grobe Aufteilung des Codes:
-* - Cedric: ?
-* - Lea: ?
-* - Yannis: ?
+* - Cedric: Authentifizierung, Profil/Settings, Geo-Daten-Verarbeitung, Datenbank
+* - Lea: Grundlegende Operationen (CRUD, insb. bearbeiten, löschen) für Tracks
+* - Yannis: Layout, Detail-Seite, Design, Kartenausschnitte
 */
 
 use App\Http\Controllers\ProfileController;
@@ -58,6 +58,6 @@ Route::prefix('/settings')->middleware('auth')->group(function () {
 
 // Tracks-Resource-Route-Gruppe, die nur eingeloggten Usern zur Verfügung steht
 Route::resource('tracks', TrackController::class)->middleware('auth');
-
+Route::get('tracks/{track}/gpx', [TrackController::class, 'gpx'])->name('tracks.gpx')->middleware('auth');
 
 require __DIR__ . '/auth.php';
