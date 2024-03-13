@@ -58,12 +58,11 @@
     <Modal bind:open={confirmTrackDeletionModal} on:close={closeModal}>
         <div class="p-6">
             <h2 class="text-lg font-medium text-gray-900">
-                Möchten Sie diese Route wirklich löschen?
+                Möchten Sie die Route "{track.title}" wirklich löschen?
             </h2>
 
             <p class="mt-1 text-sm text-gray-600">
-                Sobald die Route gelöscht ist, werden alle zugehörigen Daten
-                dauerhaft gelöscht.
+                Wird die Route gelöscht, werden auch alle dazugehörigen Daten dauerhaft entfernt.
             </p>
 
             <div class="mt-6 flex justify-end">
