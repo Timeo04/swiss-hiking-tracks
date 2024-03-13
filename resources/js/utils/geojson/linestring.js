@@ -54,3 +54,14 @@ export function getMinDistance(geojson) {
     console.log("Average distance: ", distances.reduce((a, b) => a + b, 0) / distances.length, "meters");
     return Math.min(...distances);
 }
+
+/**
+ * Länge eines GeoJSON-Objekts vom Typ LineString berechnen
+ * @param {*} geojson - GeoJSON-LineString-Objekt
+ * @returns {Number} - Die Gesamtlänge des LineStrings in Metern
+ */
+export function getLength(geojson) {
+    validateLineString(geojson);
+    const distances = calculateDistances(geojson);
+    return distances.reduce((a, b) => a + b, 0);
+}
