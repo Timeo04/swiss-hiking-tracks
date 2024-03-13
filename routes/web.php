@@ -2,7 +2,7 @@
 
 /*
 * Projektname: SwissHikingTracks
-* Datum: 07.03.2024
+* Datum: 13.03.2024
 * Autor*innen: Lea Geissmann, Yannis Bontempi, Cedric Bolleter
 * Hauptquellen:
 * - https://laravel.com/docs/
