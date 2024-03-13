@@ -137,9 +137,12 @@ class TrackController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(int $id)
+    public function edit(Track $track)
     {
-        //
+        // Inertia-Response mit Übergabewert $track zurückgeben
+        return Inertia::render('Tracks/Edit', [
+            'track' => $track
+        ]);
     }
 
     /**

@@ -60,5 +60,4 @@ Route::prefix('/settings')->middleware('auth')->group(function () {
 Route::resource('tracks', TrackController::class)->middleware('auth');
 Route::get('tracks/{track}/gpx', [TrackController::class, 'gpx'])->name('tracks.gpx')->middleware('auth');
 
-
 require __DIR__ . '/auth.php';
