@@ -9,11 +9,14 @@
     import { ArrowLeftOutline } from "flowbite-svelte-icons";
     // Funktion für Netzwerk-Requests importieren
     import { router } from "@inertiajs/svelte";
+    import { getLength } from "@/utils/geojson/linestring";
 
     export let track;
     export let auth;
 
     let confirmTrackDeletionModal = false;
+
+    let distance = getLength(track.geojson);
 
     // Modal schliessen
     function closeModal() {
@@ -35,6 +38,7 @@
         <ArrowLeftOutline size="xl" />
     </button>
     <h1 class="text-2xl text-center py-10 font-semibold">{track.title}</h1>
+    <p><strong>Distanz: </strong>{Math.round(distance/10) / 100} km</p>
 
     <div class="flex flex-col gap-2 justify-start items-center">
         <button
@@ -62,7 +66,8 @@
             </h2>
 
             <p class="mt-1 text-sm text-gray-600">
-                Wird die Route gelöscht, werden auch alle dazugehörigen Daten dauerhaft entfernt.
+                Wird die Route gelöscht, werden auch alle dazugehörigen Daten
+                dauerhaft entfernt.
             </p>
 
             <div class="mt-6 flex justify-end">
