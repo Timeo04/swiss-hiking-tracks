@@ -1,9 +1,13 @@
 <script>
+    // UI-Komponenten importieren
     import Avatar from "@/Components/Avatar.svelte";
     import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.svelte";
-    import { router } from "@inertiajs/svelte";
     import { Button } from "flowbite-svelte";
+    // Icon importieren
     import { ArrowRightToBracketOutline } from "flowbite-svelte-icons";
+    // Funktion für Netzwerk-Requests importieren
+    import { router } from "@inertiajs/svelte";
+    
     export let auth;
 </script>
 
@@ -20,6 +24,7 @@
             <p class="truncate">{auth.user.email}</p>
         </div>
         <div>
+            <!-- svelte-ignore missing-declaration -->
             <Button
                 color="primary"
                 on:click={() => router.post(route("logout"))}
@@ -29,6 +34,8 @@
         </div>
     </div>
     <div>
+        <!-- Add Link to Edit.svelte-Page -->
+        <!-- svelte-ignore missing-declaration -->
         <Button
             outline
             color="primary"

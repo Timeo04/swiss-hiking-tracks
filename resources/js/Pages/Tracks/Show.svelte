@@ -1,16 +1,21 @@
 <script>
+    // Layout importieren
     import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.svelte";
-    import { router } from "@inertiajs/svelte";
-    import { ArrowLeftOutline } from "flowbite-svelte-icons";
+    // UI-Komponenten importieren
     import Modal from "@/Components/Modal.svelte";
     import DangerButton from "@/Components/DangerButton.svelte";
     import SecondaryButton from "@/Components/SecondaryButton.svelte";
+    // Icon importieren
+    import { ArrowLeftOutline } from "flowbite-svelte-icons";
+    // Funktion für Netzwerk-Requests importieren
+    import { router } from "@inertiajs/svelte";
 
     export let track;
     export let auth;
 
     let confirmTrackDeletionModal = false;
 
+    // Modal schliessen
     function closeModal() {
         confirmTrackDeletionModal = false;
     }
@@ -21,6 +26,8 @@
 </svelte:head>
 
 <AuthenticatedLayout {auth}>
+    <!-- Go back to Index.svelte-Page -->
+    <!-- svelte-ignore missing-declaration -->
     <button
         class="rounded-full w-12 h-12 fixed top-4 left-4 bg-primary-700 hover:bg-primary-500 flex justify-center items-center text-white shadow-md hover:shadow-lg transition ease-in duration-200 focus:outline-none"
         on:click={() => router.visit(route("tracks.index"))}
@@ -47,6 +54,7 @@
         </button>
     </div>
 
+    <!-- Delete-Modal -->
     <Modal bind:open={confirmTrackDeletionModal} on:close={closeModal}>
         <div class="p-6">
             <h2 class="text-lg font-medium text-gray-900">
@@ -59,10 +67,13 @@
             </p>
 
             <div class="mt-6 flex justify-end">
+                <!-- Close Modal -->
                 <SecondaryButton on:click={closeModal}
                     >Abbrechen</SecondaryButton
                 >
 
+                <!-- Delete Track -->
+                <!-- svelte-ignore missing-declaration -->
                 <DangerButton
                     className="ms-3"
                     on:click={router.delete(route("tracks.destroy", { track }))}

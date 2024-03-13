@@ -1,26 +1,17 @@
 <script>
+    // Layout importieren
     import GuestLayout from "@/Layouts/GuestLayout.svelte";
+    // UI-Komponenten importieren
     import InputError from "@/Components/InputError.svelte";
-    import InputLabel from "@/Components/InputLabel.svelte";
     import PrimaryButton from "@/Components/PrimaryButton.svelte";
-    import TextInput from "@/Components/TextInput.svelte";
-    import { useForm } from "@inertiajs/svelte";
     import { FloatingLabelInput } from "flowbite-svelte";
-
+    // Funktion für Formular-Netzwerk-Requests importieren
+    import { useForm } from "@inertiajs/svelte";
+    
     export let email;
     export let token;
 
-    // const props = defineProps({
-    //     email: {
-    //         type: String,
-    //         required: true,
-    //     },
-    //     token: {
-    //         type: String,
-    //         required: true,
-    //     },
-    // });
-
+    // Formular initialisieren
     let form = useForm({
         token: token,
         email: email,
@@ -28,8 +19,11 @@
         password_confirmation: "",
     });
 
+    // Funktion, die aufgerufen wird, wenn das Formular abgeschickt wird
     function submit() {
+        // Netzwerk-Request an den Server senden
         $form.post(route("password.store"), {
+            // Passwort-Felder nach dem Abschicken leeren
             onFinish: () => $form.reset("password", "password_confirmation"),
         });
     }

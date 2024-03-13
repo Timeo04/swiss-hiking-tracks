@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // Create the tracks table
+        // Tracks-Tabelle erstellen
         Schema::create('tracks', function (Blueprint $table) {
             $table->id();
 
@@ -19,12 +19,12 @@ return new class extends Migration
             $table->string('title');
             $table->string('starting_location')->nullable()->default(null);
             $table->string('destination_location')->nullable()->default(null);
-            $table->string('gpx_file')->nullable()->default(null);
+            $table->json('geojson');
             $table->boolean('public')->default(false);
             
             $table->timestamps();
 
-            // Add foreign key constraints
+            // Foreign key constraint hinzufügen
             $table->foreign('user_id')->references('id')->on('users')
                 ->onDelete('cascade')->onUpdate('cascade');
         });

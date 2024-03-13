@@ -1,15 +1,19 @@
-<script setup>
-    // import { computed } from 'vue';
+<script>
+    // Layout importieren
     import GuestLayout from "@/Layouts/GuestLayout.svelte";
+    // UI-Komponenten importieren
     import PrimaryButton from "@/Components/PrimaryButton.svelte";
-    import { useForm, Link } from "@inertiajs/svelte";
-    import { inertia } from "@inertiajs/svelte";
+    // Funktionen für Netzwerk-Requests importieren
+    import { useForm, inertia } from "@inertiajs/svelte";
 
     export let status;
 
+    // Formular initialisieren
     let form = useForm({});
 
+    // Funktion, die aufgerufen wird, wenn das Formular abgeschickt wird
     function submit() {
+        // Netzwerk-Request an den Server senden
         $form.post(route("verification.send"));
     }
 
@@ -28,13 +32,12 @@
         haben, senden wir Ihnen gerne eine weitere.
     </div>
 
-    <div
-        class="mb-4 font-medium text-sm text-green-600"
-        v-if="verificationLinkSent"
-    >
-        Ein neuer Bestätigungslink wurde an die E-Mail-Adresse gesendet, die Sie
-        während der Registrierung angegeben haben.
-    </div>
+    {#if verificationLinkSent}
+        <div class="mb-4 font-medium text-sm text-green-600">
+            Ein neuer Bestätigungslink wurde an die E-Mail-Adresse gesendet, die
+            Sie während der Registrierung angegeben haben.
+        </div>
+    {/if}
 
     <form on:submit|preventDefault={submit}>
         <div class="mt-4 flex items-center justify-between">
@@ -45,16 +48,13 @@
                 E-Mail-Bestätigungslink erneut senden
             </PrimaryButton>
 
-            <button use:inertia={{ href: route("logout"), method: "post" }} type="button">
+            <!-- svelte-ignore missing-declaration -->
+            <button
+                use:inertia={{ href: route("logout"), method: "post" }}
+                type="button"
+            >
                 Abmelden
             </button>
-            <!-- <Link
-                href={route("logout")}
-                method="post"
-                as="button"
-                class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
-                >Log Out</Link
-            > -->
         </div>
     </form>
 </GuestLayout>
