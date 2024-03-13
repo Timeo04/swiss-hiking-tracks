@@ -57,7 +57,6 @@
             </p>
             <div class="m-auto">
                 <!-- Arrow left to right -->
-
             </div>
             <p class="text-gray-500 m-auto">
                 {track.destination_location != null
@@ -70,7 +69,7 @@
                 <!-- {track.length != null
                         ? track.length + " km"
                         : "? km"} -->
-                {Math.round(distance/10) / 100} km
+                {Math.round(distance / 10) / 100} km
             </p>
             <p class="text-gray-500 m-auto">
                 <!-- {track.estimated_duration != null
@@ -86,25 +85,25 @@
             </p>
             <!-- </div> -->
         </div>
-      
-          <div class="flex flex-col gap-2 justify-start items-center">
-        <button
-            type="button"
-            class="w-1/2 bg-primary-700 hover:bg-primary-500 flex justify-center items-center text-black border border-red-500 bg-transparent shadow-md font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none"
-            on:click={() => (confirmTrackDeletionModal = true)}
-        >
-            Löschen
-        </button>
 
-        <!-- svelte-ignore missing-declaration -->
-        <button
-            type="button"
-            class="w-1/2 bg-primary-700 hover:bg-primary-500 flex justify-center items-center text-black border border-red-500 bg-transparent shadow-md font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none"
-            on:click={router.visit(route("tracks.edit", { track }))}
-        >
-            Bearbeiten
-        </button>
-    </div>
+        <div class="flex flex-col gap-2 justify-start items-center">
+            <button
+                type="button"
+                class="w-1/2 bg-primary-700 hover:bg-primary-500 flex justify-center items-center text-black border border-red-500 bg-transparent shadow-md font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none"
+                on:click={() => (confirmTrackDeletionModal = true)}
+            >
+                Löschen
+            </button>
+
+            <!-- svelte-ignore missing-declaration -->
+            <button
+                type="button"
+                class="w-1/2 bg-primary-700 hover:bg-primary-500 flex justify-center items-center text-black border border-red-500 bg-transparent shadow-md font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none"
+                on:click={router.visit(route("tracks.edit", { track }))}
+            >
+                Bearbeiten
+            </button>
+        </div>
 
         <!-- Marschzeittabelle -->
         <div class="w-full h-36">
@@ -160,35 +159,34 @@
 
         <!-- Platzhalter -->
         <div class="w-full h-48"></div>
-      
     </div>
-            <!-- Delete-Modal -->
-      <Modal bind:open={confirmTrackDeletionModal} on:close={closeModal}>
-          <div class="p-6">
-              <h2 class="text-lg font-medium text-gray-900">
-                  Möchten Sie die Route "{track.title}" wirklich löschen?
-              </h2>
+    <!-- Delete-Modal -->
+    <Modal bind:open={confirmTrackDeletionModal} on:close={closeModal}>
+        <div class="p-6">
+            <h2 class="text-lg font-medium text-gray-900">
+                Möchten Sie die Route "{track.title}" wirklich löschen?
+            </h2>
 
-              <p class="mt-1 text-sm text-gray-600">
-                  Wird die Route gelöscht, werden auch alle dazugehörigen Daten
-                  dauerhaft entfernt.
-              </p>
+            <p class="mt-1 text-sm text-gray-600">
+                Wird die Route gelöscht, werden auch alle dazugehörigen Daten
+                dauerhaft entfernt.
+            </p>
 
-              <div class="mt-6 flex justify-end">
-                  <!-- Close Modal -->
-                  <SecondaryButton on:click={closeModal}
-                      >Abbrechen</SecondaryButton
-                  >
+            <div class="mt-6 flex justify-end">
+                <!-- Close Modal -->
+                <SecondaryButton on:click={closeModal}
+                    >Abbrechen</SecondaryButton
+                >
 
-                  <!-- Delete Track -->
-                  <!-- svelte-ignore missing-declaration -->
-                  <DangerButton
-                      className="ms-3"
-                      on:click={router.delete(route("tracks.destroy", { track }))}
-                  >
-                      Route löschen
-                  </DangerButton>
-              </div>
-          </div>
-      </Modal>
+                <!-- Delete Track -->
+                <!-- svelte-ignore missing-declaration -->
+                <DangerButton
+                    className="ms-3"
+                    on:click={router.delete(route("tracks.destroy", { track }))}
+                >
+                    Route löschen
+                </DangerButton>
+            </div>
+        </div>
+    </Modal>
 </AuthenticatedLayout>
