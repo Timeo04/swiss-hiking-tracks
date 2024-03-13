@@ -33,12 +33,6 @@
 </svelte:head>
 
 <AuthenticatedLayout {auth}>
-    <!-- <div slot="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            Route erstellen
-        </h2>
-    </div> -->
-    <!-- <h1 class="text-2xl font-semibold">Route erstellen</h1> -->
     <h1 class="py-10 text-2xl font-semibold text-center">
         Wanderung bearbeiten
     </h1>
@@ -46,7 +40,6 @@
     <div
         class="flex items-center justify-between p-4 bg-white rounded-lg shadow-md"
     >
-        <!-- <Card> -->
         <form on:submit|preventDefault={submit} class="w-full">
             <div class="flex flex-col gap-4 mb-6">
                 <div>
@@ -106,6 +99,7 @@
                     color="primary"
                     disabled={$form.processing}>Wanderung aktualisieren</Button
                 >
+                <!-- svelte-ignore missing-declaration -->
                 <Button
                     outline
                     on:click={() => {
@@ -115,11 +109,5 @@
                 >
             </div>
         </form>
-        <!-- </Card> -->
     </div>
-    <!-- <Button
-        color="primary"
-        on:click={() => router.visit(route("tracks.create"))}
-        >Route erstellen</Button
-    > -->
 </AuthenticatedLayout>

@@ -48,7 +48,6 @@ class TrackController extends Controller
             'starting_location' => ['nullable', 'string', 'max:255'],
             'destination_location' => ['nullable', 'string', 'max:255'],
             'geojson' => ['required', new GeoJsonRule(LineString::class)],
-            // 'gpx_file' => ['required', 'file'],
         ]);
 
         // Create a new track with the validated data
@@ -56,7 +55,6 @@ class TrackController extends Controller
             'title' => $request->input('title'),
             'starting_location' => $request->input('starting_location'),
             'destination_location' => $request->input('destination_location'),
-            // 'gpx_file' => "test.gpx",
             'geojson' => json_decode($request->input('geojson')),
             'user_id' => auth()->id(),
         ]);
@@ -88,8 +86,6 @@ class TrackController extends Controller
 
         $lineString = $track->geojson;
         $coordinates = $lineString->coordinates;
-
-        // dd($coordinates);
 
         $current_time = date('Y-m-d\TH:i:s\Z'); // ISO 8601 format
         $gpx = '<?xml version="1.0"?>
