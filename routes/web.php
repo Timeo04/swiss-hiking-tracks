@@ -21,6 +21,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\TrackController;
+use App\Http\Controllers\TagController;
 
 /*
 |--------------------------------------------------------------------------
@@ -59,5 +60,8 @@ Route::prefix('/settings')->middleware('auth')->group(function () {
 // Tracks-Resource-Route-Gruppe, die nur eingeloggten Usern zur Verfügung steht
 Route::resource('tracks', TrackController::class)->middleware('auth');
 Route::get('tracks/{track}/gpx', [TrackController::class, 'gpx'])->name('tracks.gpx')->middleware('auth');
+
+// Tags-Resource-Route-Gruppe, die nur eingeloggten Usern zur Verfügung steht
+Route::resource('tags', TagController::class)->middleware('auth');
 
 require __DIR__ . '/auth.php';
