@@ -11,6 +11,15 @@ class Tag extends Model
     use HasFactory;
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'name'
+    ];
+
+    /**
      * Return the tracks which belong to a tag
      *
      * @return BelongsToMany
