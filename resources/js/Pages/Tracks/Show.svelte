@@ -16,12 +16,13 @@
     import { router } from "@inertiajs/svelte";
     // Funktion zum Berechnen der Länge importieren
     import {
-        getLength,
+        calculateLength,
         calculateAscent,
         calculateDescent,
         calculateHikingTime,
     } from "@/utils/geojson/linestring";
     import ElevationChart from "@/Components/Tracks/ElevationChart.svelte";
+    import Map from "@/Components/Tracks/Map.svelte";
 
     export let track;
     export let auth;
@@ -131,14 +132,7 @@
             <Indicators />
         </Carousel> -->
 
-        <!-- Platzhalter -->
-        <div class="w-full h-fit">
-            <img
-                src="https://kstatic.googleusercontent.com/files/9b837ed639746f02c66e5f00bec26588fc91fc4689292b791a80971eac477e72f8f0b00fdb8dec996f5e6fc0cb777946d3e4c7ee4dd9238d50e2bf2922f4a808"
-                alt="Marschzeittabelle"
-                class="w-full h-full"
-            />
-        </div>
+        <Map {track} />
 
         <!-- AddInfo Images, Comments, AddCommentOrImage -->
         <!-- <Carousel {route to components} let:Indicators>
