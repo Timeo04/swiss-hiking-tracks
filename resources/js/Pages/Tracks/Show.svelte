@@ -7,11 +7,45 @@
     import SecondaryButton from "@/Components/SecondaryButton.svelte";
     import { Carousel } from "flowbite-svelte";
     // Icon importieren
-    import { ArrowLeftOutline } from "flowbite-svelte-icons";
+    import {
+        ArrowDownOutline,
+        ArrowLeftOutline,
+        ArrowUpOutline,
+    } from "flowbite-svelte-icons";
     // Funktion für Netzwerk-Requests importieren
     import { router } from "@inertiajs/svelte";
     // Funktion zum Berechnen der Länge importieren
-    import { getLength } from "@/utils/geojson/linestring";
+    import {
+        getLength,
+        calculateHeightPoints,
+        calculateAscent,
+        calculateDescent,
+        calculateHikingTime,
+    } from "@/utils/geojson/linestring";
+    import { Chart, Line } from "svelte-chartjs";
+    import {
+        Chart as ChartJS,
+        Title,
+        Tooltip,
+        Legend,
+        LineElement,
+        LinearScale,
+        PointElement,
+        CategoryScale,
+        Filler,
+    } from "chart.js";
+    import colors from "tailwindcss/colors";
+
+    ChartJS.register(
+        Title,
+        Tooltip,
+        Legend,
+        Filler,
+        LineElement,
+        LinearScale,
+        PointElement,
+        CategoryScale,
+    );
 
     export let track;
     export let auth;
@@ -19,11 +53,95 @@
     let confirmTrackDeletionModal = false;
 
     let distance = getLength(track.geojson);
+    let heightPoints = calculateHeightPoints(track.geojson);
+    let ascent = calculateAscent(track.geojson);
+    let descent = calculateDescent(track.geojson);
+    let hikingTime = calculateHikingTime(track.geojson, 4.2);
 
     // Modal schliessen
     function closeModal() {
         confirmTrackDeletionModal = false;
     }
+
+    ChartJS.defaults.color = colors.gray[500];
+    ChartJS.defaults.font.size = 12;
+    ChartJS.defaults.font.family =
+        'Kanit, ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"';
+    // ChartJS.defaults.font.weight = "lighter";
+
+    console.log(colors.primary);
+    let distanceData = {
+        datasets: [
+            {
+                label: "Höhe über Meer",
+                data: heightPoints.map((row) => ({
+                    y: row.height,
+                    x: row.distance / 1000,
+                })),
+                fill: "start",
+
+                backgroundColor: "#EF562F",
+                borderColor: "#EF562F",
+            },
+        ],
+    };
+    let maxHeight = Math.max(...heightPoints.map((row) => row.height));
+    let minHeight = Math.min(...heightPoints.map((row) => row.height));
+    const distanceOptions = {
+        plugins: {
+            legend: {
+                display: false,
+            },
+            tooltip: {
+                enabled: false,
+            },
+            decimation: {
+                enabled: true,
+            },
+        },
+        scales: {
+            x: {
+                title: {
+                    display: false, // set to true to show the title
+                    text: "Distanz (km)",
+                    font: {
+                        weight: "bold",
+                        size: 14,
+                    },
+                },
+                type: "linear",
+                ticks: {
+                    callback: (value) => `${Math.round(value * 10) / 10} km`,
+                },
+                max: heightPoints[heightPoints.length - 1].distance / 1000,
+                min: 0,
+                beginAtZero: true,
+            },
+            y: {
+                title: {
+                    display: true,
+                    text: "Höhe (m ü. M.)",
+                    font: {
+                        weight: "bold",
+                        size: 14,
+                    },
+                },
+                type: "linear",
+                suggestedMax: Math.max(
+                    minHeight + 150,
+                    maxHeight + (maxHeight - minHeight) * 0.15,
+                ),
+            },
+        },
+        aspectRatio: 2.5,
+        maintainAspectRation: false,
+        responsive: true,
+        datasets: {
+            line: {
+                pointRadius: 0, // disable for all `'line'` datasets
+            },
+        },
+    };
 </script>
 
 <svelte:head>
@@ -66,17 +184,27 @@
             <p class="text-gray-500 m-auto">
                 {Math.round(distance / 10) / 100} km
             </p>
-            <p class="m-auto text-red-400">
-                <!-- {track.estimated_duration != null
-                        ? track.estimated_duration + " h"
-                        : "? h"} -->
-                3h
+            <p class="m-auto text-gray-500">
+                {#if hikingTime < 60}
+                    {Math.round(hikingTime)} min
+                {:else}
+                    {Math.floor(hikingTime / 60)} h {Math.round(
+                        hikingTime % 60,
+                    )} min
+                {/if}
             </p>
-            <p class="m-auto text-red-400">
-                <!-- {track.height_difference != null
-                        ? track.height_difference + " m"
-                        : "? / ? m"} -->
-                100 m / 120 m
+            <p class="m-auto text-gray-500">
+                <span>
+                    <ArrowUpOutline
+                        size="sm"
+                        class="inline-block"
+                    />{Math.round(ascent)} m
+                </span><span>/</span><span>
+                    <ArrowDownOutline
+                        size="sm"
+                        class="inline-block"
+                    />{Math.round(descent)} m
+                </span>
             </p>
         </div>
 
@@ -99,13 +227,8 @@
             </button>
         </div>
 
-        <!-- Marschzeittabelle -->
-        <div class="w-full h-36">
-            <img
-                src="https://4.bp.blogspot.com/-wBe3cKJqqQU/WzvIQ2RZTUI/AAAAAAAACi8/ToNL9jjid_AUhjbzGh8Aya1oX3w0eNuZQCLcBGAs/s1600/Marschtabelle_E51.jpg"
-                alt="Marschzeittabelle"
-                class="w-full h-full"
-            />
+        <div class="w-full max-h-[350px] flex justify-center items-center">
+            <Line data={distanceData} options={distanceOptions} />
         </div>
 
         <!-- AddInfo Map, Safety, Weather -->
