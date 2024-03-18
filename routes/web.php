@@ -61,8 +61,8 @@ Route::prefix('/settings')->middleware('auth')->group(function () {
 Route::resource('tracks', TrackController::class)->middleware('auth');
 Route::get('tracks/{track}/gpx', [TrackController::class, 'gpx'])->name('tracks.gpx')->middleware('auth');
 
-// Tags-Resource-Route-Gruppe, die nur eingeloggten Usern zur Verfügung steht
-Route::resource('tags', TagController::class)->middleware('auth');
+// Tags-Resource-Route-Gruppe
+Route::resource('tags', TagController::class);
 
 //Route-Gruppe Verbindung Tags mit Tracks
 Route::post('tracks/{track}/tag', [TrackController::class, 'tag'])->name('tracks.tag');

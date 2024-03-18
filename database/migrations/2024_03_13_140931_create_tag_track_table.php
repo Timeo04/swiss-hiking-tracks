@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('track_tag', function (Blueprint $table) {
+        Schema::create('tag_track', function (Blueprint $table) {
             $table->unsignedBigInteger('track_id');
             $table->unsignedBigInteger('tag_id');
             $table->foreign('track_id')->references('id')->on('tracks');
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('track_tag');
+        Schema::dropIfExists('tag_track');
     }
 };

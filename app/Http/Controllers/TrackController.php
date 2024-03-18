@@ -189,5 +189,6 @@ class TrackController extends Controller
     public function tag(Track $track)
     {
         echo($track);
+        $track->tags()->attach(1);
     }
 }

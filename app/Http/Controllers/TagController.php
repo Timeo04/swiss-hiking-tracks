@@ -41,6 +41,7 @@ class TagController extends Controller
         $tag = Tag::create([
             'name' => $request->input('name'),
         ]);
+        
     }
 
     /**
@@ -91,6 +92,4 @@ class TagController extends Controller
         // Redirect to the index view of the tracks
         // return to_route('tracks.index');
     }
-
-    
 }
