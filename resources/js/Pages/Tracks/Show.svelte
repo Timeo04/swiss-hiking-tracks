@@ -7,18 +7,32 @@
     import SecondaryButton from "@/Components/SecondaryButton.svelte";
     import { Carousel } from "flowbite-svelte";
     // Icon importieren
-    import { ArrowLeftOutline } from "flowbite-svelte-icons";
+    import {
+        ArrowDownOutline,
+        ArrowLeftOutline,
+        ArrowUpOutline,
+    } from "flowbite-svelte-icons";
     // Funktion für Netzwerk-Requests importieren
     import { router } from "@inertiajs/svelte";
     // Funktion zum Berechnen der Länge importieren
-    import { getLength } from "@/utils/geojson/linestring";
+    import {
+        calculateLength,
+        calculateAscent,
+        calculateDescent,
+        calculateHikingTime,
+    } from "@/utils/geojson/linestring";
+    import ElevationChart from "@/Components/Tracks/ElevationChart.svelte";
+    import Map from "@/Components/Tracks/Map.svelte";
 
     export let track;
     export let auth;
 
     let confirmTrackDeletionModal = false;
 
-    let distance = getLength(track.geojson);
+    let distance = calculateLength(track.geojson);
+    let ascent = calculateAscent(track.geojson);
+    let descent = calculateDescent(track.geojson);
+    let hikingTime = calculateHikingTime(track.geojson, 4.2);
 
     // Modal schliessen
     function closeModal() {
@@ -66,17 +80,27 @@
             <p class="text-gray-500 m-auto">
                 {Math.round(distance / 10) / 100} km
             </p>
-            <p class="m-auto text-red-400">
-                <!-- {track.estimated_duration != null
-                        ? track.estimated_duration + " h"
-                        : "? h"} -->
-                3h
+            <p class="m-auto text-gray-500">
+                {#if hikingTime < 60}
+                    {Math.round(hikingTime)} min
+                {:else}
+                    {Math.floor(hikingTime / 60)} h {Math.round(
+                        hikingTime % 60,
+                    )} min
+                {/if}
             </p>
-            <p class="m-auto text-red-400">
-                <!-- {track.height_difference != null
-                        ? track.height_difference + " m"
-                        : "? / ? m"} -->
-                100 m / 120 m
+            <p class="m-auto text-gray-500">
+                <span>
+                    <ArrowUpOutline
+                        size="sm"
+                        class="inline-block"
+                    />{Math.round(ascent)} m
+                </span><span>/</span><span>
+                    <ArrowDownOutline
+                        size="sm"
+                        class="inline-block"
+                    />{Math.round(descent)} m
+                </span>
             </p>
         </div>
 
@@ -99,13 +123,8 @@
             </button>
         </div>
 
-        <!-- Marschzeittabelle -->
-        <div class="w-full h-36">
-            <img
-                src="https://4.bp.blogspot.com/-wBe3cKJqqQU/WzvIQ2RZTUI/AAAAAAAACi8/ToNL9jjid_AUhjbzGh8Aya1oX3w0eNuZQCLcBGAs/s1600/Marschtabelle_E51.jpg"
-                alt="Marschzeittabelle"
-                class="w-full h-full"
-            />
+        <div class="w-full">
+            <ElevationChart {track} />
         </div>
 
         <!-- AddInfo Map, Safety, Weather -->
@@ -113,14 +132,7 @@
             <Indicators />
         </Carousel> -->
 
-        <!-- Platzhalter -->
-        <div class="w-full h-fit">
-            <img
-                src="https://kstatic.googleusercontent.com/files/9b837ed639746f02c66e5f00bec26588fc91fc4689292b791a80971eac477e72f8f0b00fdb8dec996f5e6fc0cb777946d3e4c7ee4dd9238d50e2bf2922f4a808"
-                alt="Marschzeittabelle"
-                class="w-full h-full"
-            />
-        </div>
+        <Map {track} />
 
         <!-- AddInfo Images, Comments, AddCommentOrImage -->
         <!-- <Carousel {route to components} let:Indicators>

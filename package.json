@@ -22,6 +22,7 @@
         "vite": "^5.0.0"
     },
     "dependencies": {
-        "@mapbox/togeojson": "^0.16.2"
+        "@mapbox/togeojson": "^0.16.2",
+        "svelte-chartjs": "^3.1.5"
     }
 }
