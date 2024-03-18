@@ -60,7 +60,7 @@ export function getMinDistance(geojson) {
  * @param {*} geojson - GeoJSON-LineString-Objekt
  * @returns {Number} - Die Gesamtlänge des LineStrings in Metern
  */
-export function getLength(geojson) {
+export function calculateLength(geojson) {
     validateLineString(geojson);
     const distances = calculateDistances(geojson);
     return distances.reduce((a, b) => a + b, 0);
@@ -100,7 +100,7 @@ export function calculateDescent(geojson) {
 }
 
 export function calculateHikingTime(geojson, speed = 4.2) {
-    const length = getLength(geojson);
+    const length = calculateLength(geojson);
     const ascent = calculateAscent(geojson);
     const descent = calculateDescent(geojson);
 
