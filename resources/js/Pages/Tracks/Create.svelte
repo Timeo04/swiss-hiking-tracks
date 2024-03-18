@@ -10,7 +10,7 @@
         getLineString,
     } from "@/utils/geofile";
     // Funktionen für die Berechnung der minimalen Distanz importieren
-    import { getMinDistance } from "@/utils/geojson/linestring";
+    import { getElevation, getMinDistance, hasElevation } from "@/utils/geojson/linestring";
     // UI-Komponenten aus Library flowbite-svelte importieren
     import { Button, FloatingLabelInput, Helper } from "flowbite-svelte";
     // Icon importieren
@@ -47,7 +47,15 @@
             // Nur LineString-Objekt auswählen
             let geoJsonLineString = getLineString(geoJson);
 
-            let minDistance = getMinDistance(geoJsonLineString);
+            if(hasElevation(geoJsonLineString)) {
+                console.log("Elevation vorhanden");
+            } else {
+                console.log("Elevation nicht vorhanden");
+            }
+
+            geoJsonLineString = await getElevation(geoJsonLineString);
+
+            // let minDistance = getMinDistance(geoJsonLineString);
             // console.log("min-Distance", minDistance);
 
             // Netzwerk-Request an den Server senden

@@ -126,3 +126,51 @@ export function calculateHikingTime(geojson, speed = 4.2) {
     let t = lkm / speed;
     return t * 60;
 }
+
+export function hasElevation(geojson) {
+    validateLineString(geojson);
+    return geojson.coordinates.every(coordinate => {
+        if (coordinate.length !== 3) {
+            return false;
+        }
+        return true;
+    });
+}
+
+export async function getElevation(geojson) {
+    if (hasElevation(geojson)) {
+        return geojson;
+    }
+    const coordinates = geojson.coordinates.map(coordinate => ({ latitude: coordinate[1], longitude: coordinate[0] }));
+    // const response = await fetch('https://api.open-elevation.com/api/v1/lookup', {
+    //     method: 'POST',
+    //     headers: {
+    //         'Content-Type': 'application/json',
+    //         'Accept': 'application/json'
+    //     },
+    //     body: JSON.stringify({ locations: coordinates })
+    // });
+    let url = 'https://api.open-elevation.com/api/v1/lookup?locations=';
+    coordinates.forEach((coordinate, index) => {
+        url += `${coordinate.latitude},${coordinate.longitude}`;
+        if (index < coordinates.length - 1) {
+            url += '|';
+        }
+    });
+    const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json'
+        },
+        // body: JSON.stringify({ locations: coordinates })
+    });
+    const data = await response.json();
+    console.log(data);
+
+    geojson.coordinates = geojson.coordinates.map((coordinate, index) => {
+        coordinate[2] = data.results[index].elevation;
+        return coordinate;
+    });
+
+    return geojson;
+}
