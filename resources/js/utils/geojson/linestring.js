@@ -65,3 +65,64 @@ export function getLength(geojson) {
     const distances = calculateDistances(geojson);
     return distances.reduce((a, b) => a + b, 0);
 }
+
+export function calculateHeightPoints(geojson) {
+    validateLineString(geojson);
+    const distances = calculateDistances(geojson);
+    let heightPoints = [{ distance: 0, height: geojson.coordinates[0][2] }];
+    distances.forEach((distance, index) => {
+        heightPoints.push({ distance: distance + heightPoints[index].distance, height: geojson.coordinates[index + 1][2] });
+    });
+    console.log(heightPoints);
+    return heightPoints;
+}
+
+export function calculateAscent(geojson) {
+    const heightPoints = calculateHeightPoints(geojson);
+    let ascent = 0;
+    for (let i = 0; i < heightPoints.length - 1; i++) {
+        if (heightPoints[i].height < heightPoints[i + 1].height) {
+            ascent += heightPoints[i + 1].height - heightPoints[i].height;
+        }
+    }
+    return ascent;
+}
+
+export function calculateDescent(geojson) {
+    const heightPoints = calculateHeightPoints(geojson);
+    let descent = 0;
+    for (let i = 0; i < heightPoints.length - 1; i++) {
+        if (heightPoints[i].height > heightPoints[i + 1].height) {
+            descent += heightPoints[i].height - heightPoints[i + 1].height;
+        }
+    }
+    return descent;
+}
+
+export function calculateHikingTime(geojson, speed = 4.2) {
+    const length = getLength(geojson);
+    const ascent = calculateAscent(geojson);
+    const descent = calculateDescent(geojson);
+
+    // https://www.wanderwege-infrastruktur.ch/de/downloads/hilfsmittel-signalisation
+    // const c0 = 14.271;
+    // const c1 = 0.36992;
+    // const c2 = 0.025922;
+    // const c3 = -0.0014384;
+    // const c4 = 0.000032105;
+    // const c5 = 0.0000081542;
+    // const c6 = -0.000000090261;
+    // const c7 = -0.000000020757;
+    // const c8 = 0.00000000010192;
+    // const c9 = 0.000000000028588;
+    // const c10 = -0.000000000000057466;
+    // const c11 = -0.000000000000021842;
+    // const c12 = 1.5176E-17;
+    // const c13 = 8.6894E-18;
+    // const c14 = -1.3584E-21;
+    // const c15 = -1.4026E-21;
+
+    let lkm = (length / 1000) + (ascent / 100) + (descent / 200);
+    let t = lkm / speed;
+    return t * 60;
+}
