@@ -185,4 +185,9 @@ class TrackController extends Controller
         // Redirect to the index view of the tracks
         return to_route('tracks.index');
     }
+
+    public function tag(Track $track)
+    {
+        echo($track);
+    }
 }

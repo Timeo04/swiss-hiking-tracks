@@ -32,18 +32,15 @@ class TagController extends Controller
      */
     public function store(Request $request)
     {
-        echo ('Hallo store');
         //Validate the request data
         $request->validate([
             'name' => ['required', 'max:255'],
         ]);
 
         // Create a new tag with the validated data
-        Tag::create([
+        $tag = Tag::create([
             'name' => $request->input('name'),
         ]);
-        // Redirect to the show view of the newly created track
-        //return to_route('tracks.show', $track);
     }
 
     /**
@@ -94,4 +91,6 @@ class TagController extends Controller
         // Redirect to the index view of the tracks
         // return to_route('tracks.index');
     }
+
+    
 }
