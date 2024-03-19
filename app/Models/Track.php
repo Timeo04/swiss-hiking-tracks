@@ -5,10 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\Image\Enums\Fit;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class Track extends Model
+class Track extends Model implements HasMedia
 {
     use HasFactory;
+    use InteractsWithMedia;
 
     /**
      * The attributes that are mass assignable.
@@ -24,7 +29,7 @@ class Track extends Model
         'geojson',
         'public'
     ];
-    
+
     /**
      * The attributes that should be cast.
      *
@@ -43,5 +48,15 @@ class Track extends Model
     {
         // Ein Track gehört zu einem User
         return $this->belongsTo(User::class);
+    }
+
+
+    // Media Functions
+    public function registerMediaConversions(Media $media = null): void
+    {
+        $this
+            ->addMediaConversion('preview')
+            ->fit(Fit::Contain, 300, 300)
+            ->nonQueued();
     }
 }
