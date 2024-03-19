@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 // Track-Model importieren
 use App\Models\Track;
+use App\Models\Tag;
 use DOMDocument;
 // Inertia importieren
 use Inertia\Inertia;
@@ -186,9 +187,22 @@ class TrackController extends Controller
         return to_route('tracks.index');
     }
 
-    public function tag(Track $track)
+    public function tag(Request $request, Track $track)
     {
-        echo($track);
-        $track->tags()->attach(1);
+        // Validate the request data
+        $request->validate([
+            'name' => ['required', 'max:255'],
+        ]);
+
+        $name = $request->input('name');
+
+        // Suche nach dem Tag in der Datenbank oder erstelle ihn, falls er nicht existiert
+        $tag = Tag::firstOrCreate(['name' => $name]);
+
+        // Hier erhältst du die ID des Tags, unabhängig davon, ob er neu erstellt wurde oder nicht
+        $tagId = $tag->id;
+
+        echo ($name);
+        $track->tags()->attach($tagId);
     }
 }
