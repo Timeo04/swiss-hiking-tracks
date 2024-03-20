@@ -167,16 +167,23 @@
         </Carousel> -->
 
         <!-- Platzhalter -->
-        <swiper-container class="mySwiper " pagination="true">
+        <swiper-container
+            class="mySwiper"
+            space-between="10"
+            pagination="true"
+            observer="true"
+        >
             {#each images as image}
-                <swiper-slide>
-                    <div>
-                        <img src={image} alt="Bild" class="w-full" />
-                    </div>
+                <swiper-slide class="h-[500px]">
+                    <!-- <div class="h-[500px] rounded-xl"> -->
+                    <img src={image} alt="Bild" class="w-full rounded-xl" />
+                    <!-- </div> -->
                 </swiper-slide>
             {/each}
             <swiper-slide>
-                <div class="flex justify-stretch items-stretch h-full w-full">
+                <div
+                    class="flex justify-stretch items-stretch w-full rounded-xl bg-gray-200 h-[500px]"
+                >
                     <button
                         on:click={() =>
                             imageForm.querySelector("input").click()}
@@ -200,8 +207,6 @@
                         }}
                         bind:files={imageFiles}
                         type="file"
-                        id="file"
-                        name="file"
                         accept="image/*"
                     />
                 </form>
@@ -264,9 +269,6 @@
     }
 
     swiper-slide {
-        text-align: center;
-        font-size: 18px;
-        background: #fff;
         display: flex;
         justify-content: center;
         align-items: center;
