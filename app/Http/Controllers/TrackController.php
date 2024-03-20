@@ -72,8 +72,21 @@ class TrackController extends Controller
     {
         // Inertia-Response mit Übergabewert $track zurückgeben
         return Inertia::render('Tracks/Show', [
-            'track' => $track
+            'track' => $track,
+            'images' => $track->getMedia('images')->map(fn ($media) => $media->getUrl()),
         ]);
+    }
+
+    public function storeImage(Request $request, Track $track): \Illuminate\Http\RedirectResponse
+    {
+        $request->validate([
+            'image' => ['required', 'image']
+        ]);
+
+        $track->addMediaFromRequest('image')
+            ->toMediaCollection('images');  // 'images' ist der Name der MediaCollection
+
+        return to_route('tracks.show', $track);
     }
 
     /**
@@ -151,8 +164,8 @@ class TrackController extends Controller
         // Validate the request data
         $request->validate([
             'title' => ['required', 'max:255'],
-            'starting_location' => ['string', 'max:255'],
-            'destination_location' => ['string', 'max:255'],
+            'starting_location' => ['nullable', 'string', 'max:255'],
+            'destination_location' => ['nullable', 'string', 'max:255'],
         ]);
 
         // Update the track with the validated data
