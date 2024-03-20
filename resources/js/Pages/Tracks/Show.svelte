@@ -167,7 +167,7 @@
         </Carousel> -->
 
         <!-- Platzhalter -->
-        <swiper-container class="mySwiper" pagination="true">
+        <swiper-container class="mySwiper " pagination="true">
             {#each images as image}
                 <swiper-slide>
                     <div>
@@ -190,7 +190,7 @@
                 <form
                     on:submit|preventDefault={submitImage}
                     bind:this={imageForm}
-                    class="invisible"
+                    class="hidden"
                 >
                     <input
                         on:input={function () {
