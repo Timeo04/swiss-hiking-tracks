@@ -11,6 +11,7 @@
         ArrowDownOutline,
         ArrowLeftOutline,
         ArrowUpOutline,
+        PlusSolid,
     } from "flowbite-svelte-icons";
     // Funktion für Netzwerk-Requests importieren
     import { router } from "@inertiajs/svelte";
@@ -24,8 +25,15 @@
     import ElevationChart from "@/Components/Tracks/ElevationChart.svelte";
     import Map from "@/Components/Tracks/Map.svelte";
 
+    // Import Swiper Svelte components
+    import { register } from "swiper/element/bundle";
+
+    register();
+
     export let track;
     export let auth;
+    export let images;
+    export let main_image;
 
     let confirmTrackDeletionModal = false;
 
@@ -37,6 +45,25 @@
     // Modal schliessen
     function closeModal() {
         confirmTrackDeletionModal = false;
+    }
+
+    let imageFiles = null;
+    let imageForm;
+    async function submitImage() {
+        if (imageFiles == null) {
+            return;
+        }
+        console.log(imageFiles[0]);
+        router.post(
+            route("tracks.storeImage", track),
+            {
+                image: imageFiles[0],
+            },
+            {
+                forceFormData: true,
+                preserveScroll: true,
+            },
+        );
     }
 </script>
 
@@ -140,13 +167,46 @@
         </Carousel> -->
 
         <!-- Platzhalter -->
-        <div class="w-full h-fit">
-            <img
-                src="https://4kwallpapers.com/images/wallpapers/mountain-peak-alps-1242x2208-11501.jpg"
-                alt="Marschzeittabelle"
-                class="w-full h-full"
-            />
-        </div>
+        <swiper-container class="mySwiper" pagination="true">
+            {#each images as image}
+                <swiper-slide>
+                    <div>
+                        <img src={image} alt="Bild" class="w-full" />
+                    </div>
+                </swiper-slide>
+            {/each}
+            <swiper-slide>
+                <div class="flex justify-stretch items-stretch h-full w-full">
+                    <button
+                        on:click={() =>
+                            imageForm.querySelector("input").click()}
+                        class="p-20 w-full h-full flex-col gap-2 flex justify-center items-center"
+                    >
+                        <PlusSolid size="xl" />
+                        <p>Bild hinzufügen</p>
+                    </button>
+                </div>
+
+                <form
+                    on:submit|preventDefault={submitImage}
+                    bind:this={imageForm}
+                    class="invisible"
+                >
+                    <input
+                        on:input={function () {
+                            // console.log(this.files[0]);
+                            imageFiles = this.files;
+                            submitImage();
+                        }}
+                        bind:files={imageFiles}
+                        type="file"
+                        id="file"
+                        name="file"
+                        accept="image/*"
+                    />
+                </form>
+            </swiper-slide>
+        </swiper-container>
 
         <!-- Tags -->
         <!-- Display Tags -->
@@ -196,3 +256,26 @@
         </div>
     </Modal>
 </AuthenticatedLayout>
+
+<style>
+    swiper-container {
+        width: 100%;
+        height: 100%;
+    }
+
+    swiper-slide {
+        text-align: center;
+        font-size: 18px;
+        background: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    swiper-slide img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+</style>
