@@ -59,5 +59,6 @@ Route::prefix('/settings')->middleware('auth')->group(function () {
 // Tracks-Resource-Route-Gruppe, die nur eingeloggten Usern zur Verfügung steht
 Route::resource('tracks', TrackController::class)->middleware('auth');
 Route::get('tracks/{track}/gpx', [TrackController::class, 'gpx'])->name('tracks.gpx')->middleware('auth');
+Route::post('tracks/{track}/image', [TrackController::class, 'storeImage'])->name('tracks.storeImage')->middleware('auth');
 
 require __DIR__ . '/auth.php';
