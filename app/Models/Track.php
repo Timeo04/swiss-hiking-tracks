@@ -54,9 +54,17 @@ class Track extends Model implements HasMedia
     // Media Functions
     public function registerMediaConversions(Media $media = null): void
     {
-        $this
-            ->addMediaConversion('preview')
-            ->fit(Fit::Contain, 300, 300)
-            ->nonQueued();
+        // $this
+        //     ->addMediaConversion('preview')
+        //     ->fit(Fit::Contain, 200, 200)
+        //     ->nonQueued();
+    }
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('images');
+
+        $this->addMediaCollection('main_image')
+            ->singleFile();
     }
 }
