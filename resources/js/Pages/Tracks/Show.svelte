@@ -46,6 +46,9 @@
     function closeModal() {
         confirmTrackDeletionModal = false;
     }
+    let swiper;
+    $: console.log(swiper);
+    $: swiper != null ? swiper.swiper.updateSlides(images) : null;
 
     let imageFiles = null;
     let imageForm;
@@ -172,17 +175,18 @@
             space-between="10"
             pagination="true"
             observer="true"
+            bind:this={swiper}
         >
             {#each images as image}
                 <swiper-slide class="h-[500px]">
                     <!-- <div class="h-[500px] rounded-xl"> -->
-                    <img src={image} alt="Bild" class="w-full rounded-xl" />
+                    <img src={image} alt="Bild" class="w-full rounded-2xl" />
                     <!-- </div> -->
                 </swiper-slide>
             {/each}
             <swiper-slide>
                 <div
-                    class="flex justify-stretch items-stretch w-full rounded-xl bg-gray-200 h-[500px]"
+                    class="flex justify-stretch items-stretch w-full rounded-2xl bg-gray-200 h-[500px]"
                 >
                     <button
                         on:click={() =>
@@ -279,5 +283,18 @@
         width: 100%;
         height: 100%;
         object-fit: cover;
+    }
+    :global(:root) {
+        --swiper-theme-color: #ef562f;
+        --swiper-pagination-color: var(--swiper-theme-color);
+        --swiper-pagination-bullet-size: 6px;
+        --swiper-pagination-bullet-width: 6px;
+        --swiper-pagination-bullet-height: 6px;
+        --swiper-pagination-bullet-inactive-color: #fff;
+        --swiper-pagination-bullet-inactive-opacity: 1;
+        --swiper-pagination-bullet-opacity: 1;
+        --swiper-pagination-bullet-horizontal-gap: 2px;
+        --swiper-pagination-bullet-vertical-gap: 4px;
+        --swiper-pagination-bottom: 6px;
     }
 </style>
