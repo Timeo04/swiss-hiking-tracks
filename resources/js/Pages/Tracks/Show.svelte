@@ -138,9 +138,6 @@
         </div>
 
         <!-- AddInfo Map, Safety, Weather -->
-        <!-- <Carousel {route to components} let:Indicators>
-            <Indicators />
-        </Carousel> -->
 
         <Map {track} />
 
