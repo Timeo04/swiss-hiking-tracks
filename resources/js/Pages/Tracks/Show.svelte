@@ -48,7 +48,7 @@
 
 <AuthenticatedLayout {auth}>
     <div class="fixed z-10 top-0 left-0 w-full bg-none">
-        <h1 class="text-2xl text-center py-10 font-semibold">{track.title}</h1>
+        <h1 class="text-2xl text-center py-16 font-semibold">{track.title}</h1>
     </div>
     <!-- Go back to Index.svelte-Page -->
     <!-- svelte-ignore missing-declaration -->
@@ -72,7 +72,9 @@
     <!-- <div class="h-80 w-full bg-white"></div> -->
 
     <div
-        class="p-2 pt-4 bg-white rounded-t-2xl w-full h-fit flex flex-col justify-center items-stretch gap-6 z-20"
+        class="p-2 pt-4 bg-white rounded-t-2xl w-full h-fit
+        flex flex-col justify-center items-stretch gap-6 z-20
+        snap-start"
     >
         <div>
             <div class="flex items-center justify-center mb-2">
