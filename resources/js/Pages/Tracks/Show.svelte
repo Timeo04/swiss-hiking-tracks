@@ -133,27 +133,6 @@
             </div>
         </div>
 
-        <div
-            class="flex flex-col gap-2 justify-start items-stretch md:items-center"
-        >
-            <button
-                type="button"
-                class="w-full bg-primary-700 hover:bg-primary-500 flex justify-center items-center text-black border border-red-500 bg-transparent shadow-md font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none"
-                on:click={() => (confirmTrackDeletionModal = true)}
-            >
-                Löschen
-            </button>
-
-            <!-- svelte-ignore missing-declaration -->
-            <button
-                type="button"
-                class="w-full bg-primary-700 hover:bg-primary-500 flex justify-center items-center text-black border border-red-500 bg-transparent shadow-md font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none"
-                on:click={router.visit(route("tracks.edit", { track }))}
-            >
-                Bearbeiten
-            </button>
-        </div>
-
         <div class="w-full">
             <ElevationChart {track} />
         </div>
@@ -181,13 +160,27 @@
         <!-- ShareButton -->
 
         <!-- DeleteButton -->
-        <button
-            type="button"
-            class=" w-10/12 bg-primary-700 hover:bg-primary-500 flex justify-center items-center text-black border border-red-500 bg-transparent shadow-md font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none"
-            on:click={() => (confirmTrackDeletionModal = true)}
+
+        <div
+            class="flex flex-col gap-2 justify-start items-stretch md:items-center"
         >
-            Löschen
-        </button>
+            <button
+                type="button"
+                class="w-full bg-primary-700 hover:bg-primary-500 flex justify-center items-center text-black border border-red-500 bg-transparent shadow-md font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none"
+                on:click={() => (confirmTrackDeletionModal = true)}
+            >
+                Löschen
+            </button>
+
+            <!-- svelte-ignore missing-declaration -->
+            <button
+                type="button"
+                class="w-full bg-primary-700 hover:bg-primary-500 flex justify-center items-center text-black border border-red-500 bg-transparent shadow-md font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none"
+                on:click={router.visit(route("tracks.edit", { track }))}
+            >
+                Bearbeiten
+            </button>
+        </div>
 
         <!-- Platzhalter -->
         <div class="w-full h-12"></div>
