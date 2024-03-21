@@ -206,4 +206,14 @@ class TrackController extends Controller
         // Redirect to the index view of the tracks
         return to_route('tracks.index');
     }
+
+    public function destroyImage(Request $request, Track $track, int $image): \Illuminate\Http\RedirectResponse
+    {
+        $images = $track->getMedia('images');
+
+        $image = $images->firstWhere('id', $image);
+        $image->delete();
+
+        return to_route('tracks.show', $track);
+    }
 }

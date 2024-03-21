@@ -42,12 +42,13 @@
         );
     }
 
-    async function deleteImage(image) {
-        console.log("delete image", image);
+    async function deleteImage(imageId) {
+        router.delete(route("tracks.destroyImage", [track, imageId]), {
+            preserveScroll: true,
+        });
     }
 
     async function setHome(imageId) {
-        console.log("set home", imageId);
         let newOrder = images.map((img) => img.id);
         newOrder = newOrder.filter((img) => img != imageId);
         newOrder.unshift(imageId);

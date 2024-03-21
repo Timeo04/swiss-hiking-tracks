@@ -61,5 +61,6 @@ Route::resource('tracks', TrackController::class)->middleware('auth');
 Route::get('tracks/{track}/gpx', [TrackController::class, 'gpx'])->name('tracks.gpx')->middleware('auth');
 Route::post('tracks/{track}/image', [TrackController::class, 'storeImage'])->name('tracks.storeImage')->middleware('auth');
 Route::post('tracks/{track}/image/order', [TrackController::class, 'updateImageOrder'])->name('tracks.updateImageOrder')->middleware('auth');
+Route::delete('tracks/{track}/image/{image}', [TrackController::class, 'destroyImage'])->name('tracks.destroyImage')->middleware('auth');
 
 require __DIR__ . '/auth.php';
