@@ -9,11 +9,6 @@
     // swiper parameters
     const swiperParams = {
         slidesPerView: 1,
-        on: {
-            init() {
-                // ...
-            },
-        },
         observer: true,
         observeSlideChildren: true,
         pagination: {

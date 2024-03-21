@@ -24,6 +24,7 @@
     import ElevationChart from "@/Components/Tracks/ElevationChart.svelte";
     import Map from "@/Components/Tracks/Map.svelte";
     import ImageSwiper from "@/Components/Tracks/ImageSwiper.svelte";
+    import InformationsSwiper from "@/Components/Tracks/InformationsSwiper.svelte";
 
     export let track;
     export let auth;
@@ -47,9 +48,6 @@
 </svelte:head>
 
 <AuthenticatedLayout {auth}>
-    <div class="fixed z-10 top-0 left-0 w-full bg-none">
-        <h1 class="text-2xl text-center py-16 font-semibold">{track.title}</h1>
-    </div>
     <!-- Go back to Index.svelte-Page -->
     <!-- svelte-ignore missing-declaration -->
     <button
@@ -60,16 +58,21 @@
     </button>
 
     <!-- spacer -->
-    <div class="h-[calc(100vh-225px)] w-full">
-        {#if images.length > 0}
-            <img
-                class="fixed top-0 left-0 z-0 object-cover w-screen h-screen"
-                src={images[0].url}
-                alt={track.title}
-            />
-        {/if}
+    <div class="h-[calc(100vh-225px)] w-full"></div>
+
+    <!-- Background -->
+    {#if images.length > 0}
+        <img
+            class="fixed top-0 left-0 z-0 object-cover w-screen h-screen"
+            src={images[0].url}
+            alt={track.title}
+        />
+    {/if}
+
+    <!-- Title -->
+    <div class="fixed z-10 top-0 left-0 w-full bg-none">
+        <h1 class="text-2xl text-center py-16 font-semibold">{track.title}</h1>
     </div>
-    <!-- <div class="h-80 w-full bg-white"></div> -->
 
     <div
         class="p-2 pt-4 bg-white rounded-t-[20px] w-full h-fit
@@ -141,7 +144,8 @@
 
         <!-- AddInfo Map, Safety, Weather -->
 
-        <Map {track} />
+        <!-- <Map {track} /> -->
+        <InformationsSwiper {track} />
 
         <!-- AddInfo Images, Comments, AddCommentOrImage -->
         <!-- <Carousel {route to components} let:Indicators>

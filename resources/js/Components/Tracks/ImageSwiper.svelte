@@ -91,7 +91,7 @@
     {/each}
     <swiper-slide>
         <div
-            class="flex justify-stretch items-stretch w-full rounded-2xl bg-gray-200 h-[500px]"
+            class="flex justify-stretch items-stretch w-full rounded-2xl bg-gray-300 h-[500px]"
         >
             <button
                 on:click={() => imageForm.querySelector("input").click()}
