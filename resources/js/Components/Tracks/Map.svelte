@@ -3,6 +3,7 @@
     export let geojson = track.geojson;
     export let imageryBaseMap = false;
     export let interactiveMap = true;
+    export let cooperativeGestures = true;
 
     import {
         Map,
@@ -34,7 +35,7 @@
             center: startPos,
             zoom: 15,
             hash: true,
-            cooperativeGestures: interactiveMap,
+            cooperativeGestures: interactiveMap && cooperativeGestures,
             locale: {
                 "CooperativeGesturesHandler.WindowsHelpText":
                     "Mit Strg + Maus bewegen und scrollen, um die Karte zu bewegen und zoomen.",
