@@ -24,6 +24,7 @@
     import ElevationChart from "@/Components/Tracks/ElevationChart.svelte";
     import Map from "@/Components/Tracks/Map.svelte";
     import ImageSwiper from "@/Components/Tracks/ImageSwiper.svelte";
+    import InformationsSwiper from "@/Components/Tracks/InformationsSwiper.svelte";
 
     export let track;
     export let auth;
@@ -143,7 +144,8 @@
 
         <!-- AddInfo Map, Safety, Weather -->
 
-        <Map {track} />
+        <!-- <Map {track} /> -->
+        <InformationsSwiper {track} />
 
         <!-- AddInfo Images, Comments, AddCommentOrImage -->
         <!-- <Carousel {route to components} let:Indicators>
