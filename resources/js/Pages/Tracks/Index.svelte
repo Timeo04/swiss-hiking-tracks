@@ -21,7 +21,7 @@
             <!-- Show all Tracks -->
             {#each tracks as track}
                 <div
-                    class="flex items-center justify-between p-4 bg-white rounded-lg shadow-md"
+                    class="flex items-center justify-between p-4 gap-2 bg-white rounded-lg shadow-md"
                 >
                     <div class="flex items-center">
                         <div class="ml-4">

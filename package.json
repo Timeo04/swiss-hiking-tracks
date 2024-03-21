@@ -23,6 +23,7 @@
     },
     "dependencies": {
         "@mapbox/togeojson": "^0.16.2",
-        "svelte-chartjs": "^3.1.5"
+        "svelte-chartjs": "^3.1.5",
+        "swiper": "^11.0.7"
     }
 }

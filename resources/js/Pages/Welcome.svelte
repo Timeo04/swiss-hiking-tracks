@@ -1,6 +1,6 @@
 <script>
     // Layout importieren
-    import { inertia } from "@inertiajs/svelte";
+    import { inertia, router } from "@inertiajs/svelte";
     import { Button } from "flowbite-svelte";
 
     const route = window.route;
@@ -115,7 +115,7 @@
                 class="mt-6 w-full"
                 color="primary"
                 size="lg"
-                href={route("dashboard")}
+                on:click={() => router.visit(route("dashboard"))}
             >
                 Zum Dashboard
             </Button>
@@ -124,7 +124,7 @@
                 class="mt-6 w-full"
                 color="primary"
                 size="lg"
-                href={route("register")}
+                on:click={() => router.visit(route("register"))}
             >
                 Registrieren
             </Button>
