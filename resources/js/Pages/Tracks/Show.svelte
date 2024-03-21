@@ -5,7 +5,6 @@
     import Modal from "@/Components/Modal.svelte";
     import DangerButton from "@/Components/DangerButton.svelte";
     import SecondaryButton from "@/Components/SecondaryButton.svelte";
-    import { Carousel } from "flowbite-svelte";
     // Icon importieren
     import {
         ArrowDownOutline,
@@ -13,7 +12,6 @@
         ArrowUpOutline,
         PlusSolid,
     } from "flowbite-svelte-icons";
-    // Funktion für Netzwerk-Requests importieren
     import { router } from "@inertiajs/svelte";
     // Funktion zum Berechnen der Länge importieren
     import {
@@ -24,11 +22,8 @@
     } from "@/utils/geojson/linestring";
     import ElevationChart from "@/Components/Tracks/ElevationChart.svelte";
     import Map from "@/Components/Tracks/Map.svelte";
+    import ImageSwiper from "@/Components/Tracks/ImageSwiper.svelte";
 
-    // Import Swiper Svelte components
-    import { register } from "swiper/element/bundle";
-
-    register();
 
     export let track;
     export let auth;
@@ -45,28 +40,6 @@
     // Modal schliessen
     function closeModal() {
         confirmTrackDeletionModal = false;
-    }
-    let swiper;
-    $: console.log(swiper);
-    $: swiper != null ? swiper.swiper.updateSlides(images) : null;
-
-    let imageFiles = null;
-    let imageForm;
-    async function submitImage() {
-        if (imageFiles == null) {
-            return;
-        }
-        console.log(imageFiles[0]);
-        router.post(
-            route("tracks.storeImage", track),
-            {
-                image: imageFiles[0],
-            },
-            {
-                forceFormData: true,
-                preserveScroll: true,
-            },
-        );
     }
 </script>
 
@@ -170,52 +143,8 @@
         </Carousel> -->
 
         <!-- Platzhalter -->
-        <swiper-container
-            class="mySwiper"
-            space-between="10"
-            pagination="true"
-            observer="true"
-            bind:this={swiper}
-        >
-            {#each images as image}
-                <swiper-slide class="h-[500px]">
-                    <!-- <div class="h-[500px] rounded-xl"> -->
-                    <img src={image} alt="Bild" class="w-full rounded-2xl" />
-                    <!-- </div> -->
-                </swiper-slide>
-            {/each}
-            <swiper-slide>
-                <div
-                    class="flex justify-stretch items-stretch w-full rounded-2xl bg-gray-200 h-[500px]"
-                >
-                    <button
-                        on:click={() =>
-                            imageForm.querySelector("input").click()}
-                        class="p-20 w-full h-full flex-col gap-2 flex justify-center items-center"
-                    >
-                        <PlusSolid size="xl" />
-                        <p>Bild hinzufügen</p>
-                    </button>
-                </div>
 
-                <form
-                    on:submit|preventDefault={submitImage}
-                    bind:this={imageForm}
-                    class="hidden"
-                >
-                    <input
-                        on:input={function () {
-                            // console.log(this.files[0]);
-                            imageFiles = this.files;
-                            submitImage();
-                        }}
-                        bind:files={imageFiles}
-                        type="file"
-                        accept="image/*"
-                    />
-                </form>
-            </swiper-slide>
-        </swiper-container>
+        <ImageSwiper {images} {track} />
 
         <!-- Tags -->
         <!-- Display Tags -->
@@ -265,36 +194,3 @@
         </div>
     </Modal>
 </AuthenticatedLayout>
-
-<style>
-    swiper-container {
-        width: 100%;
-        height: 100%;
-    }
-
-    swiper-slide {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    swiper-slide img {
-        display: block;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-    :global(:root) {
-        --swiper-theme-color: #ef562f;
-        --swiper-pagination-color: var(--swiper-theme-color);
-        --swiper-pagination-bullet-size: 6px;
-        --swiper-pagination-bullet-width: 6px;
-        --swiper-pagination-bullet-height: 6px;
-        --swiper-pagination-bullet-inactive-color: #fff;
-        --swiper-pagination-bullet-inactive-opacity: 1;
-        --swiper-pagination-bullet-opacity: 1;
-        --swiper-pagination-bullet-horizontal-gap: 2px;
-        --swiper-pagination-bullet-vertical-gap: 4px;
-        --swiper-pagination-bottom: 6px;
-    }
-</style>
