@@ -14,6 +14,8 @@
         LngLatBounds,
     } from "maplibre-gl";
 
+    import { onDestroy } from 'svelte';
+    
     let mapContainer;
     let map;
     let startPos = [8.04494, 47.38579];
@@ -94,6 +96,10 @@
     $: if (mapContainer) {
         init();
     }
+
+    onDestroy(() => {
+        if (map != null) map.remove();
+    });
 </script>
 
 <div class="map w-full h-[600px]" data-testid="map" bind:this={mapContainer} />
