@@ -3,7 +3,12 @@
     // Funktion für Netzwerk-Requests importieren
     import { router } from "@inertiajs/svelte";
     // Icon importieren
-    import { PlusSolid } from "flowbite-svelte-icons";
+    import {
+        HomeOutline,
+        HomeSolid,
+        PlusSolid,
+        TrashBinOutline,
+    } from "flowbite-svelte-icons";
 
     export let images = [];
     export let track;
@@ -36,13 +41,38 @@
             },
         );
     }
+
+    async function deleteImage(image) {
+        console.log("delete image", image);
+    }
+
+    async function setHome(image) {
+        console.log("set home", image);
+    }
 </script>
 
 <Swiper bind:this={swiper}>
-    {#each images as image}
-        <swiper-slide class="h-[500px]">
+    {#each images as image, i}
+        <swiper-slide class="h-[500px] relative">
             <!-- <div class="h-[500px] rounded-xl"> -->
             <img src={image} alt="Bild" class="w-full rounded-2xl" />
+            <button
+                on:click={setHome(image)}
+                disabled={i == 0}
+                class="absolute top-4 left-4 text-gray-700"
+            >
+                {#if i == 0}
+                    <HomeSolid />
+                {:else}
+                    <HomeOutline />
+                {/if}
+            </button>
+            <button
+                on:click={deleteImage(image)}
+                class="absolute top-4 right-4"
+            >
+                <TrashBinOutline />
+            </button>
             <!-- </div> -->
         </swiper-slide>
     {/each}
