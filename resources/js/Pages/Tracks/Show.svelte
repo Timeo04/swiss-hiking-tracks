@@ -60,7 +60,7 @@
     </button>
 
     <!-- spacer -->
-    <div class="h-[calc(100vh-220px)] w-full">
+    <div class="h-[calc(100vh-225px)] w-full">
         {#if images.length > 0}
             <img
                 class="fixed top-0 left-0 z-0 object-cover w-screen h-screen"
@@ -72,7 +72,7 @@
     <!-- <div class="h-80 w-full bg-white"></div> -->
 
     <div
-        class="p-2 pt-4 bg-white rounded-t-2xl w-full h-fit
+        class="p-2 pt-4 bg-white rounded-t-[20px] w-full h-fit
         flex flex-col justify-center items-stretch gap-6 z-20
         snap-start"
     >
