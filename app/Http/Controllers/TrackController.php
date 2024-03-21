@@ -12,6 +12,7 @@ use Inertia\Inertia;
 // GeoJsonRule für Validation importieren
 use YucaDoo\LaravelGeoJsonRule\GeoJsonRule;
 use GeoJson\Geometry\LineString;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class TrackController extends Controller
 {
@@ -72,8 +73,21 @@ class TrackController extends Controller
     {
         // Inertia-Response mit Übergabewert $track zurückgeben
         return Inertia::render('Tracks/Show', [
-            'track' => $track
+            'track' => $track,
+            'images' => $track->getMedia('images')->map(fn ($media) => ['id' => $media->id, 'url' => $media->getUrl()]),
         ]);
+    }
+
+    public function storeImage(Request $request, Track $track): \Illuminate\Http\RedirectResponse
+    {
+        $request->validate([
+            'image' => ['required', 'image']
+        ]);
+
+        $track->addMediaFromRequest('image')
+            ->toMediaCollection('images');  // 'images' ist der Name der MediaCollection
+
+        return to_route('tracks.show', $track);
     }
 
     /**
@@ -151,8 +165,8 @@ class TrackController extends Controller
         // Validate the request data
         $request->validate([
             'title' => ['required', 'max:255'],
-            'starting_location' => ['string', 'max:255'],
-            'destination_location' => ['string', 'max:255'],
+            'starting_location' => ['nullable', 'string', 'max:255'],
+            'destination_location' => ['nullable', 'string', 'max:255'],
         ]);
 
         // Update the track with the validated data
@@ -164,6 +178,17 @@ class TrackController extends Controller
         $track->save();
 
         // Redirect to the show view of the updated track
+        return to_route('tracks.show', $track);
+    }
+
+    public function updateImageOrder(Request $request, Track $track): \Illuminate\Http\RedirectResponse
+    {
+        $request->validate([
+            'order' => ['required', 'array']
+        ]);
+
+        Media::setNewOrder($request->input('order'));
+
         return to_route('tracks.show', $track);
     }
 
@@ -180,5 +205,15 @@ class TrackController extends Controller
 
         // Redirect to the index view of the tracks
         return to_route('tracks.index');
+    }
+
+    public function destroyImage(Request $request, Track $track, int $image): \Illuminate\Http\RedirectResponse
+    {
+        $images = $track->getMedia('images');
+
+        $image = $images->firstWhere('id', $image);
+        $image->delete();
+
+        return to_route('tracks.show', $track);
     }
 }
