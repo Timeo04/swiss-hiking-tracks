@@ -1,6 +1,8 @@
 <script>
     export let track;
-    let geojson = track.geojson;
+    export let geojson = track.geojson;
+    export let imageryBaseMap = false;
+    export let interactiveMap = true;
 
     import {
         Map,
@@ -8,42 +10,84 @@
         GeolocateControl,
         ScaleControl,
         AttributionControl,
+        LngLatBounds,
     } from "maplibre-gl";
-    // import { map } from "$lib/stores";
 
     let mapContainer;
     let map;
     let startPos = [8.04494, 47.38579];
 
+    const coordinates = geojson.coordinates;
+    const bounds = coordinates.reduce(
+        (bounds, coord) => {
+            return bounds.extend(coord);
+        },
+        new LngLatBounds(coordinates[0], coordinates[0]),
+    );
+
     const init = () => {
         const _map = new Map({
             container: mapContainer,
-            style: `https://vectortiles.geo.admin.ch/styles/ch.swisstopo.basemap.vt/style.json`,
+            style: imageryBaseMap
+                ? "https://vectortiles.geo.admin.ch/styles/ch.swisstopo.leichte-basiskarte-imagery.vt/style.json"
+                : `https://vectortiles.geo.admin.ch/styles/ch.swisstopo.basemap.vt/style.json`,
             center: startPos,
             zoom: 15,
             hash: true,
-            cooperativeGestures: true,
+            cooperativeGestures: interactiveMap,
+            locale: {
+                "CooperativeGesturesHandler.WindowsHelpText":
+                    "Mit Strg + Maus bewegen und scrollen, um die Karte zu bewegen und zoomen.",
+                "CooperativeGesturesHandler.MacHelpText":
+                    "Mit ⌘ + Maus bewegen und scrollen, um die Karte zu bewegen und zoomen.",
+                "CooperativeGesturesHandler.MobileHelpText":
+                    "Mit zwei Fingern Karte bewegen und zoomen.",
+            },
             attributionControl: false,
+            interactive: interactiveMap,
         });
-        _map.addControl(new NavigationControl({}), "top-right");
-        _map.addControl(
-            new GeolocateControl({
-                positionOptions: { enableHighAccuracy: true },
-                trackUserLocation: true,
-            }),
-            "top-right",
-        );
-        _map.addControl(
-            new ScaleControl({ maxWidth: 80, unit: "metric" }),
-            "bottom-left",
-        );
-        _map.addControl(
-            new AttributionControl({ compact: true }),
-            "bottom-right",
-        );
+        if (interactiveMap) {
+            _map.addControl(new NavigationControl({}), "top-right");
+            _map.addControl(
+                new GeolocateControl({
+                    positionOptions: { enableHighAccuracy: true },
+                    trackUserLocation: true,
+                }),
+                "top-right",
+            );
+            _map.addControl(
+                new ScaleControl({ maxWidth: 80, unit: "metric" }),
+                "bottom-left",
+            );
+            _map.addControl(
+                new AttributionControl({ compact: true }),
+                "bottom-right",
+            );
+        }
 
+        _map.on("load", () => {
+            _map.addSource("LineString", {
+                type: "geojson",
+                data: geojson,
+            });
+            _map.addLayer({
+                id: "LineString",
+                type: "line",
+                source: "LineString",
+                layout: {
+                    "line-join": "round",
+                    "line-cap": "round",
+                },
+                paint: {
+                    "line-color": "#ff0000",
+                    "line-width": 5,
+                },
+            });
+        });
+        _map.fitBounds(bounds, {
+            padding: 100,
+        });
         map = _map;
-        // map.set(_map);
     };
 
     $: if (mapContainer) {
@@ -51,20 +95,8 @@
     }
 </script>
 
-<!-- Platzhalter -->
-<!-- <div class="w-full h-full"> -->
-<!-- <img
-        src="https://kstatic.googleusercontent.com/files/9b837ed639746f02c66e5f00bec26588fc91fc4689292b791a80971eac477e72f8f0b00fdb8dec996f5e6fc0cb777946d3e4c7ee4dd9238d50e2bf2922f4a808"
-        alt="Map"
-        class="w-full h-full"
-    /> -->
-<div
-    class="map w-full h-[600px]"
-    data-testid="map"
-    bind:this={mapContainer}
-/>
-<!-- </div> -->
+<div class="map w-full h-[600px]" data-testid="map" bind:this={mapContainer} />
 
 <style>
-    @import 'maplibre-gl/dist/maplibre-gl.css';
+    @import "maplibre-gl/dist/maplibre-gl.css";
 </style>
