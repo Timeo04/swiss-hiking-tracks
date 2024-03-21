@@ -23,7 +23,7 @@
         <Card
             class="flex flex-col gap-2 justify-center items-center w-10/12 w-max-[400px] border-red-500 bg-gray-200 p-8 text-center"
         >
-            <h1>Geben Sie Acht!</h1>
+            <strong class="text-black text-xl">Geben Sie Acht!</strong>
             <p>
                 Hier finden Sie einige Sicherheitshinweise und Notfallnummern.
             </p>
