@@ -12,6 +12,7 @@ use Inertia\Inertia;
 // GeoJsonRule für Validation importieren
 use YucaDoo\LaravelGeoJsonRule\GeoJsonRule;
 use GeoJson\Geometry\LineString;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class TrackController extends Controller
 {
@@ -73,7 +74,7 @@ class TrackController extends Controller
         // Inertia-Response mit Übergabewert $track zurückgeben
         return Inertia::render('Tracks/Show', [
             'track' => $track,
-            'images' => $track->getMedia('images')->map(fn ($media) => $media->getUrl()),
+            'images' => $track->getMedia('images')->map(fn ($media) => ['id' => $media->id, 'url' => $media->getUrl()]),
         ]);
     }
 
@@ -177,6 +178,17 @@ class TrackController extends Controller
         $track->save();
 
         // Redirect to the show view of the updated track
+        return to_route('tracks.show', $track);
+    }
+
+    public function updateImageOrder(Request $request, Track $track): \Illuminate\Http\RedirectResponse
+    {
+        $request->validate([
+            'order' => ['required', 'array']
+        ]);
+
+        Media::setNewOrder($request->input('order'));
+
         return to_route('tracks.show', $track);
     }
 

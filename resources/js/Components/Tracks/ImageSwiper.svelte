@@ -46,18 +46,30 @@
         console.log("delete image", image);
     }
 
-    async function setHome(image) {
-        console.log("set home", image);
+    async function setHome(imageId) {
+        console.log("set home", imageId);
+        let newOrder = images.map((img) => img.id);
+        newOrder = newOrder.filter((img) => img != imageId);
+        newOrder.unshift(imageId);
+        router.post(
+            route("tracks.updateImageOrder", track),
+            {
+                order: newOrder,
+            },
+            {
+                preserveScroll: true,
+            },
+        );
     }
 </script>
 
 <Swiper bind:this={swiper}>
-    {#each images as image, i}
+    {#each images as image, i (image.id)}
         <swiper-slide class="h-[500px] relative">
             <!-- <div class="h-[500px] rounded-xl"> -->
-            <img src={image} alt="Bild" class="w-full rounded-2xl" />
+            <img src={image.url} alt="Bild" class="w-full rounded-2xl" />
             <button
-                on:click={setHome(image)}
+                on:click={setHome(image.id)}
                 disabled={i == 0}
                 class="absolute top-4 left-4 text-gray-700"
             >
@@ -68,7 +80,7 @@
                 {/if}
             </button>
             <button
-                on:click={deleteImage(image)}
+                on:click={deleteImage(image.id)}
                 class="absolute top-4 right-4"
             >
                 <TrashBinOutline />
