@@ -33,7 +33,10 @@
     let distance = calculateLength(track.geojson);
     let ascent = calculateAscent(track.geojson);
     let descent = calculateDescent(track.geojson);
-    let hikingTime = calculateHikingTime(track.geojson, 4.2);
+    let hikingTime = calculateHikingTime(
+        track.geojson,
+        auth.user.hiking_speed || 4.2,
+    );
 
     // Modal schliessen
     function closeModal() {
