@@ -55,7 +55,7 @@ Route::prefix('/settings')->middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::get('/', fn () => Inertia::render('Profile/Settings'))->name('settings')->middleware('auth');
+    Route::get('/', [ProfileController::class, 'settings'])->name('settings')->middleware('auth');
 });
 
 // Tracks-Resource-Route-Gruppe, die nur eingeloggten Usern zur Verfügung steht
