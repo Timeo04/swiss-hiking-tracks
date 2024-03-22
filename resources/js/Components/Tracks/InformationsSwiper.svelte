@@ -27,8 +27,8 @@
             <p>
                 Hier finden Sie einige Sicherheitshinweise und Notfallnummern.
             </p>
-            <a href="https://www.sac-cas.ch/de/ausbildung-und-sicherheit/sicher-unterwegs/" class="inline-flex items-center text-primary-600 underline hover:text-primary-500">Schweizer Alpen-Club (SAC)</a>
-            <a href="https://www.schweizer-wanderwege.ch/de/wandern/unterwegs/sicherheit-und-notfall" class="inline-flex items-center text-primary-600 underline hover:text-primary-500">Schweizer-Wanderwege</a>
+            <a target="_blank" href="https://www.sac-cas.ch/de/ausbildung-und-sicherheit/sicher-unterwegs/" class="inline-flex items-center text-primary-600 underline hover:text-primary-500">Schweizer Alpen-Club (SAC)</a>
+            <a target="_blank" href="https://www.schweizer-wanderwege.ch/de/wandern/unterwegs/sicherheit-und-notfall" class="inline-flex items-center text-primary-600 underline hover:text-primary-500">Schweizer-Wanderwege</a>
             <div>
                 <p>Polizei: 117</p>
                 <p>Feuerwehr 118</p>
