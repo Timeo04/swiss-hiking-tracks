@@ -45,7 +45,9 @@ Route::get('/', function () {
 
 // Dashboard zurückgeben, wenn der User eingeloggt ist
 Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
+    return Inertia::render('Dashboard', [
+        'tracks' => auth()->user()->tracks,
+    ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 // Settings-Route-Gruppe, die nur eingeloggten Usern zur Verfügung steht
