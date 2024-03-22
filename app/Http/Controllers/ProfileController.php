@@ -60,4 +60,19 @@ class ProfileController extends Controller
 
         return Redirect::to('/');
     }
+
+    public function settings(Request $request)
+    {
+        $tracks = $request->user()->tracks;
+        $images = [];
+        foreach ($tracks as $track) {
+            $media = $track->getMedia('images');
+            foreach ($media as $image) {
+                array_push($images, ['id' => $image->id, 'url' => $image->getUrl()]);
+            }
+        }
+        return Inertia::render('Profile/Settings', [
+            'images' => $images,
+        ]);
+    }
 }
