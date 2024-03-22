@@ -12,6 +12,7 @@ use Inertia\Inertia;
 // GeoJsonRule für Validation importieren
 use YucaDoo\LaravelGeoJsonRule\GeoJsonRule;
 use GeoJson\Geometry\LineString;
+use Illuminate\Support\Str;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class TrackController extends Controller
@@ -213,6 +214,26 @@ class TrackController extends Controller
 
         $image = $images->firstWhere('id', $image);
         $image->delete();
+
+        return to_route('tracks.show', $track);
+    }
+
+    public function share(Request $request, Track $track): \Illuminate\Http\RedirectResponse
+    {
+        $random_string = Str::random(8);
+        while (Track::where('share_url', $random_string)->exists()) {
+            $random_string = Str::random(8);
+        }
+        $track->share_url = $random_string;
+        $track->save();
+
+        return to_route('tracks.show', $track);
+    }
+
+    public function unshare(Request $request, Track $track): \Illuminate\Http\RedirectResponse
+    {
+        $track->share_url = null;
+        $track->save();
 
         return to_route('tracks.show', $track);
     }
