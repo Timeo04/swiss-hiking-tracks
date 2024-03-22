@@ -2,13 +2,15 @@
     // UI-Komponenten importieren
     import Avatar from "@/Components/Avatar.svelte";
     import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.svelte";
-    import { Button } from "flowbite-svelte";
+    import { Button, Range } from "flowbite-svelte";
     // Icon importieren
     import { ArrowRightToBracketOutline } from "flowbite-svelte-icons";
     // Funktion für Netzwerk-Requests importieren
     import { router } from "@inertiajs/svelte";
-    
+
     export let auth;
+    export let images;
+    // console.log(images);
 </script>
 
 <AuthenticatedLayout {auth}>
@@ -45,4 +47,23 @@
             Profil bearbeiten
         </Button>
     </div>
+    <div
+        class="p-4 sm:p-8 bg-white shadow sm:rounded-lg flex flex-col gap-2 justify-start items-center"
+    >
+        <h2 class="font-bold text-lg">Gehgeschwindigkeit</h2>
+        <div class="w-full">
+            <Range min="3" max="6" step="0.1" value={4.2} />
+        </div>
+    </div>
+    <h2 class="text-xl font-bold text-center">Hochgeladene Bilder</h2>
+    <div class="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 gap-2">
+        {#each images as image}
+            <img
+                class="rounded-lg object-cover w-full aspect-square"
+                src={image.url}
+                alt={image.title}
+            />
+        {/each}
+    </div>
+    <div class="h-10"></div>
 </AuthenticatedLayout>
