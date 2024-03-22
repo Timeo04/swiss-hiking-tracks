@@ -36,7 +36,7 @@
                 : `https://vectortiles.geo.admin.ch/styles/ch.swisstopo.basemap.vt/style.json`,
             center: startPos,
             zoom: 15,
-            hash: true,
+            hash: false,
             cooperativeGestures: interactiveMap && cooperativeGestures,
             locale: {
                 "CooperativeGesturesHandler.WindowsHelpText":
