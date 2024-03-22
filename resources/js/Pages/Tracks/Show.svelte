@@ -11,7 +11,6 @@
         ArrowDownOutline,
         ArrowLeftOutline,
         ArrowUpOutline,
-        PlusSolid,
     } from "flowbite-svelte-icons";
     import { router } from "@inertiajs/svelte";
     // Funktion zum Berechnen der Länge importieren
@@ -22,7 +21,6 @@
         calculateHikingTime,
     } from "@/utils/geojson/linestring";
     import ElevationChart from "@/Components/Tracks/ElevationChart.svelte";
-    import Map from "@/Components/Tracks/Map.svelte";
     import ImageSwiper from "@/Components/Tracks/ImageSwiper.svelte";
     import InformationsSwiper from "@/Components/Tracks/InformationsSwiper.svelte";
 
