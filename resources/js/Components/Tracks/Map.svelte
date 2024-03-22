@@ -14,7 +14,7 @@
         LngLatBounds,
     } from "maplibre-gl";
 
-    import { onDestroy } from 'svelte';
+    import { onDestroy, onMount } from 'svelte';
     
     let mapContainer;
     let map;
@@ -86,6 +86,7 @@
                     "line-width": 5,
                 },
             });
+            _map.resize();
         });
         _map.fitBounds(bounds, {
             padding: 100,
@@ -93,16 +94,16 @@
         map = _map;
     };
 
-    $: if (mapContainer) {
+    onMount(() => {
         init();
-    }
+    });
 
     onDestroy(() => {
         if (map != null) map.remove();
     });
 </script>
 
-<div class="map w-full h-[600px]" data-testid="map" bind:this={mapContainer} />
+<div class="map w-full h-full" data-testid="map" bind:this={mapContainer} />
 
 <style>
     @import "maplibre-gl/dist/maplibre-gl.css";
