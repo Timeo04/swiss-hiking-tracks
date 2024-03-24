@@ -10,10 +10,17 @@
     // Funktion für Netzwerk-Requests importieren
     import { router } from "@inertiajs/svelte";
     import { FloatingLabelInput } from "flowbite-svelte";
+    import { useForm, inertia } from "@inertiajs/svelte";
+    import PrimaryButton from "@/Components/PrimaryButton.svelte";
+    import { sineInOut } from "svelte/easing";
+    import { fade } from "svelte/transition";
     
-
     export let track;
     export let auth;
+    // Formular initialisieren
+    let form = useForm({
+        kategorie: track.kategorie,
+    });
 
     let confirmTrackDeletionModal = false;
 
@@ -58,15 +65,28 @@
         <div>
             <FloatingLabelInput
                 style="outlined"
-                id="name"
+                id="kategorie"
                 type="text"
                 required
+                bind:value={$form.kategorie}
                 autofocus
-                autocomplete="name"
+                autocomplete="Kategorie"
             >
                 Kategorie
             </FloatingLabelInput>
+        </div>
 
+        <div class="flex items-center gap-4">
+            <PrimaryButton disabled={$form.processing}>Speichern</PrimaryButton>
+
+            {#if $form.recentlySuccessful}
+                <p
+                    transition:fade={{ easing: sineInOut }}
+                    class="text-sm text-gray-600"
+                >
+                    Gespeichert.
+                </p>
+            {/if}
         </div>
     </div>
 
