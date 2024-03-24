@@ -9,6 +9,8 @@
     import { ArrowLeftOutline } from "flowbite-svelte-icons";
     // Funktion für Netzwerk-Requests importieren
     import { router } from "@inertiajs/svelte";
+    import { FloatingLabelInput } from "flowbite-svelte";
+    
 
     export let track;
     export let auth;
@@ -52,6 +54,20 @@
         >
             Bearbeiten
         </button>
+
+        <div>
+            <FloatingLabelInput
+                style="outlined"
+                id="name"
+                type="text"
+                required
+                autofocus
+                autocomplete="name"
+            >
+                Kategorie
+            </FloatingLabelInput>
+
+        </div>
     </div>
 
     <!-- Delete-Modal -->
