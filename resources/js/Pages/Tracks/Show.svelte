@@ -14,12 +14,12 @@
     import PrimaryButton from "@/Components/PrimaryButton.svelte";
     import { sineInOut } from "svelte/easing";
     import { fade } from "svelte/transition";
-    
+
     export let track;
     export let auth;
     // Formular initialisieren
     let form = useForm({
-        kategorie: track.kategorie,
+        name: track.kategorie
     });
 
     let confirmTrackDeletionModal = false;
@@ -61,33 +61,43 @@
         >
             Bearbeiten
         </button>
-
-        <div>
-            <FloatingLabelInput
-                style="outlined"
-                id="kategorie"
-                type="text"
-                required
-                bind:value={$form.kategorie}
-                autofocus
-                autocomplete="Kategorie"
-            >
-                Kategorie
-            </FloatingLabelInput>
-        </div>
-
-        <div class="flex items-center gap-4">
-            <PrimaryButton disabled={$form.processing}>Speichern</PrimaryButton>
-
-            {#if $form.recentlySuccessful}
-                <p
-                    transition:fade={{ easing: sineInOut }}
-                    class="text-sm text-gray-600"
+        <!-- svelte-ignore missing-declaration -->
+        <form
+            on:submit|preventDefault={$form.post(route("tracks.tag", {track}), {
+                preserveScroll: true
+        
+            })}
+            class="mt-6 space-y-6"
+        >
+            <div>
+                <FloatingLabelInput
+                    style="outlined"
+                    id="kategorie"
+                    type="text"
+                    required
+                    bind:value={$form.name}
+                    autofocus
+                    autocomplete="Kategorie"
                 >
-                    Gespeichert.
-                </p>
-            {/if}
-        </div>
+                    Kategorie
+                </FloatingLabelInput>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <PrimaryButton disabled={$form.processing}
+                    >Speichern</PrimaryButton
+                >
+
+                {#if $form.recentlySuccessful}
+                    <p
+                        transition:fade={{ easing: sineInOut }}
+                        class="text-sm text-gray-600"
+                    >
+                        Gespeichert.
+                    </p>
+                {/if}
+            </div>
+        </form>
     </div>
 
     <!-- Delete-Modal -->
@@ -98,7 +108,8 @@
             </h2>
 
             <p class="mt-1 text-sm text-gray-600">
-                Wird die Route gelöscht, werden auch alle dazugehörigen Daten dauerhaft entfernt.
+                Wird die Route gelöscht, werden auch alle dazugehörigen Daten
+                dauerhaft entfernt.
             </p>
 
             <div class="mt-6 flex justify-end">
