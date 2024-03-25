@@ -3,6 +3,7 @@
     import PrimaryButton from "@/Components/PrimaryButton.svelte";
     import SecondaryButton from "@/Components/SecondaryButton.svelte";
     import { router } from "@inertiajs/svelte";
+    import { ShareNodesOutline } from "flowbite-svelte-icons";
     import QRCode from "qrcode";
 
     export let open = false;
@@ -20,23 +21,46 @@
     function closeModal() {
         open = false;
     }
+
+    function share() {
+        if (navigator.share) {
+            navigator.share({
+                title: track.title,
+                text: "Schau dir diese Route an!",
+                url: route("tracks.show", track.share_url),
+            });
+        }
+    }
 </script>
 
 <Modal bind:open on:close={closeModal}>
     <div class="p-6">
         {#if track.share_url != null}
-            <p>Diese Route wurde geteilt:</p>
+            <h2 class="font-bold text-xl text-center">
+                Die Route "{track.title}" teilen
+            </h2>
+            <canvas class="mx-auto" bind:this={qrCodeCanvas}></canvas>
             <!-- svelte-ignore missing-declaration -->
-            <p>{route("tracks.show", track.share_url)}</p>
-            <p>
+            <a
+                class="text-primary-600 text-center block underline"
+                href={route("tracks.show", track.share_url)}
+                >{route("tracks.show", track.share_url)}</a
+            >
+            <!-- <p>
                 <em>Geben Sie diesen Link weiter, um diesen Track zu teilen.</em
                 >
-            </p>
-            <canvas bind:this={qrCodeCanvas}></canvas>
+            </p> -->
+            {#if navigator.share}
+                <div class="mt-4 w-full flex justify-center items-center">
+                    <SecondaryButton on:click={share}>
+                        <ShareNodesOutline tabindex="-1" />
+                    </SecondaryButton>
+                </div>
+            {/if}
             <div class="mt-6 flex justify-end">
                 <!-- Close Modal -->
                 <SecondaryButton on:click={closeModal}
-                    >Abbrechen</SecondaryButton
+                    >Schliessen</SecondaryButton
                 >
 
                 <!-- Delete Track -->
@@ -50,7 +74,7 @@
                         },
                     )}
                 >
-                    Teilen beenden
+                    Freigabe widerrufen
                 </PrimaryButton>
             </div>
         {:else}
