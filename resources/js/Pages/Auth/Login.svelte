@@ -109,7 +109,7 @@
             {/if}
 
             <PrimaryButton
-                className="bg-primary-600 ms-4 {$form.processing
+                className="ms-4 {$form.processing
                     ? 'opacity-25'
                     : ''}"
                 disabled={$form.processing}
