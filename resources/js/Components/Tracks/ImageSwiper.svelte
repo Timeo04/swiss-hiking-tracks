@@ -72,7 +72,7 @@
             <button
                 on:click={setHome(image.id)}
                 disabled={i == 0}
-                class="absolute top-4 left-4 text-gray-700"
+                class="absolute top-4 left-4 text-gray-700 text-white mix-blend-difference grayscale"
             >
                 {#if i == 0}
                     <HomeSolid />
