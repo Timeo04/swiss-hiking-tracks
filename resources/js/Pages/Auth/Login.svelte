@@ -5,9 +5,9 @@
     import Checkbox from "@/Components/Checkbox.svelte";
     import InputError from "@/Components/InputError.svelte";
     import PrimaryButton from "@/Components/PrimaryButton.svelte";
-    import { FloatingLabelInput } from "flowbite-svelte";
+    import { Button, FloatingLabelInput } from "flowbite-svelte";
     // Funktion für Formular-Netzwerk-Requests importieren
-    import { inertia, useForm } from "@inertiajs/svelte";
+    import { inertia, router, useForm } from "@inertiajs/svelte";
 
     export let status;
     export let canResetPassword;
@@ -34,6 +34,12 @@
 </svelte:head>
 
 <GuestLayout>
+    <p class="text-gray-500 text-xs mb-1">Noch kein Konto?</p>
+    <!-- svelte-ignore missing-declaration -->
+    <Button size="sm" class="w-full" outline on:click={() => router.visit(route("register"))}>
+        Registrieren
+    </Button>
+    <hr class="my-2" />
     <!-- Status-Meldung anzeigen, falls vorhanden -->
     {#if status}
         <div class="mb-4 font-medium text-sm text-green-600">
@@ -90,7 +96,7 @@
             </label>
         </div>
 
-        <div class="flex flex-row items-center justify-end mt-4">
+        <div class="flex flex-row items-center justify-end mt-2">
             {#if canResetPassword}
                 <!-- svelte-ignore missing-declaration -->
                 <a
@@ -103,7 +109,9 @@
             {/if}
 
             <PrimaryButton
-                className="ms-4 {$form.processing ? 'opacity-25' : ''}"
+                className="bg-primary-600 ms-4 {$form.processing
+                    ? 'opacity-25'
+                    : ''}"
                 disabled={$form.processing}
             >
                 anmelden
