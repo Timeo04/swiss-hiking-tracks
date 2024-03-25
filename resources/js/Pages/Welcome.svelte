@@ -1,6 +1,7 @@
 <script>
     // Layout importieren
     import ApplicationLogo from "@/Components/ApplicationLogo.svelte";
+    import PrimaryButton from "@/Components/PrimaryButton.svelte";
     import GuestLayout from "@/Layouts/GuestLayout.svelte";
     import { inertia, router } from "@inertiajs/svelte";
     import { Button } from "flowbite-svelte";
@@ -65,23 +66,19 @@
         </div>
 
         {#if auth.user != null}
-            <Button
-                class="mt-6 w-full"
-                color="primary"
-                size="lg"
+            <PrimaryButton
+                className="mt-4 justify-center w-full"
                 on:click={() => router.visit(route("dashboard"))}
             >
                 Zum Dashboard
-            </Button>
+            </PrimaryButton>
         {:else}
-            <Button
-                class="mt-6 w-full"
-                color="primary"
-                size="lg"
+            <PrimaryButton
+                className="mt-4 justify-center w-full"
                 on:click={() => router.visit(route("register"))}
             >
                 Registrieren
-            </Button>
+            </PrimaryButton>
             <a
                 href={route("login")}
                 class="mt-4 block
@@ -96,7 +93,7 @@
             class="flex justify-center mt-10 px-6 sm:items-center sm:justify-between gap-4"
         >
             <div
-                class="w-full ms-4 text-center text-sm text-gray-500 dark:text-gray-400"
+                class="w-full text-center text-sm text-gray-500 dark:text-gray-400"
             >
                 Laravel v{laravelVersion} (PHP v{phpVersion})
             </div>
