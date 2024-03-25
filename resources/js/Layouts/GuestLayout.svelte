@@ -18,7 +18,7 @@
     </div>
 
     <div
-        class="w-full max-w-md mt-6 px-4 py-4 bg-white/75 shadow-md overflow-hidden rounded-2xl"
+        class="w-full max-w-md mt-6 px-3 py-3 pt-2 bg-white/75 shadow-md overflow-hidden rounded-2xl"
     >
         <slot />
     </div>
