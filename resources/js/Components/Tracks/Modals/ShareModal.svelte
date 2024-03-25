@@ -1,6 +1,6 @@
 <script>
-    import DangerButton from "@/Components/DangerButton.svelte";
     import Modal from "@/Components/Modal.svelte";
+    import PrimaryButton from "@/Components/PrimaryButton.svelte";
     import SecondaryButton from "@/Components/SecondaryButton.svelte";
     import { router } from "@inertiajs/svelte";
     import QRCode from "qrcode";
@@ -41,7 +41,7 @@
 
                 <!-- Delete Track -->
                 <!-- svelte-ignore missing-declaration -->
-                <DangerButton
+                <PrimaryButton
                     className="ms-3"
                     on:click={router.delete(
                         route("tracks.unshare", { track }),
@@ -51,7 +51,7 @@
                     )}
                 >
                     Teilen beenden
-                </DangerButton>
+                </PrimaryButton>
             </div>
         {:else}
             <h2 class="text-lg font-medium text-gray-900">
@@ -71,7 +71,7 @@
 
                 <!-- Delete Track -->
                 <!-- svelte-ignore missing-declaration -->
-                <DangerButton
+                <PrimaryButton
                     className="ms-3"
                     on:click={router.post(
                         route("tracks.share", { track }),
@@ -82,7 +82,7 @@
                     )}
                 >
                     Route teilen
-                </DangerButton>
+                </PrimaryButton>
             </div>
         {/if}
     </div>
