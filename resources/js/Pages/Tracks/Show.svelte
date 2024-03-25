@@ -59,7 +59,7 @@
     <title>{track.title}</title>
 </svelte:head>
 
-<AuthenticatedLayout {auth}>
+<AuthenticatedLayout {auth} className="px-0">
     <!-- Go back to Index.svelte-Page -->
     <!-- svelte-ignore missing-declaration -->
     <button
