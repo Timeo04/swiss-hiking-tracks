@@ -24,6 +24,7 @@
     "dependencies": {
         "@mapbox/togeojson": "^0.16.2",
         "maplibre-gl": "^4.1.1",
+        "qrcode": "^1.5.3",
         "svelte-chartjs": "^3.1.5",
         "swiper": "^11.0.7"
     }

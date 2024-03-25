@@ -23,12 +23,22 @@
     import ElevationChart from "@/Components/Tracks/ElevationChart.svelte";
     import ImageSwiper from "@/Components/Tracks/ImageSwiper.svelte";
     import InformationsSwiper from "@/Components/Tracks/InformationsSwiper.svelte";
+    import QRCode from "qrcode";
 
     export let track;
     export let auth;
     export let images;
 
     let confirmTrackDeletionModal = false;
+    let shareModal = false;
+    let qrCodeCanvas;
+
+    $: if (track.share_url != null && qrCodeCanvas != null) {
+        let qrCode = new QRCode.toCanvas(
+            qrCodeCanvas,
+            route("tracks.show", track.share_url),
+        );
+    }
 
     let distance = calculateLength(track.geojson);
     let ascent = calculateAscent(track.geojson);
@@ -41,6 +51,7 @@
     // Modal schliessen
     function closeModal() {
         confirmTrackDeletionModal = false;
+        shareModal = false;
     }
 </script>
 
@@ -184,6 +195,14 @@
             >
                 Bearbeiten
             </button>
+
+            <button
+                type="button"
+                class="w-full bg-primary-700 hover:bg-primary-500 flex justify-center items-center text-black border border-red-500 bg-transparent shadow-md font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none"
+                on:click={() => (shareModal = true)}
+            >
+                Teilen
+            </button>
         </div>
 
         <!-- Platzhalter -->
@@ -216,6 +235,75 @@
                     Route löschen
                 </DangerButton>
             </div>
+        </div>
+    </Modal>
+
+    <!-- Share-Modal -->
+    <Modal bind:open={shareModal} on:close={closeModal}>
+        <div class="p-6">
+            {#if track.share_url != null}
+                <p>Diese Route wurde geteilt:</p>
+                <!-- svelte-ignore missing-declaration -->
+                <p>{route("tracks.show", track.share_url)}</p>
+                <p>
+                    <em
+                        >Geben Sie diesen Link weiter, um diesen Track zu
+                        teilen.</em
+                    >
+                </p>
+                <canvas bind:this={qrCodeCanvas}></canvas>
+                <div class="mt-6 flex justify-end">
+                    <!-- Close Modal -->
+                    <SecondaryButton on:click={closeModal}
+                        >Abbrechen</SecondaryButton
+                    >
+
+                    <!-- Delete Track -->
+                    <!-- svelte-ignore missing-declaration -->
+                    <DangerButton
+                        className="ms-3"
+                        on:click={router.delete(
+                            route("tracks.unshare", { track }),
+                            {
+                                preserveScroll: true,
+                            },
+                        )}
+                    >
+                        Teilen beenden
+                    </DangerButton>
+                </div>
+            {:else}
+                <h2 class="text-lg font-medium text-gray-900">
+                    Möchten Sie die Route "{track.title}" teilen?
+                </h2>
+
+                <!-- <p class="mt-1 text-sm text-gray-600">
+                    Wird die Route gelöscht, werden auch alle dazugehörigen Daten
+                    dauerhaft entfernt.
+                </p> -->
+
+                <div class="mt-6 flex justify-end">
+                    <!-- Close Modal -->
+                    <SecondaryButton on:click={closeModal}
+                        >Abbrechen</SecondaryButton
+                    >
+
+                    <!-- Delete Track -->
+                    <!-- svelte-ignore missing-declaration -->
+                    <DangerButton
+                        className="ms-3"
+                        on:click={router.post(
+                            route("tracks.share", { track }),
+                            {},
+                            {
+                                preserveScroll: true,
+                            },
+                        )}
+                    >
+                        Route teilen
+                    </DangerButton>
+                </div>
+            {/if}
         </div>
     </Modal>
 </AuthenticatedLayout>
