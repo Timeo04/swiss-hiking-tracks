@@ -30,4 +30,10 @@
         background-size: cover;
         background-position: center;
     }
+
+    @media (min-width: 640px) {
+        .bg-image {
+            background-image: url(@/assets/img/swisshikingtracks_bg_lg.jpg);
+        }
+    }
 </style>
