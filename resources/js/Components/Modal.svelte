@@ -62,7 +62,6 @@
         class="fixed inset-0 overflow-y-auto px-4 py-6 sm:px-0 z-[60]"
         scroll-region
         out:fade={{ duration: 200 }}
-        in:slide={{ duration: 300, easing: sineOut, y: [100, 0] }}
     >
         <div
             role="presentation"
@@ -76,6 +75,7 @@
 
         <div
             class="fixed bottom-0 left-0 w-full sm:relative sm:mb-6 bg-white rounded-t-lg sm:rounded-lg overflow-hidden shadow-xl transform transition-all sm:w-full sm:mx-auto {maxWidthClass()}"
+            in:slide={{ duration: 300, easing: sineOut, axis: "y" }}
         >
             <slot />
         </div>
