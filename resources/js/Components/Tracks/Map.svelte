@@ -87,6 +87,9 @@
                 },
             });
             _map.resize();
+            _map.fitBounds(bounds, {
+                padding: 100,
+            });
         });
         _map.fitBounds(bounds, {
             padding: 100,
