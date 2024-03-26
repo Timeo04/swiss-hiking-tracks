@@ -181,8 +181,10 @@
 <!-- svelte-ignore missing-declaration -->
         <form
             on:submit|preventDefault={$form.post(route("tracks.tag", {track}), {
-                preserveScroll: true
-        
+                preserveScroll: true,
+                onSuccess: () => {
+                    $form.reset();
+                },
             })}
             class="mt-6 space-y-6"
         >
