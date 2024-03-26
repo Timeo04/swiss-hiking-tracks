@@ -79,6 +79,23 @@ class TrackController extends Controller
         ]);
     }
 
+    /**
+     * Display the specified resource.
+     * @param  \App\Models\Track  $track
+     * @return \Illuminate\Http\Response
+     */
+    public function showShare(String $track_share_url): \Inertia\Response
+    {
+        $track = Track::where('share_url', $track_share_url)->firstOrFail();
+
+        // Inertia-Response mit Übergabewert $track zurückgeben
+        return Inertia::render('Tracks/Show', [
+            'track' => $track,
+            'images' => $track->getMedia('images')->map(fn ($media) => ['id' => $media->id, 'url' => $media->getUrl()]),
+            'shared' => true
+        ]);
+    }
+
     public function storeImage(Request $request, Track $track): \Illuminate\Http\RedirectResponse
     {
         $request->validate([
@@ -238,7 +255,8 @@ class TrackController extends Controller
         return to_route('tracks.show', $track);
     }
 
-    public static function generateRandomString($length = 8) {
+    public static function generateRandomString($length = 8)
+    {
         $characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $charactersLength = strlen($characters);
         $randomString = '';
