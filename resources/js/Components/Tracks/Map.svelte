@@ -101,7 +101,7 @@
                         "line-cap": "round",
                     },
                     paint: {
-                        "line-color": "#ff0000",
+                        "line-color": "#ef562f",
                         "line-width": 5,
                     },
                 });
