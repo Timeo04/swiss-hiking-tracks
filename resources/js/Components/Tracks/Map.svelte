@@ -18,9 +18,11 @@
         ScaleControl,
         AttributionControl,
         LngLatBounds,
+        Popup,
     } from "maplibre-gl";
 
     import { onDestroy, onMount } from "svelte";
+    import MapPopupContent from "./MapPopupContent.svelte";
 
     let mapContainer;
     let map;
@@ -108,7 +110,43 @@
                 if (popups) {
                     _map.on("click", layerName, (e) => {
                         console.log("clicked", e, track);
-                        router.visit(route("tracks.show", track.id));
+                        console.log(e.lngLat);
+                        let popup = new Popup()
+                            .setLngLat(e.lngLat)
+                            .setText("")
+                            .on("open", (e) => {
+                                console.log("popup opened");
+                                // console.log(this);
+                                console.log(e.target);
+                                let popupContentElement = e.target._content;
+
+                                let anchorElement = e.target._closeButton;
+
+                                let popupContentComponent = new MapPopupContent(
+                                    {
+                                        target: popupContentElement,
+                                        anchor: anchorElement,
+                                        props: {
+                                            track,
+                                        },
+                                    },
+                                );
+
+                                // Document.querySelector(".maplibregl-popup-content").classList.add("sht-popup");
+                            })
+                            .on("close", (e) => {
+                                console.log("popup closed");
+                                // destroy popup
+                            })
+                            .addTo(_map)
+                            .addClassName("sht-popup");
+
+                        // popup;
+
+                        // popup
+                        // router.visit(route("tracks.show", track.id), {
+                        //     preserveScroll: false,
+                        // });
                     });
                 }
             });
@@ -139,6 +177,17 @@
 
 <div class="map w-full h-full" data-testid="map" bind:this={mapContainer} />
 
-<style>
+<style lang="postcss">
     @import "maplibre-gl/dist/maplibre-gl.css";
+
+    :global(.sht-popup) :global(.maplibregl-popup-content) {
+        /* @apply bg-primary-600; */
+        @apply font-sans;
+    }
+    :global(.sht-popup) :global(.maplibregl-popup-close-button) {
+        /* @apply mr-3; */
+        @apply w-5 h-5;
+        @apply flex justify-center items-center;
+        @apply text-2xl;
+    }
 </style>
