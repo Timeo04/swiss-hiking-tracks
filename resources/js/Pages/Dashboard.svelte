@@ -26,6 +26,7 @@
             imageryBaseMap={true}
             cooperativeGestures={false} 
             class="h-full w-full"
+            popups
         />
     </div>
 </AuthenticatedLayout>
