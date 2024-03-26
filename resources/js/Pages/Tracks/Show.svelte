@@ -35,9 +35,9 @@
     export let auth = null;
     export let images;
     export let shared = false;
-      // Formular initialisieren
+    // Formular initialisieren
     let form = useForm({
-        name: track.kategorie
+        name: track.kategorie,
     });
 
     let layout = shared ? ShareLayout : AuthenticatedLayout;
@@ -88,7 +88,9 @@
 
     <!-- Title -->
     <div class="fixed z-10 top-0 left-0 w-full bg-none">
-        <h1 class="text-2xl text-center py-16 font-semibold text-white ">{track.title}</h1>
+        <h1 class="text-2xl text-center py-16 font-semibold text-white">
+            {track.title}
+        </h1>
     </div>
 
     <div
@@ -178,45 +180,48 @@
 
         {#if !shared}
             <!-- AddTags -->
-<!-- svelte-ignore missing-declaration -->
-        <form
-            on:submit|preventDefault={$form.post(route("tracks.tag", {track}), {
-                preserveScroll: true,
-                onSuccess: () => {
-                    $form.reset();
-                },
-            })}
-            class="mt-6 space-y-6"
-        >
-            <div>
-                <FloatingLabelInput
-                    style="outlined"
-                    id="kategorie"
-                    type="text"
-                    required
-                    bind:value={$form.name}
-                    autofocus
-                    autocomplete="Kategorie"
-                >
-                    Kategorie
-                </FloatingLabelInput>
-            </div>
-
-            <div class="flex items-center gap-4">
-                <PrimaryButton disabled={$form.processing}
-                    >Speichern</PrimaryButton
-                >
-
-                {#if $form.recentlySuccessful}
-                    <p
-                        transition:fade={{ easing: sineInOut }}
-                        class="text-sm text-gray-600"
+            <!-- svelte-ignore missing-declaration -->
+            <form
+                on:submit|preventDefault={$form.post(
+                    route("tracks.tag", { track }),
+                    {
+                        preserveScroll: true,
+                        onSuccess: () => {
+                            $form.reset();
+                        },
+                    },
+                )}
+                class="mt-6 space-y-6"
+            >
+                <div>
+                    <FloatingLabelInput
+                        style="outlined"
+                        id="kategorie"
+                        type="text"
+                        required
+                        bind:value={$form.name}
+                        autofocus
+                        autocomplete="Kategorie"
                     >
-                        Gespeichert.
-                    </p>
-                {/if}
-            </div>
-        </form>
+                        Kategorie
+                    </FloatingLabelInput>
+                </div>
+
+                <div class="flex items-center gap-4">
+                    <PrimaryButton disabled={$form.processing}
+                        >Speichern</PrimaryButton
+                    >
+
+                    {#if $form.recentlySuccessful}
+                        <p
+                            transition:fade={{ easing: sineInOut }}
+                            class="text-sm text-gray-600"
+                        >
+                            Gespeichert.
+                        </p>
+                    {/if}
+                </div>
+            </form>
             <!-- ShareButton -->
 
             <!-- DeleteButton -->
