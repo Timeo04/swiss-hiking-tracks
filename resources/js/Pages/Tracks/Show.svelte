@@ -24,11 +24,14 @@
     import ImageSwiper from "@/Components/Tracks/ImageSwiper.svelte";
     import InformationsSwiper from "@/Components/Tracks/InformationsSwiper.svelte";
     import ShareModal from "@/Components/Tracks/Modals/ShareModal.svelte";
+    import ShareLayout from "@/Layouts/ShareLayout.svelte";
 
     export let track;
     export let auth = null;
     export let images;
     export let shared = false;
+
+    let layout = shared ? ShareLayout : AuthenticatedLayout;
 
     let confirmTrackDeletionModal = false;
     let shareModal = false;
@@ -51,7 +54,7 @@
     <title>{track.title}</title>
 </svelte:head>
 
-<AuthenticatedLayout {auth} className="px-0">
+<svelte:component this={layout} {auth} className="px-0">
     {#if !shared}
         <!-- Go back to Index.svelte-Page -->
         <!-- svelte-ignore missing-declaration -->
@@ -236,4 +239,4 @@
 
     <!-- Share-Modal -->
     <ShareModal {track} bind:open={shareModal} />
-</AuthenticatedLayout>
+</svelte:component>
