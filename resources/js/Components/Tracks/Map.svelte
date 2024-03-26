@@ -48,6 +48,11 @@
             center: startPos,
             zoom: zoomLevel,
             bounds: bounds,
+            fitBoundsOptions: {
+                padding: 100,
+            },
+            pitchWithRotate: false,
+            touchPitch: false,
             hash: false,
             cooperativeGestures: interactiveMap && cooperativeGestures,
             locale: {
