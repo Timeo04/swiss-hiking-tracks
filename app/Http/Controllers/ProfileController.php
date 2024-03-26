@@ -60,4 +60,31 @@ class ProfileController extends Controller
 
         return Redirect::to('/');
     }
+
+    public function settings(Request $request)
+    {
+        $tracks = $request->user()->tracks;
+        $images = [];
+        foreach ($tracks as $track) {
+            $media = $track->getMedia('images');
+            foreach ($media as $image) {
+                array_push($images, ['id' => $image->id, 'url' => $image->getUrl(), 'track_id' => $track->id]);
+            }
+        }
+        return Inertia::render('Profile/Settings', [
+            'images' => $images,
+        ]);
+    }
+
+    public function setHikingSpeed(Request $request)
+    {
+        $request->validate([
+            'hiking_speed' => ['required', 'numeric', 'min:0'],
+        ]);
+
+        $request->user()->hiking_speed = $request->input('hiking_speed');
+        $request->user()->save();
+
+        return to_route('settings');
+    }
 }

@@ -2,7 +2,7 @@
 
 /*
 * Projektname: SwissHikingTracks
-* Datum: 07.03.2024
+* Datum: 13.03.2024
 * Autor*innen: Lea Geissmann, Yannis Bontempi, Cedric Bolleter
 * Hauptquellen:
 * - https://laravel.com/docs/
@@ -46,7 +46,9 @@ Route::get('/', function () {
 
 // Dashboard zurückgeben, wenn der User eingeloggt ist
 Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
+    return Inertia::render('Dashboard', [
+        'tracks' => auth()->user()->tracks,
+    ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 // Settings-Route-Gruppe, die nur eingeloggten Usern zur Verfügung steht
@@ -54,12 +56,20 @@ Route::prefix('/settings')->middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::get('/', fn () => Inertia::render('Profile/Settings'))->name('settings')->middleware('auth');
+    Route::post('/profile/hiking-speed', [ProfileController::class, 'setHikingSpeed'])->name('profile.setHikingSpeed');
+    Route::get('/', [ProfileController::class, 'settings'])->name('settings')->middleware('auth');
 });
 
 // Tracks-Resource-Route-Gruppe, die nur eingeloggten Usern zur Verfügung steht
-Route::resource('tracks', TrackController::class)->middleware('auth');
+Route::resource('tracks', TrackController::class)->middleware('auth')->where(['track' => '[0-9]+']);
 Route::get('tracks/{track}/gpx', [TrackController::class, 'gpx'])->name('tracks.gpx')->middleware('auth');
+Route::post('tracks/{track}/image', [TrackController::class, 'storeImage'])->name('tracks.storeImage')->middleware('auth');
+Route::post('tracks/{track}/image/order', [TrackController::class, 'updateImageOrder'])->name('tracks.updateImageOrder')->middleware('auth');
+Route::delete('tracks/{track}/image/{image}', [TrackController::class, 'destroyImage'])->name('tracks.destroyImage')->middleware('auth');
+Route::post('tracks/{track}/share', [TrackController::class, 'share'])->name('tracks.share')->middleware('auth');
+Route::delete('tracks/{track}/share', [TrackController::class, 'unshare'])->name('tracks.unshare')->middleware('auth');
+
+Route::get('tracks/{track_share_url}', [TrackController::class, 'showShare'])->name('tracks.showShare')->where(['track_share_url' => '[A-Za-z]+']);
 
 // Tags-Resource-Route-Gruppe
 Route::resource('tags', TagController::class);

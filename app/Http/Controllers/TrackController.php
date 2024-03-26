@@ -13,6 +13,8 @@ use Inertia\Inertia;
 // GeoJsonRule für Validation importieren
 use YucaDoo\LaravelGeoJsonRule\GeoJsonRule;
 use GeoJson\Geometry\LineString;
+use Illuminate\Support\Str;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class TrackController extends Controller
 {
@@ -49,7 +51,6 @@ class TrackController extends Controller
             'starting_location' => ['nullable', 'string', 'max:255'],
             'destination_location' => ['nullable', 'string', 'max:255'],
             'geojson' => ['required', new GeoJsonRule(LineString::class)],
-            // 'gpx_file' => ['required', 'file'],
         ]);
 
         // Create a new track with the validated data
@@ -57,7 +58,6 @@ class TrackController extends Controller
             'title' => $request->input('title'),
             'starting_location' => $request->input('starting_location'),
             'destination_location' => $request->input('destination_location'),
-            // 'gpx_file' => "test.gpx",
             'geojson' => json_decode($request->input('geojson')),
             'user_id' => auth()->id(),
         ]);
@@ -75,8 +75,38 @@ class TrackController extends Controller
     {
         // Inertia-Response mit Übergabewert $track zurückgeben
         return Inertia::render('Tracks/Show', [
-            'track' => $track
+            'track' => $track,
+            'images' => $track->getMedia('images')->map(fn ($media) => ['id' => $media->id, 'url' => $media->getUrl()]),
         ]);
+    }
+
+    /**
+     * Display the specified resource.
+     * @param  \App\Models\Track  $track
+     * @return \Illuminate\Http\Response
+     */
+    public function showShare(String $track_share_url): \Inertia\Response
+    {
+        $track = Track::where('share_url', $track_share_url)->firstOrFail();
+
+        // Inertia-Response mit Übergabewert $track zurückgeben
+        return Inertia::render('Tracks/Show', [
+            'track' => $track,
+            'images' => $track->getMedia('images')->map(fn ($media) => ['id' => $media->id, 'url' => $media->getUrl()]),
+            'shared' => true
+        ]);
+    }
+
+    public function storeImage(Request $request, Track $track): \Illuminate\Http\RedirectResponse
+    {
+        $request->validate([
+            'image' => ['required', 'image']
+        ]);
+
+        $track->addMediaFromRequest('image')
+            ->toMediaCollection('images');  // 'images' ist der Name der MediaCollection
+
+        return to_route('tracks.show', $track);
     }
 
     /**
@@ -89,8 +119,6 @@ class TrackController extends Controller
 
         $lineString = $track->geojson;
         $coordinates = $lineString->coordinates;
-
-        // dd($coordinates);
 
         $current_time = date('Y-m-d\TH:i:s\Z'); // ISO 8601 format
         $gpx = '<?xml version="1.0"?>
@@ -156,8 +184,8 @@ class TrackController extends Controller
         // Validate the request data
         $request->validate([
             'title' => ['required', 'max:255'],
-            'starting_location' => ['string', 'max:255'],
-            'destination_location' => ['string', 'max:255'],
+            'starting_location' => ['nullable', 'string', 'max:255'],
+            'destination_location' => ['nullable', 'string', 'max:255'],
         ]);
 
         // Update the track with the validated data
@@ -169,6 +197,17 @@ class TrackController extends Controller
         $track->save();
 
         // Redirect to the show view of the updated track
+        return to_route('tracks.show', $track);
+    }
+
+    public function updateImageOrder(Request $request, Track $track): \Illuminate\Http\RedirectResponse
+    {
+        $request->validate([
+            'order' => ['required', 'array']
+        ]);
+
+        Media::setNewOrder($request->input('order'));
+
         return to_route('tracks.show', $track);
     }
 
@@ -204,5 +243,46 @@ class TrackController extends Controller
 
         echo ($name);
         $track->tags()->attach($tagId);
+    }
+  
+    public function destroyImage(Request $request, Track $track, int $image): \Illuminate\Http\RedirectResponse
+    {
+        $images = $track->getMedia('images');
+
+        $image = $images->firstWhere('id', $image);
+        $image->delete();
+
+        return to_route('tracks.show', $track);
+    }
+
+    public function share(Request $request, Track $track): \Illuminate\Http\RedirectResponse
+    {
+        $random_string = TrackController::generateRandomString(8);
+        while (Track::where('share_url', $random_string)->exists()) {
+            $random_string = TrackController::generateRandomString(8);
+        }
+        $track->share_url = $random_string;
+        $track->save();
+
+        return to_route('tracks.show', $track);
+    }
+
+    public function unshare(Request $request, Track $track): \Illuminate\Http\RedirectResponse
+    {
+        $track->share_url = null;
+        $track->save();
+
+        return to_route('tracks.show', $track);
+    }
+
+    public static function generateRandomString($length = 8)
+    {
+        $characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+        return $randomString;
     }
 }
