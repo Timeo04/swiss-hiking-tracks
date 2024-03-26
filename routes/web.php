@@ -68,6 +68,6 @@ Route::delete('tracks/{track}/image/{image}', [TrackController::class, 'destroyI
 Route::post('tracks/{track}/share', [TrackController::class, 'share'])->name('tracks.share')->middleware('auth');
 Route::delete('tracks/{track}/share', [TrackController::class, 'unshare'])->name('tracks.unshare')->middleware('auth');
 
-Route::get('tracks/{track_share_url}', [TrackController::class, 'show'])->name('tracks.showShare')->where(['track_share_url' => '[A-Za-z]+']);
+Route::get('tracks/{track_share_url}', [TrackController::class, 'showShare'])->name('tracks.showShare')->where(['track_share_url' => '[A-Za-z]+']);
 
 require __DIR__ . '/auth.php';
