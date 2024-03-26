@@ -26,8 +26,9 @@
     import ShareModal from "@/Components/Tracks/Modals/ShareModal.svelte";
 
     export let track;
-    export let auth;
+    export let auth = null;
     export let images;
+    export let shared = false;
 
     let confirmTrackDeletionModal = false;
     let shareModal = false;
@@ -37,7 +38,7 @@
     let descent = calculateDescent(track.geojson);
     let hikingTime = calculateHikingTime(
         track.geojson,
-        auth.user.hiking_speed || 4.2,
+        auth != null && auth.user != null ? auth.user.hiking_speed || 4.2 : 4.2,
     );
 
     // Modal schliessen
@@ -51,14 +52,16 @@
 </svelte:head>
 
 <AuthenticatedLayout {auth} className="px-0">
-    <!-- Go back to Index.svelte-Page -->
-    <!-- svelte-ignore missing-declaration -->
-    <button
-        class="z-30 fixed rounded-full w-12 h-12 top-4 left-4 bg-primary-700 hover:bg-primary-500 flex justify-center items-center text-white shadow-md hover:shadow-lg transition ease-in duration-200 focus:outline-none"
-        on:click={() => router.visit(route("tracks.index"))}
-    >
-        <ArrowLeftOutline size="xl" />
-    </button>
+    {#if !shared}
+        <!-- Go back to Index.svelte-Page -->
+        <!-- svelte-ignore missing-declaration -->
+        <button
+            class="z-30 fixed rounded-full w-12 h-12 top-4 left-4 bg-primary-700 hover:bg-primary-500 flex justify-center items-center text-white shadow-md hover:shadow-lg transition ease-in duration-200 focus:outline-none"
+            on:click={() => router.visit(route("tracks.index"))}
+        >
+            <ArrowLeftOutline size="xl" />
+        </button>
+    {/if}
 
     <!-- spacer -->
     <div class="h-[calc(100vh-225px)] w-full"></div>
@@ -161,40 +164,42 @@
 
         <!-- Tags -->
         <!-- Display Tags -->
-        <!-- AddTags -->
 
-        <!-- ShareButton -->
+        {#if !shared}
+            <!-- AddTags -->
 
-        <!-- DeleteButton -->
+            <!-- ShareButton -->
 
-        <div
-            class="flex flex-col gap-2 justify-start items-stretch md:items-center"
-        >
-            <button
-                type="button"
-                class="w-full bg-primary-700 hover:bg-primary-500 flex justify-center items-center text-black border border-red-500 bg-transparent shadow-md font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none"
-                on:click={() => (confirmTrackDeletionModal = true)}
+            <!-- DeleteButton -->
+            <div
+                class="flex flex-col gap-2 justify-start items-stretch md:items-center"
             >
-                Löschen
-            </button>
+                <button
+                    type="button"
+                    class="w-full bg-primary-700 hover:bg-primary-500 flex justify-center items-center text-black border border-red-500 bg-transparent shadow-md font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none"
+                    on:click={() => (confirmTrackDeletionModal = true)}
+                >
+                    Löschen
+                </button>
 
-            <!-- svelte-ignore missing-declaration -->
-            <button
-                type="button"
-                class="w-full bg-primary-700 hover:bg-primary-500 flex justify-center items-center text-black border border-red-500 bg-transparent shadow-md font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none"
-                on:click={router.visit(route("tracks.edit", { track }))}
-            >
-                Bearbeiten
-            </button>
+                <!-- svelte-ignore missing-declaration -->
+                <button
+                    type="button"
+                    class="w-full bg-primary-700 hover:bg-primary-500 flex justify-center items-center text-black border border-red-500 bg-transparent shadow-md font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none"
+                    on:click={router.visit(route("tracks.edit", { track }))}
+                >
+                    Bearbeiten
+                </button>
 
-            <button
-                type="button"
-                class="w-full bg-primary-700 hover:bg-primary-500 flex justify-center items-center text-black border border-red-500 bg-transparent shadow-md font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none"
-                on:click={() => (shareModal = true)}
-            >
-                Teilen
-            </button>
-        </div>
+                <button
+                    type="button"
+                    class="w-full bg-primary-700 hover:bg-primary-500 flex justify-center items-center text-black border border-red-500 bg-transparent shadow-md font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none"
+                    on:click={() => (shareModal = true)}
+                >
+                    Teilen
+                </button>
+            </div>
+        {/if}
 
         <!-- Platzhalter -->
         <div class="w-full h-12"></div>
