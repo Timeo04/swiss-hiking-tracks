@@ -1,6 +1,9 @@
 <script>
-    export let track;
-    export let geojson = track.geojson;
+    // export let track;
+    // export let geojson = track.geojson;
+    export let tracks = [];
+    // export let track;
+    // export let geojsons = [];
     export let imageryBaseMap = false;
     export let interactiveMap = true;
     export let cooperativeGestures = true;
@@ -14,14 +17,19 @@
         LngLatBounds,
     } from "maplibre-gl";
 
-    import { onDestroy, onMount } from 'svelte';
-    
+    import { onDestroy, onMount } from "svelte";
+
     let mapContainer;
     let map;
-    let startPos = [8.04494, 47.38579];
+    let startPos = [8.231726, 46.798473];
+    let zoomLevel = 8;
+    let bounds = null;
 
-    const coordinates = geojson.coordinates;
-    const bounds = coordinates.reduce(
+    let coordinates = [];
+    tracks.forEach((track) => {
+        coordinates.push(...track.geojson.coordinates);
+    });
+    bounds = coordinates.reduce(
         (bounds, coord) => {
             return bounds.extend(coord);
         },
@@ -35,7 +43,7 @@
                 ? "https://vectortiles.geo.admin.ch/styles/ch.swisstopo.leichte-basiskarte-imagery.vt/style.json"
                 : `https://vectortiles.geo.admin.ch/styles/ch.swisstopo.basemap.vt/style.json`,
             center: startPos,
-            zoom: 15,
+            zoom: zoomLevel,
             hash: false,
             cooperativeGestures: interactiveMap && cooperativeGestures,
             locale: {
@@ -69,31 +77,37 @@
         }
 
         _map.on("load", () => {
-            _map.addSource("LineString", {
-                type: "geojson",
-                data: geojson,
-            });
-            _map.addLayer({
-                id: "LineString",
-                type: "line",
-                source: "LineString",
-                layout: {
-                    "line-join": "round",
-                    "line-cap": "round",
-                },
-                paint: {
-                    "line-color": "#ff0000",
-                    "line-width": 5,
-                },
+            tracks.forEach((track) => {
+                _map.addSource("track_" + track.id, {
+                    type: "geojson",
+                    data: track.geojson,
+                });
+                _map.addLayer({
+                    id: "track_" + track.id,
+                    type: "line",
+                    source: "track_" + track.id,
+                    layout: {
+                        "line-join": "round",
+                        "line-cap": "round",
+                    },
+                    paint: {
+                        "line-color": "#ff0000",
+                        "line-width": 5,
+                    },
+                });
             });
             _map.resize();
+            if (bounds != null) {
+                _map.fitBounds(bounds, {
+                    padding: 100,
+                });
+            }
+        });
+        if (bounds != null) {
             _map.fitBounds(bounds, {
                 padding: 100,
             });
-        });
-        _map.fitBounds(bounds, {
-            padding: 100,
-        });
+        }
         map = _map;
     };
 

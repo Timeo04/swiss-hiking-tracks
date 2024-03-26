@@ -9,7 +9,7 @@
 
 <Swiper bind:this={swiper}>
     <swiper-slide class="h-[500px] relative rounded-2xl overflow-clip">
-        <Map {track} />
+        <Map tracks={[track]} />
     </swiper-slide>
     <swiper-slide
         class="h-[500px] bg-gray-300 relative rounded-2xl overflow-clip"
