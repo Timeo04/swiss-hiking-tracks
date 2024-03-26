@@ -13,7 +13,7 @@
     $: if (track.share_url != null && qrCodeCanvas != null) {
         let qrCode = new QRCode.toCanvas(
             qrCodeCanvas,
-            route("tracks.show", track.share_url),
+            route("tracks.showShare", track.share_url),
         );
     }
 
@@ -27,7 +27,7 @@
             navigator.share({
                 title: track.title,
                 text: "Schau dir diese Route an!",
-                url: route("tracks.show", track.share_url),
+                url: route("tracks.showShare", track.share_url),
             });
         }
     }
@@ -43,8 +43,8 @@
             <!-- svelte-ignore missing-declaration -->
             <a
                 class="text-primary-600 text-center block underline"
-                href={route("tracks.show", track.share_url)}
-                >{route("tracks.show", track.share_url)}</a
+                href={route("tracks.showShare", track.share_url)}
+                >{route("tracks.showShare", track.share_url)}</a
             >
             <!-- <p>
                 <em>Geben Sie diesen Link weiter, um diesen Track zu teilen.</em
