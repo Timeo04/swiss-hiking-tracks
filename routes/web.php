@@ -21,6 +21,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\TrackController;
+use App\Http\Controllers\TagController;
 
 /*
 |--------------------------------------------------------------------------
@@ -69,5 +70,11 @@ Route::post('tracks/{track}/share', [TrackController::class, 'share'])->name('tr
 Route::delete('tracks/{track}/share', [TrackController::class, 'unshare'])->name('tracks.unshare')->middleware('auth');
 
 Route::get('tracks/{track_share_url}', [TrackController::class, 'showShare'])->name('tracks.showShare')->where(['track_share_url' => '[A-Za-z]+']);
+
+// Tags-Resource-Route-Gruppe
+Route::resource('tags', TagController::class);
+
+//Route-Gruppe Verbindung Tags mit Tracks
+Route::post('tracks/{track}/tag', [TrackController::class, 'tag'])->name('tracks.tag');
 
 require __DIR__ . '/auth.php';

@@ -13,6 +13,11 @@
         ArrowUpOutline,
     } from "flowbite-svelte-icons";
     import { router } from "@inertiajs/svelte";
+    import { FloatingLabelInput } from "flowbite-svelte";
+    import { useForm, inertia } from "@inertiajs/svelte";
+    import PrimaryButton from "@/Components/PrimaryButton.svelte";
+    import { sineInOut } from "svelte/easing";
+    import { fade } from "svelte/transition";
     // Funktion zum Berechnen der Länge importieren
     import {
         calculateLength,
@@ -30,6 +35,10 @@
     export let auth = null;
     export let images;
     export let shared = false;
+      // Formular initialisieren
+    let form = useForm({
+        name: track.kategorie
+    });
 
     let layout = shared ? ShareLayout : AuthenticatedLayout;
 
@@ -65,7 +74,6 @@
             <ArrowLeftOutline size="xl" />
         </button>
     {/if}
-
     <!-- spacer -->
     <div class="h-[calc(100vh-225px)] w-full"></div>
 
@@ -170,7 +178,43 @@
 
         {#if !shared}
             <!-- AddTags -->
+<!-- svelte-ignore missing-declaration -->
+        <form
+            on:submit|preventDefault={$form.post(route("tracks.tag", {track}), {
+                preserveScroll: true
+        
+            })}
+            class="mt-6 space-y-6"
+        >
+            <div>
+                <FloatingLabelInput
+                    style="outlined"
+                    id="kategorie"
+                    type="text"
+                    required
+                    bind:value={$form.name}
+                    autofocus
+                    autocomplete="Kategorie"
+                >
+                    Kategorie
+                </FloatingLabelInput>
+            </div>
 
+            <div class="flex items-center gap-4">
+                <PrimaryButton disabled={$form.processing}
+                    >Speichern</PrimaryButton
+                >
+
+                {#if $form.recentlySuccessful}
+                    <p
+                        transition:fade={{ easing: sineInOut }}
+                        class="text-sm text-gray-600"
+                    >
+                        Gespeichert.
+                    </p>
+                {/if}
+            </div>
+        </form>
             <!-- ShareButton -->
 
             <!-- DeleteButton -->
