@@ -30,7 +30,7 @@
         <div
             class="fixed bottom-0 left-0 z-50 w-full h-16"
         >
-            <img src={Mountains} role="presentation" />
+            <img src={Mountains} role="presentation" alt="Berge" />
         </div>
     </div>
 </div>
