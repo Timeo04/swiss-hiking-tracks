@@ -83,7 +83,7 @@
 
     <!-- Title -->
     <div class="fixed z-10 top-0 left-0 w-full bg-none">
-        <h1 class="text-2xl text-center py-16 font-semibold">{track.title}</h1>
+        <h1 class="text-2xl text-center py-16 font-semibold text-white ">{track.title}</h1>
     </div>
 
     <div
