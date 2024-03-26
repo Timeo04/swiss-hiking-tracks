@@ -79,6 +79,23 @@ class TrackController extends Controller
         ]);
     }
 
+    /**
+     * Display the specified resource.
+     * @param  \App\Models\Track  $track
+     * @return \Illuminate\Http\Response
+     */
+    public function showShare(String $track_share_url): \Inertia\Response
+    {
+        $track = Track::where('share_url', $track_share_url)->firstOrFail();
+
+        // Inertia-Response mit Übergabewert $track zurückgeben
+        return Inertia::render('Tracks/Show', [
+            'track' => $track,
+            'images' => $track->getMedia('images')->map(fn ($media) => ['id' => $media->id, 'url' => $media->getUrl()]),
+            'shared' => true
+        ]);
+    }
+
     public function storeImage(Request $request, Track $track): \Illuminate\Http\RedirectResponse
     {
         $request->validate([
@@ -220,9 +237,9 @@ class TrackController extends Controller
 
     public function share(Request $request, Track $track): \Illuminate\Http\RedirectResponse
     {
-        $random_string = Str::random(8);
+        $random_string = TrackController::generateRandomString(8);
         while (Track::where('share_url', $random_string)->exists()) {
-            $random_string = Str::random(8);
+            $random_string = TrackController::generateRandomString(8);
         }
         $track->share_url = $random_string;
         $track->save();
@@ -236,5 +253,16 @@ class TrackController extends Controller
         $track->save();
 
         return to_route('tracks.show', $track);
+    }
+
+    public static function generateRandomString($length = 8)
+    {
+        $characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+        return $randomString;
     }
 }

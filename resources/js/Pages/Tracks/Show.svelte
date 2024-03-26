@@ -23,35 +23,30 @@
     import ElevationChart from "@/Components/Tracks/ElevationChart.svelte";
     import ImageSwiper from "@/Components/Tracks/ImageSwiper.svelte";
     import InformationsSwiper from "@/Components/Tracks/InformationsSwiper.svelte";
-    import QRCode from "qrcode";
+    import ShareModal from "@/Components/Tracks/Modals/ShareModal.svelte";
+    import ShareLayout from "@/Layouts/ShareLayout.svelte";
 
     export let track;
-    export let auth;
+    export let auth = null;
     export let images;
+    export let shared = false;
+
+    let layout = shared ? ShareLayout : AuthenticatedLayout;
 
     let confirmTrackDeletionModal = false;
     let shareModal = false;
-    let qrCodeCanvas;
-
-    $: if (track.share_url != null && qrCodeCanvas != null) {
-        let qrCode = new QRCode.toCanvas(
-            qrCodeCanvas,
-            route("tracks.show", track.share_url),
-        );
-    }
 
     let distance = calculateLength(track.geojson);
     let ascent = calculateAscent(track.geojson);
     let descent = calculateDescent(track.geojson);
     let hikingTime = calculateHikingTime(
         track.geojson,
-        auth.user.hiking_speed || 4.2,
+        auth != null && auth.user != null ? auth.user.hiking_speed || 4.2 : 4.2,
     );
 
     // Modal schliessen
     function closeModal() {
         confirmTrackDeletionModal = false;
-        shareModal = false;
     }
 </script>
 
@@ -59,15 +54,17 @@
     <title>{track.title}</title>
 </svelte:head>
 
-<AuthenticatedLayout {auth} className="px-0">
-    <!-- Go back to Index.svelte-Page -->
-    <!-- svelte-ignore missing-declaration -->
-    <button
-        class="z-30 fixed rounded-full w-12 h-12 top-4 left-4 bg-primary-700 hover:bg-primary-500 flex justify-center items-center text-white shadow-md hover:shadow-lg transition ease-in duration-200 focus:outline-none"
-        on:click={() => router.visit(route("tracks.index"))}
-    >
-        <ArrowLeftOutline size="xl" />
-    </button>
+<svelte:component this={layout} {auth} className="px-0">
+    {#if !shared}
+        <!-- Go back to Index.svelte-Page -->
+        <!-- svelte-ignore missing-declaration -->
+        <button
+            class="z-30 fixed rounded-full w-12 h-12 top-4 left-4 bg-primary-700 hover:bg-primary-500 flex justify-center items-center text-white shadow-md hover:shadow-lg transition ease-in duration-200 focus:outline-none"
+            on:click={() => router.visit(route("tracks.index"))}
+        >
+            <ArrowLeftOutline size="xl" />
+        </button>
+    {/if}
 
     <!-- spacer -->
     <div class="h-[calc(100vh-225px)] w-full"></div>
@@ -170,40 +167,42 @@
 
         <!-- Tags -->
         <!-- Display Tags -->
-        <!-- AddTags -->
 
-        <!-- ShareButton -->
+        {#if !shared}
+            <!-- AddTags -->
 
-        <!-- DeleteButton -->
+            <!-- ShareButton -->
 
-        <div
-            class="flex flex-col gap-2 justify-start items-stretch md:items-center"
-        >
-            <button
-                type="button"
-                class="w-full bg-primary-700 hover:bg-primary-500 flex justify-center items-center text-black border border-red-500 bg-transparent shadow-md font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none"
-                on:click={() => (confirmTrackDeletionModal = true)}
+            <!-- DeleteButton -->
+            <div
+                class="flex flex-col gap-2 justify-start items-stretch md:items-center"
             >
-                Löschen
-            </button>
+                <button
+                    type="button"
+                    class="w-full bg-primary-700 hover:bg-primary-500 flex justify-center items-center text-black border border-red-500 bg-transparent shadow-md font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none"
+                    on:click={() => (confirmTrackDeletionModal = true)}
+                >
+                    Löschen
+                </button>
 
-            <!-- svelte-ignore missing-declaration -->
-            <button
-                type="button"
-                class="w-full bg-primary-700 hover:bg-primary-500 flex justify-center items-center text-black border border-red-500 bg-transparent shadow-md font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none"
-                on:click={router.visit(route("tracks.edit", { track }))}
-            >
-                Bearbeiten
-            </button>
+                <!-- svelte-ignore missing-declaration -->
+                <button
+                    type="button"
+                    class="w-full bg-primary-700 hover:bg-primary-500 flex justify-center items-center text-black border border-red-500 bg-transparent shadow-md font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none"
+                    on:click={router.visit(route("tracks.edit", { track }))}
+                >
+                    Bearbeiten
+                </button>
 
-            <button
-                type="button"
-                class="w-full bg-primary-700 hover:bg-primary-500 flex justify-center items-center text-black border border-red-500 bg-transparent shadow-md font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none"
-                on:click={() => (shareModal = true)}
-            >
-                Teilen
-            </button>
-        </div>
+                <button
+                    type="button"
+                    class="w-full bg-primary-700 hover:bg-primary-500 flex justify-center items-center text-black border border-red-500 bg-transparent shadow-md font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none"
+                    on:click={() => (shareModal = true)}
+                >
+                    Teilen
+                </button>
+            </div>
+        {/if}
 
         <!-- Platzhalter -->
         <div class="w-full h-12"></div>
@@ -239,71 +238,5 @@
     </Modal>
 
     <!-- Share-Modal -->
-    <Modal bind:open={shareModal} on:close={closeModal}>
-        <div class="p-6">
-            {#if track.share_url != null}
-                <p>Diese Route wurde geteilt:</p>
-                <!-- svelte-ignore missing-declaration -->
-                <p>{route("tracks.show", track.share_url)}</p>
-                <p>
-                    <em
-                        >Geben Sie diesen Link weiter, um diesen Track zu
-                        teilen.</em
-                    >
-                </p>
-                <canvas bind:this={qrCodeCanvas}></canvas>
-                <div class="mt-6 flex justify-end">
-                    <!-- Close Modal -->
-                    <SecondaryButton on:click={closeModal}
-                        >Abbrechen</SecondaryButton
-                    >
-
-                    <!-- Delete Track -->
-                    <!-- svelte-ignore missing-declaration -->
-                    <DangerButton
-                        className="ms-3"
-                        on:click={router.delete(
-                            route("tracks.unshare", { track }),
-                            {
-                                preserveScroll: true,
-                            },
-                        )}
-                    >
-                        Teilen beenden
-                    </DangerButton>
-                </div>
-            {:else}
-                <h2 class="text-lg font-medium text-gray-900">
-                    Möchten Sie die Route "{track.title}" teilen?
-                </h2>
-
-                <!-- <p class="mt-1 text-sm text-gray-600">
-                    Wird die Route gelöscht, werden auch alle dazugehörigen Daten
-                    dauerhaft entfernt.
-                </p> -->
-
-                <div class="mt-6 flex justify-end">
-                    <!-- Close Modal -->
-                    <SecondaryButton on:click={closeModal}
-                        >Abbrechen</SecondaryButton
-                    >
-
-                    <!-- Delete Track -->
-                    <!-- svelte-ignore missing-declaration -->
-                    <DangerButton
-                        className="ms-3"
-                        on:click={router.post(
-                            route("tracks.share", { track }),
-                            {},
-                            {
-                                preserveScroll: true,
-                            },
-                        )}
-                    >
-                        Route teilen
-                    </DangerButton>
-                </div>
-            {/if}
-        </div>
-    </Modal>
-</AuthenticatedLayout>
+    <ShareModal {track} bind:open={shareModal} />
+</svelte:component>
