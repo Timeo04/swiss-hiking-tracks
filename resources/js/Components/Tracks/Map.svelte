@@ -1,4 +1,6 @@
 <script>
+    import { router } from "@inertiajs/svelte";
+
     // export let track;
     // export let geojson = track.geojson;
     export let tracks = [];
@@ -7,6 +9,7 @@
     export let imageryBaseMap = false;
     export let interactiveMap = true;
     export let cooperativeGestures = true;
+    export let popups = false;
 
     import {
         Map,
@@ -44,6 +47,7 @@
                 : `https://vectortiles.geo.admin.ch/styles/ch.swisstopo.basemap.vt/style.json`,
             center: startPos,
             zoom: zoomLevel,
+            bounds: bounds,
             hash: false,
             cooperativeGestures: interactiveMap && cooperativeGestures,
             locale: {
@@ -78,14 +82,15 @@
 
         _map.on("load", () => {
             tracks.forEach((track) => {
-                _map.addSource("track_" + track.id, {
+                let layerName = "track_" + track.id;
+                _map.addSource(layerName, {
                     type: "geojson",
                     data: track.geojson,
                 });
                 _map.addLayer({
-                    id: "track_" + track.id,
+                    id: layerName,
                     type: "line",
-                    source: "track_" + track.id,
+                    source: layerName,
                     layout: {
                         "line-join": "round",
                         "line-cap": "round",
@@ -95,6 +100,12 @@
                         "line-width": 5,
                     },
                 });
+                if (popups) {
+                    _map.on("click", layerName, (e) => {
+                        console.log("clicked", e, track);
+                        router.visit(route("tracks.show", track.id));
+                    });
+                }
             });
             _map.resize();
             if (bounds != null) {
@@ -108,6 +119,7 @@
                 padding: 100,
             });
         }
+
         map = _map;
     };
 
