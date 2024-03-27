@@ -2,6 +2,7 @@
     import Swiper from "@/Components/Swiper.svelte";
     import Map from "./Map.svelte";
     import { Card } from "flowbite-svelte";
+    import WeatherAddInfo from "../WeatherAddInfo.svelte";
 
     export let track;
     let swiper = null;
@@ -14,7 +15,8 @@
     <swiper-slide
         class="h-[500px] bg-gray-300 relative rounded-2xl overflow-clip"
     >
-        <h3 class="text-2xl">Wetter</h3>
+        <!-- <h3 class="text-2xl">Wetter</h3> -->
+        <WeatherAddInfo/>
     </swiper-slide>
     <swiper-slide
         class="h-[500px] bg-gray-300 relative rounded-2xl overflow-clip flex justify-center items-center"
