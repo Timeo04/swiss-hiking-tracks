@@ -1,14 +1,14 @@
 <!-- Coppied from https://open-meteo.com/en/docs/ -->
 <script>
-
     import WeatherChart from "./WeatherChart.svelte";
 
-    export let lat = 47.385994;
-    export let lon = 8.044127;
+    export let lat = 51.962944;
+    export let lon = 7.6286944;
 
     let weatherData = null;
     let current = null;
     let daily = null;
+    let currentTime = null;
 
     let paramsCurrent = [
         "temperature_2m",
@@ -70,10 +70,8 @@
         current = weatherData.current;
         daily = weatherData.daily;
         console.log("current Weather", weatherData);
+        currentTime = current.time;
     });
-
-
-
 </script>
 
 <div>
@@ -84,15 +82,15 @@
         - Wettercode Darstellung durch Icon
         - Markierung der Uhrzeit + Darstellung der aktuellen Uhrzeit -->
 
-        <!-- <div class="w-full h-96"> -->
-            <!-- {#if weatherData.minutely_15.temperature_2m != null} -->
+        <div class="w-full">
+            {#if weatherData.minutely_15.temperature_2m != null}
                 
-            <!-- <Line data={weatherData} /> -->
-            <!-- {/if} -->
-            <!-- <WeatherChart {weatherData}/> -->
-        <!-- </div> -->
+                <WeatherChart foreCastData={weatherData} currentTime={currentTime}/>
+                <!-- <Line data={weatherData} /> -->
+            {/if}
+        </div>
         <h3>Current weather</h3>
-        <p>
+        <!-- <p>
             {current.is_day != null
                 ? current.is_day == 1
                     ? "Day"
@@ -152,7 +150,7 @@
             Weather code: {current.weather_code != null
                 ? current.weather_code
                 : "-"}
-        </p>
+        </p> -->
     {:else}
         <p>Loading...</p>
     {/if}
