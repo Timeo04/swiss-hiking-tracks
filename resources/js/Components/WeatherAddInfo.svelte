@@ -2,8 +2,10 @@
 <script>
     import WeatherChart from "./WeatherChart.svelte";
 
-    export let lat = 51.962944;
-    export let lon = 7.6286944;
+    export let track;
+
+    let lat = track.geojson.coordinates[0][1];
+    let lon = track.geojson.coordinates[0][0];
 
     let weatherData = null;
     let current = null;
@@ -74,83 +76,43 @@
     });
 </script>
 
-<div>
+<div clss="w-full h-full flex flex-col justif-start items-center gap-4">
     {#if weatherData != null}
         <!-- Diagramm des Wetters des Tages: Graph Wetter durch den Tag: 
         - Temperatur
         - Regenfall
         - Wettercode Darstellung durch Icon
         - Markierung der Uhrzeit + Darstellung der aktuellen Uhrzeit -->
-
-        <div class="w-full">
+        <div class="w-full rounded-[15px] bg-white p-4 flex flex-col gap-4 justify-center">
             {#if weatherData.minutely_15.temperature_2m != null}
-                
                 <WeatherChart foreCastData={weatherData} currentTime={currentTime}/>
-                <!-- <Line data={weatherData} /> -->
+            {/if}
+            {#if daily.time != null}
+                {#each daily.time as {}, i}
+                    <div class="w-full grid grid-cols-3 text-sm justify-center text-center">
+                        <p>
+                            {daily.time[i] != null ? daily.time[i] : "-"}
+                        </p>
+                        <div class="flex justify-center text-center">
+                            <p>
+                                {daily.temperature_2m_max[i] != null
+                                    ? daily.temperature_2m_max[i]
+                                    : "-"}
+                            /
+                                {daily.temperature_2m_min[i] != null
+                                    ? daily.temperature_2m_min[i]
+                                    : "-"} C°
+                            </p>
+                        </div>
+                        <p>
+                            {daily.precipitation_sum[i] != null
+                                ? daily.precipitation_sum[i]
+                                : "-"} mm
+                        </p>
+                    </div>
+                {/each}
             {/if}
         </div>
-        <h3>Current weather</h3>
-        <!-- <p>
-            {current.is_day != null
-                ? current.is_day == 1
-                    ? "Day"
-                    : "Night"
-                : "-"}
-        </p>
-        <p>
-            Temperature: {current.temperature_2m != null
-                ? current.temperature_2m
-                : "-"}°C
-        </p>
-        <p>
-            Humidity: {current.relative_humidity_2m != null
-                ? current.relative_humidity_2m
-                : "-"}%
-        </p>
-        <p>
-            Apparent Temperature: {current.apparent_temperature != null
-                ? current.apparent_temperature
-                : "-"}°C
-        </p>
-        <p>
-            Precipitation: {current.precipitation != null
-                ? current.precipitation
-                : "-"} mm
-        </p>
-        <p>
-            Rain: {current.rain != null ? current.rain : "-"} mm
-        </p>
-        <p>
-            Showers: {current.showers != null ? current.showers : "-"} mm
-        </p>
-        <p>
-            Snowfall: {current.snowfall != null ? current.snowfall : "-"} mm
-        </p>
-        <p>
-            Cloud cover: {current.cloud_cover != null
-                ? current.cloud_cover
-                : "-"}%
-        </p>
-        <p>
-            UV index: {current.uv_index_max != null
-                ? current.uv_index_max
-                : "-"}
-        </p>
-        <p>
-            Wind speed: {current.wind_speed_10m != null
-                ? current.wind_speed_10m
-                : "-"} km/h
-        </p>
-        <p>
-            Wind direction: {current.wind_direction_10m != null
-                ? current.wind_direction_10m
-                : "-"}°
-        </p>
-        <p>
-            Weather code: {current.weather_code != null
-                ? current.weather_code
-                : "-"}
-        </p> -->
     {:else}
         <p>Loading...</p>
     {/if}

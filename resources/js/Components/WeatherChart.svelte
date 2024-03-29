@@ -34,11 +34,11 @@
     let foreCastPrecipitation = [];
     foreCastPrecipitation = foreCastData.minutely_15.precipitation;
 
-    console.log("ForeCast", foreCastTemp);
-    console.log("Current Time", currentTime);
-    console.log("Time", time);
-    console.log("ForeCastOne", foreCastData);
-    console.log("ForeCastPrecipitation", foreCastPrecipitation);
+    // console.log("ForeCast", foreCastTemp);
+    // console.log("Current Time", currentTime);
+    // console.log("Time", time);
+    // console.log("ForeCastOne", foreCastData);
+    // console.log("ForeCastPrecipitation", foreCastPrecipitation);
 
     ChartJS.register(
         Title,
@@ -205,7 +205,7 @@
                 position: "right",
             },
         },
-        aspectRatio: 2.5,
+        aspectRatio: 1.5,
         maintainAspectRation: false,
         responsive: true,
         datasets: {
@@ -216,7 +216,7 @@
     };
 </script>
 
-<div class="w-full max-h-[350px] flex justify-center items-center">
+<div class="w-full h-full max-h-[400px] flex justify-center items-center">
     <Bar data={forecastData} options={forecastOptions} />
     <!-- <Line data={forecastDataPrecipitation} options={forecastOptions} /> -->
 </div>
