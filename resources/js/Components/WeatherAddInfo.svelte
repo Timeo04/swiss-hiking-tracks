@@ -11,6 +11,7 @@
     let current = null;
     let daily = null;
     let currentTime = null;
+    let dayName = [];
 
     let paramsCurrent = [
         "temperature_2m",
@@ -73,6 +74,11 @@
         daily = weatherData.daily;
         console.log("current Weather", weatherData);
         currentTime = current.time;
+
+        daily.time.forEach(time => {
+            let dayString = new Date(time);
+            dayName.push(Intl.DateTimeFormat("en-US", {weekday: "long"}).format(dayString));
+        });
     });
 </script>
 
@@ -91,7 +97,8 @@
                 {#each daily.time as {}, i}
                     <div class="w-full grid grid-cols-3 text-sm justify-center text-center">
                         <p>
-                            {daily.time[i] != null ? daily.time[i] : "-"}
+                            <!-- {daily.time[i] != null ? daily.time[i] : "-"} -->
+                            {dayName[i]}
                         </p>
                         <div class="flex justify-center text-center">
                             <p>
