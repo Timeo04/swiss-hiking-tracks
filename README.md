@@ -54,13 +54,7 @@ php artisan migrate
 ``` 
 > Dieser Befehl erstellt die Datenbanktabellen für die Applikation.
 
-7. Erstellen Sie einen symbolischen Link für das `storage` Verzeichnis:
-```bash
-php artisan storage:link
-```
-> Dieser Befehl erstellt einen symbolischen Link vom public/storage Verzeichnis zu storage/app/public, was es ermöglicht, auf Dateien im storage/app/public Verzeichnis über die URL `http://localhost:8000/storage` zuzugreifen. Dies ist notwendig, da die Anwendung in diesem Verzeichnis von den Nutzer*innen hochgeladene Dateien abspeichert.
-
-8. Starten Sie den Entwicklungsserver: (in zwei verschiedenen Terminals)
+7. Starten Sie den Entwicklungsserver: (in zwei verschiedenen Terminals)
 ```bash
 php artisan serve
 ```
