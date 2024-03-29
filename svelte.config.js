@@ -11,7 +11,7 @@ export default {
   vitePlugin: {
     inspector: {
       toggleKeyCombo: 'meta-shift',
-      showToggleButton: 'always',
+      showToggleButton: 'never',
       toggleButtonPos: 'bottom-right'
     },
   }
