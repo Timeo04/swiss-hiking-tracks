@@ -97,7 +97,6 @@
                 {#each daily.time as {}, i}
                     <div class="w-full grid grid-cols-3 text-sm justify-center text-center">
                         <p>
-                            <!-- {daily.time[i] != null ? daily.time[i] : "-"} -->
                             {dayName[i]}
                         </p>
                         <div class="flex justify-center text-center">
