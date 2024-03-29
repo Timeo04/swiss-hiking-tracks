@@ -17,7 +17,7 @@
         class="min-h-screen bg-gray-100 flex flex-col justify-start items-center"
     >
         <!-- Page Content -->
-        <main class="{className} flex flex-col gap-2 p-2 max-w-4xl xl:max-w-5xl w-full snap-proximity snap-y">
+        <main class="{className} flex flex-col gap-2 p-2 max-w-4xl xl:max-w-5xl w-full" scroll-region>
             <slot />
         </main>
         <!-- Add Spacer to prevent content behind navbar -->

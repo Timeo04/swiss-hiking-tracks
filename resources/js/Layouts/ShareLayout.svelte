@@ -19,7 +19,8 @@
     >
         <!-- Page Content -->
         <main
-            class="{className} flex flex-col gap-2 p-2 max-w-4xl xl:max-w-5xl w-full snap-proximity snap-y"
+            class="{className} flex flex-col gap-2 p-2 max-w-4xl xl:max-w-5xl w-full"
+            scroll-region
         >
             <slot />
         </main>

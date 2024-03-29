@@ -95,8 +95,7 @@
 
     <div
         class="p-2 pt-4 bg-white rounded-t-[20px] w-full h-fit
-        flex flex-col justify-center items-stretch gap-6 z-20
-        snap-start"
+        flex flex-col justify-center items-stretch gap-6 z-20"
     >
         <div>
             <div class="flex items-center justify-center mb-2">
