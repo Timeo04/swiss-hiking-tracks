@@ -72,7 +72,6 @@
         current = weatherData.current;
         daily = weatherData.daily;
         currentTime = current.time;
-
         daily.time.forEach(time => {
             let dayString = new Date(time);
             dayName.push(Intl.DateTimeFormat("en-US", {weekday: "long"}).format(dayString));
