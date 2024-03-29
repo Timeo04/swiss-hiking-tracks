@@ -72,7 +72,7 @@
         weatherData = data;
         current = weatherData.current;
         daily = weatherData.daily;
-        console.log("current Weather", weatherData);
+        // console.log("current Weather", weatherData);
         currentTime = current.time;
 
         daily.time.forEach(time => {
