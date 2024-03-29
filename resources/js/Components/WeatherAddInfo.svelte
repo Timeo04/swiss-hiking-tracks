@@ -1,4 +1,3 @@
-<!-- Coppied from https://open-meteo.com/en/docs/ -->
 <script>
     import WeatherChart from "./WeatherChart.svelte";
 
@@ -72,7 +71,6 @@
         weatherData = data;
         current = weatherData.current;
         daily = weatherData.daily;
-        // console.log("current Weather", weatherData);
         currentTime = current.time;
 
         daily.time.forEach(time => {
