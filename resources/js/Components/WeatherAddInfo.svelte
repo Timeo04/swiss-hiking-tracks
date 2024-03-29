@@ -1,4 +1,3 @@
-<!-- Coppied from https://open-meteo.com/en/docs/ -->
 <script>
     import WeatherChart from "./WeatherChart.svelte";
 
@@ -11,6 +10,7 @@
     let current = null;
     let daily = null;
     let currentTime = null;
+    let dayName = [];
 
     let paramsCurrent = [
         "temperature_2m",
@@ -71,8 +71,11 @@
         weatherData = data;
         current = weatherData.current;
         daily = weatherData.daily;
-        // console.log("current Weather", weatherData);
         currentTime = current.time;
+        daily.time.forEach(time => {
+            let dayString = new Date(time);
+            dayName.push(Intl.DateTimeFormat("en-US", {weekday: "long"}).format(dayString));
+        });
     });
 </script>
 
@@ -90,8 +93,8 @@
             {#if daily.time != null}
                 {#each daily.time as {}, i}
                     <div class="w-full grid grid-cols-3 text-sm justify-center text-center">
-                        <p>
-                            {daily.time[i] != null ? daily.time[i] : "-"}
+                        <p class="text-left">
+                            {dayName[i]}
                         </p>
                         <div class="flex justify-center text-center">
                             <p>
@@ -104,7 +107,7 @@
                                     : "-"} C°
                             </p>
                         </div>
-                        <p>
+                        <p class="text-right">
                             {daily.precipitation_sum[i] != null
                                 ? daily.precipitation_sum[i]
                                 : "-"} mm
