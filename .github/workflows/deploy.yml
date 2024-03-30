@@ -50,16 +50,16 @@ jobs:
     #     timeout: 600000
         # dry-run: true
 
-    - name: "Deploy"
-      uses: milanmk/actions-file-deployer@master
-      with:
-        remote-protocol: "ftp"
-        remote-host: ${{ vars.FTP_SERVER_URL }}
-        remote-user: ${{ vars.FTP_USER_NAME }}
-        remote-password: ${{ secrets.FTP_PASSWORD }}
-        remote-port: 21
-        remote-path: "/"
-        sync: full
+    # - name: "Deploy"
+    #   uses: milanmk/actions-file-deployer@master
+    #   with:
+    #     remote-protocol: "ftp"
+    #     remote-host: ${{ vars.FTP_SERVER_URL }}
+    #     remote-user: ${{ vars.FTP_USER_NAME }}
+    #     remote-password: ${{ secrets.FTP_PASSWORD }}
+    #     remote-port: 21
+    #     remote-path: "/"
+    #     sync: full
 
     # - name: Trigger migrations
     #   uses: fjogeleit/http-request-action@v1.15.2
@@ -80,3 +80,13 @@ jobs:
     #     DB_CONNECTION: sqlite
     #     DB_DATABASE: database/database.sqlite
     #   run: vendor/bin/phpunit
+    - name: Deploy
+      uses: kevinpainchaud/simple-ftp-deploy-action@v1.2.1
+      with:
+        ftp_host: ${{ vars.FTP_SERVER_URL }}
+        ftp_username: ${{ vars.FTP_USER_NAME }}
+        ftp_password: ${{ secrets.FTP_PASSWORD }}
+        local_source_dir: "."
+        dist_target_dir: "/"
+        delete: "true"
+        exclude: "'^logs/' '^README.md' '.env'"
