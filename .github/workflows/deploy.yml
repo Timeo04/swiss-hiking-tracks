@@ -40,6 +40,8 @@ jobs:
           **/.env
           **/node_modules/**
         protocol: ftps
+        port: 21
+        timeout: 600000
         # dry-run: true
 
     - name: Trigger migrations
