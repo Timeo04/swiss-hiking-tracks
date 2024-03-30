@@ -80,13 +80,28 @@ jobs:
     #     DB_CONNECTION: sqlite
     #     DB_DATABASE: database/database.sqlite
     #   run: vendor/bin/phpunit
-    - name: Deploy
-      uses: kevinpainchaud/simple-ftp-deploy-action@v1.2.1
+    # - name: Deploy
+    #   uses: kevinpainchaud/simple-ftp-deploy-action@v1.2.1
+    #   with:
+    #     ftp_host: ${{ vars.FTP_SERVER_URL }}
+    #     ftp_username: ${{ vars.FTP_USER_NAME }}
+    #     ftp_password: ${{ secrets.FTP_PASSWORD }}
+    #     local_source_dir: "."
+    #     dist_target_dir: "/"
+        # exclude: "'^logs/' '^README.md' '.env'"
+        # delete: "true"
+    - name: FTP Deployer
+      uses: sand4rt/ftp-deployer@v1.8
       with:
-        ftp_host: ${{ vars.FTP_SERVER_URL }}
-        ftp_username: ${{ vars.FTP_USER_NAME }}
-        ftp_password: ${{ secrets.FTP_PASSWORD }}
-        local_source_dir: "."
-        dist_target_dir: "/"
-        delete: "true"
-        exclude: "'^logs/' '^README.md' '.env'"
+        sftp: false # optional
+        host: ${{ vars.FTP_SERVER_URL }} # e.g. ftp.host.com or sftp.host.com (without ftp:// or ftps://)
+        port: 21 # optional, default is: 21
+        username: ${{ vars.FTP_USER_NAME }} # FTP username
+        password: ${{ secrets.FTP_PASSWORD }} # FTP password
+        remote_folder: '/' # optional, remote path of your FTP server
+        local_folder: '.' # optional, local path, default is: dist
+        cleanup: true # optional, remove existing files inside FTP remote folder
+        # include: '[]' # optional, e.g. '['dist']'
+        exclude: "['node_modules/**', '.git/**', '*.env']"
+        passive: true # optional
+
