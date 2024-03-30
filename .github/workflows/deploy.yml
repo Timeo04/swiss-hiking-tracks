@@ -59,7 +59,7 @@ jobs:
         remote-password: ${{ secrets.FTP_PASSWORD }}
         remote-port: 21
         remote-path: "/"
-        sync: delta
+        sync: full
 
     # - name: Trigger migrations
     #   uses: fjogeleit/http-request-action@v1.15.2
