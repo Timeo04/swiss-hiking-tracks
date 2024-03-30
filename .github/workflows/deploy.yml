@@ -33,12 +33,13 @@ jobs:
         server: ${{ vars.FTP_SERVER_URL }}
         username: ${{ vars.FTP_USER_NAME }}
         password: ${{ secrets.FTP_PASSWORD }}
-        server-dir: 'swisshikingtracks/'
+        server-dir: ./
         exclude: |
           **/.git*
           **/.git*/**
           **/.env
           **/node_modules/**
+        protocol: ftps
         dry-run: true
 
     - name: Trigger migrations
