@@ -29,6 +29,9 @@ jobs:
 
     - name: Cleanup empty files
       run: find . -type f -empty -print -delete
+
+    - name: Cleanup vite timestamp
+      run: find . -type f -name vite.config.js.timestamp\* -exec rm {} \;
           
     - name: 📂 Sync files
       uses: SamKirkland/FTP-Deploy-Action@v4.3.4
