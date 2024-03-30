@@ -30,25 +30,36 @@ jobs:
     - name: Cleanup empty files
       run: find . -type f -empty -print -delete
 
-    - name: Cleanup vite timestamp
-      run: find . -type f -name vite.config.js.timestamp\* -exec rm {} \;
+    # - name: Cleanup vite timestamp
+    #   run: find . -type f -name vite.config.js.timestamp\* -exec rm {} \;
           
-    - name: 📂 Sync files
-      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
-      with:
-        server: ${{ vars.FTP_SERVER_URL }}
-        username: ${{ vars.FTP_USER_NAME }}
-        password: ${{ secrets.FTP_PASSWORD }}
-        server-dir: ./
-        exclude: |
-          **/.git*
-          **/.git*/**
-          **/.env
-          **/node_modules/**
-        protocol: ftps
-        port: 21
-        timeout: 600000
+    # - name: 📂 Sync files
+    #   uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+    #   with:
+    #     server: ${{ vars.FTP_SERVER_URL }}
+    #     username: ${{ vars.FTP_USER_NAME }}
+    #     password: ${{ secrets.FTP_PASSWORD }}
+    #     server-dir: ./
+    #     exclude: |
+    #       **/.git*
+    #       **/.git*/**
+    #       **/.env
+    #       **/node_modules/**
+    #     protocol: ftps
+    #     port: 21
+    #     timeout: 600000
         # dry-run: true
+
+    - name: "Deploy"
+      uses: milanmk/actions-file-deployer@master
+      with:
+        remote-protocol: "ftp"
+        remote-host: ${{ vars.FTP_SERVER_URL }}
+        remote-user: ${{ vars.FTP_USER_NAME }}
+        remote-password: ${{ secrets.FTP_PASSWORD }}
+        remote-port: 21
+        # remote-path: "/"
+        sync: full
 
     - name: Trigger migrations
       uses: fjogeleit/http-request-action@v1.15.2
