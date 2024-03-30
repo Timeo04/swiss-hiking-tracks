@@ -102,6 +102,6 @@ jobs:
         local_folder: '.' # optional, local path, default is: dist
         cleanup: true # optional, remove existing files inside FTP remote folder
         # include: '[]' # optional, e.g. '['dist']'
-        exclude: "['node_modules/**', '.git/**', '*.env']"
+        exclude: '["node_modules/**", ".git/**", "*.env"]'
         passive: true # optional
 
