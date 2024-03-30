@@ -50,16 +50,16 @@ jobs:
     #     timeout: 600000
         # dry-run: true
 
-    # - name: "Deploy"
-    #   uses: milanmk/actions-file-deployer@master
-    #   with:
-    #     remote-protocol: "ftp"
-    #     remote-host: ${{ vars.FTP_SERVER_URL }}
-    #     remote-user: ${{ vars.FTP_USER_NAME }}
-    #     remote-password: ${{ secrets.FTP_PASSWORD }}
-    #     remote-port: 21
-    #     remote-path: "/"
-    #     sync: full
+    - name: "Deploy"
+      uses: milanmk/actions-file-deployer@master
+      with:
+        remote-protocol: "ftp"
+        remote-host: ${{ vars.FTP_SERVER_URL }}
+        remote-user: ${{ vars.FTP_USER_NAME }}
+        remote-password: ${{ secrets.FTP_PASSWORD }}
+        remote-port: 21
+        remote-path: "/"
+        sync: delta
 
     # - name: Trigger migrations
     #   uses: fjogeleit/http-request-action@v1.15.2
@@ -90,18 +90,20 @@ jobs:
     #     dist_target_dir: "/"
         # exclude: "'^logs/' '^README.md' '.env'"
         # delete: "true"
-    - name: FTP Deployer
-      uses: sand4rt/ftp-deployer@v1.8
-      with:
-        sftp: false # optional
-        host: ${{ vars.FTP_SERVER_URL }} # e.g. ftp.host.com or sftp.host.com (without ftp:// or ftps://)
-        port: 21 # optional, default is: 21
-        username: ${{ vars.FTP_USER_NAME }} # FTP username
-        password: ${{ secrets.FTP_PASSWORD }} # FTP password
-        remote_folder: '/' # optional, remote path of your FTP server
-        local_folder: '.' # optional, local path, default is: dist
-        cleanup: true # optional, remove existing files inside FTP remote folder
-        # include: '[]' # optional, e.g. '['dist']'
-        exclude: '["node_modules/**", ".git/**", "*.env"]'
-        passive: true # optional
+ 
+    
+    # - name: FTP Deployer
+    #   uses: sand4rt/ftp-deployer@v1.8
+    #   with:
+    #     sftp: false # optional
+    #     host: ${{ vars.FTP_SERVER_URL }} # e.g. ftp.host.com or sftp.host.com (without ftp:// or ftps://)
+    #     port: 21 # optional, default is: 21
+    #     username: ${{ vars.FTP_USER_NAME }} # FTP username
+    #     password: ${{ secrets.FTP_PASSWORD }} # FTP password
+    #     remote_folder: '/' # optional, remote path of your FTP server
+    #     local_folder: '.' # optional, local path, default is: dist
+    #     cleanup: true # optional, remove existing files inside FTP remote folder
+    #     # include: '[]' # optional, e.g. '['dist']'
+    #     exclude: '["node_modules/**", ".git/**", "*.env"]'
+    #     passive: true # optional
 
