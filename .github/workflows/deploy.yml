@@ -40,7 +40,7 @@ jobs:
           **/.env
           **/node_modules/**
         protocol: ftps
-        dry-run: true
+        # dry-run: true
 
     - name: Trigger migrations
       uses: fjogeleit/http-request-action@v1.15.2
