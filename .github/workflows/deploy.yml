@@ -27,8 +27,8 @@ jobs:
     - name: Build
       run: npm run build --if-present
 
-    - name: Cleanup empty files
-      run: find . -type f -empty -print -delete
+    # - name: Cleanup empty files
+    #   run: find . -type f -empty -print -delete
 
     # - name: Cleanup vite timestamp
     #   run: find . -type f -name vite.config.js.timestamp\* -exec rm {} \;
@@ -58,14 +58,14 @@ jobs:
         remote-user: ${{ vars.FTP_USER_NAME }}
         remote-password: ${{ secrets.FTP_PASSWORD }}
         remote-port: 21
-        # remote-path: "/"
-        sync: full
+        remote-path: "/"
+        sync: delta
 
-    - name: Trigger migrations
-      uses: fjogeleit/http-request-action@v1.15.2
-      with:
-        url: 'https://swisshikingtracks.ch/migrate'
-        method: 'GET'
+    # - name: Trigger migrations
+    #   uses: fjogeleit/http-request-action@v1.15.2
+    #   with:
+    #     url: 'https://swisshikingtracks.ch/migrate'
+    #     method: 'GET'
         
     # - name: Generate key
     #   run: php artisan key:generate
