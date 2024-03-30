@@ -238,11 +238,13 @@ class TrackController extends Controller
         // Suche nach dem Tag in der Datenbank oder erstelle ihn, falls er nicht existiert
         $tag = Tag::firstOrCreate(['name' => $name]);
 
-        // Hier erhältst du die ID des Tags, unabhängig davon, ob er neu erstellt wurde oder nicht
+        // ID des Tags, unabhängig davon, ob er neu erstellt wurde oder nicht
         $tagId = $tag->id;
 
-        echo ($name);
         $track->tags()->attach($tagId);
+
+        // Weiterleitung zur Track-Seite
+        return to_route('tracks.show', $track);
     }
   
     public function destroyImage(Request $request, Track $track, int $image): \Illuminate\Http\RedirectResponse

@@ -71,10 +71,10 @@ Route::delete('tracks/{track}/share', [TrackController::class, 'unshare'])->name
 
 Route::get('tracks/{track_share_url}', [TrackController::class, 'showShare'])->name('tracks.showShare')->where(['track_share_url' => '[A-Za-z]+']);
 
-// Tags-Resource-Route-Gruppe
-Route::resource('tags', TagController::class);
+// Tags-Resource-Route-Gruppe, die nur eingeloggten Usern zur Verfügung steht
+Route::resource('tags', TagController::class)->middleware('auth');
 
-//Route-Gruppe Verbindung Tags mit Tracks
-Route::post('tracks/{track}/tag', [TrackController::class, 'tag'])->name('tracks.tag');
+//Route-Gruppe Verbindung Tags mit Tracks, die nur eingeloggten Usern zur Verfügung steht
+Route::post('tracks/{track}/tag', [TrackController::class, 'tag'])->name('tracks.tag')->middleware('auth');
 
 require __DIR__ . '/auth.php';
