@@ -1,0 +1,61 @@
+name: Build and deploy to FTP
+
+on:
+#   push:
+#     branches: [ "main" ]  
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  laravel-deploy:
+    name: 🎉 Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: shivammathur/setup-php@15c43e89cdef867065b0213be354c2841860869e
+      with:
+        php-version: '8.3'
+    - name: 🚚 Get latest code
+      uses: actions/checkout@v4
+    # - name: Copy .env
+    #   run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+    - name: Install Production Dependencies
+      run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist --no-dev
+    - name: NPM clean install
+      run: npm ci --production
+    - name: Build
+      run: npm run build --if-present
+          
+    - name: 📂 Sync files
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      with:
+        server: ${{ vars.FTP_SERVER_URL }}
+        username: ${{ vars.FTP_USER_NAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        server_dir: 'swisshikingtracks/'
+        exclude: |
+          **/.git*
+          **/.git*/**
+          **/.env
+        dry-run: true
+
+    - name: Trigger migrations
+      uses: fjogeleit/http-request-action@v1.15.2
+      with:
+        url: 'https://swisshikingtracks.ch/migrate'
+        method: 'POST'
+        
+    # - name: Generate key
+    #   run: php artisan key:generate
+    # - name: Directory Permissions
+    #   run: chmod -R 777 storage bootstrap/cache
+    # - name: Create Database
+    #   run: |
+    #     mkdir -p database
+    #     touch database/database.sqlite
+    # - name: Execute tests (Unit and Feature tests) via PHPUnit
+    #   env:
+    #     DB_CONNECTION: sqlite
+    #     DB_DATABASE: database/database.sqlite
+    #   run: vendor/bin/phpunit
