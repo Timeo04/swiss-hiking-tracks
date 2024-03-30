@@ -26,6 +26,9 @@ jobs:
       run: npm ci
     - name: Build
       run: npm run build --if-present
+
+    - name: Cleanup empty files
+      run: find . -type f -empty -print -delete
           
     - name: 📂 Sync files
       uses: SamKirkland/FTP-Deploy-Action@v4.3.4
