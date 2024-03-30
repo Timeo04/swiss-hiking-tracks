@@ -23,7 +23,7 @@ jobs:
     - name: Install Production Dependencies
       run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist --no-dev
     - name: NPM clean install
-      run: npm ci --production
+      run: npm ci
     - name: Build
       run: npm run build --if-present
           
@@ -38,6 +38,7 @@ jobs:
           **/.git*
           **/.git*/**
           **/.env
+          **/node_modules/**
         dry-run: true
 
     - name: Trigger migrations
