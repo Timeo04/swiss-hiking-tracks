@@ -10,10 +10,10 @@ use App\Models\Tag;
 use DOMDocument;
 // Inertia importieren
 use Inertia\Inertia;
-// GeoJsonRule für Validation importieren
+// GeoJsonRule und LineString für Validation importieren
 use YucaDoo\LaravelGeoJsonRule\GeoJsonRule;
 use GeoJson\Geometry\LineString;
-use Illuminate\Support\Str;
+// Media-Model für Bilder bei Tracks importieren
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class TrackController extends Controller
@@ -59,7 +59,7 @@ class TrackController extends Controller
             'starting_location' => $request->input('starting_location'),
             'destination_location' => $request->input('destination_location'),
             'geojson' => json_decode($request->input('geojson')),
-            'user_id' => auth()->id(),
+            'user_id' => auth()->id(), // Get User ID from the authenticated user
         ]);
 
         // Redirect to the show view of the newly created track
@@ -73,10 +73,12 @@ class TrackController extends Controller
      */
     public function show(Track $track): \Inertia\Response
     {
-        // Inertia-Response mit Übergabewert $track zurückgeben
+        // Alle Bilder des Tracks abrufen und in ein Array mit id und URL umwandeln
+        $images = $track->getMedia('images')->map(fn ($media) => ['id' => $media->id, 'url' => $media->getUrl()]);
+        // Inertia-Response mit Übergabewert $track und $images zurückgeben
         return Inertia::render('Tracks/Show', [
             'track' => $track,
-            'images' => $track->getMedia('images')->map(fn ($media) => ['id' => $media->id, 'url' => $media->getUrl()]),
+            'images' => $images,
         ]);
     }
 
@@ -87,6 +89,7 @@ class TrackController extends Controller
      */
     public function showShare(String $track_share_url): \Inertia\Response
     {
+        // Get Track by share_url
         $track = Track::where('share_url', $track_share_url)->firstOrFail();
 
         // Inertia-Response mit Übergabewert $track zurückgeben
@@ -97,15 +100,25 @@ class TrackController extends Controller
         ]);
     }
 
+    /**
+     * Bild zu einem Track hinzufügen.
+     *
+     * @param Request $request
+     * @param Track $track
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function storeImage(Request $request, Track $track): \Illuminate\Http\RedirectResponse
     {
+        // Validate the request data
         $request->validate([
             'image' => ['required', 'image']
         ]);
 
+        // Bild hochladen und zur MediaCollection 'images' hinzufügen
         $track->addMediaFromRequest('image')
             ->toMediaCollection('images');  // 'images' ist der Name der MediaCollection
 
+        // Redirect to the show view of the track
         return to_route('tracks.show', $track);
     }
 
@@ -116,8 +129,9 @@ class TrackController extends Controller
      */
     public function gpx(Track $track): \Illuminate\Http\Response
     {
-
+        // LineString aus Datenbank abrufen
         $lineString = $track->geojson;
+        // Koordinaten aus LineString extrahieren
         $coordinates = $lineString->coordinates;
 
         $current_time = date('Y-m-d\TH:i:s\Z'); // ISO 8601 format
@@ -151,6 +165,7 @@ class TrackController extends Controller
             </trk>
         </gpx>';
 
+        // DOMDocument erstellen und gpx-Datei laden
         $doc = new DOMDocument('1.0');
         $doc->loadXML($gpx);
         $doc->formatOutput = true;
@@ -163,16 +178,25 @@ class TrackController extends Controller
         ]);
     }
 
+    /**
+     * Generate and redirect to Swisstopo with the specified Track.
+     * @param  \App\Models\Track  $track
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function swisstopo(Track $track)
     {
+        // GPX-URL generieren
         $gpxUrl = route('tracks.gpx', $track);
 
+        // Base64-URL generieren
         // https://www.php.net/manual/en/function.base64-encode.php
         $gpxUrlBase64 = rtrim(strtr(base64_encode($gpxUrl), '+/', '-_'), '=');
 
+        // Swisstopo-URL generieren
         $swisstopoUrl = "https://swisstopo.app/u/";
         $swisstopoUrl .= $gpxUrlBase64;
 
+        // Redirect to Swisstopo
         return redirect($swisstopoUrl);
     }
 
@@ -213,14 +237,23 @@ class TrackController extends Controller
         return to_route('tracks.show', $track);
     }
 
+    /**
+     * Update the order of the images of the specified Track in storage.
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Track  $track
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function updateImageOrder(Request $request, Track $track): \Illuminate\Http\RedirectResponse
     {
+        // Validate the request data
         $request->validate([
             'order' => ['required', 'array']
         ]);
 
+        // Set the new order of the images
         Media::setNewOrder($request->input('order'));
 
+        // Redirect to the show view of the track
         return to_route('tracks.show', $track);
     }
 
@@ -239,6 +272,13 @@ class TrackController extends Controller
         return to_route('tracks.index');
     }
 
+    /**
+     * Tag zu einem Track hinzufügen
+     *
+     * @param Request $request
+     * @param Track $track
+     * @return void
+     */
     public function tag(Request $request, Track $track)
     {
         // Validate the request data
@@ -258,44 +298,86 @@ class TrackController extends Controller
         $track->tags()->attach($tagId);
     }
 
+    /**
+     * Bild von einem Track löschen
+     *
+     * @param Request $request
+     * @param Track $track
+     * @return void
+     */
     public function destroyImage(Request $request, Track $track, int $image): \Illuminate\Http\RedirectResponse
     {
+        // Bilder abrufen
         $images = $track->getMedia('images');
 
+        // Bild finden und löschen
         $image = $images->firstWhere('id', $image);
         $image->delete();
 
+        // Redirect to the show view of the track
         return to_route('tracks.show', $track);
     }
 
+    /**
+     * Track teilen
+     *
+     * @param Request $request
+     * @param Track $track
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function share(Request $request, Track $track): \Illuminate\Http\RedirectResponse
     {
+        // Zufälliger String für Share generieren
         $random_string = TrackController::generateRandomString(8);
+        // Überprüfen, ob der String bereits existiert oder einen neuen generieren
         while (Track::where('share_url', $random_string)->exists()) {
             $random_string = TrackController::generateRandomString(8);
         }
+
+        // String als share_url in der Datenbank speichern
         $track->share_url = $random_string;
         $track->save();
 
+        // Redirect to the show view of the track
         return to_route('tracks.show', $track);
     }
 
+    /**
+     * Track nicht mehr teilen
+     *
+     * @param Request $request
+     * @param Track $track
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function unshare(Request $request, Track $track): \Illuminate\Http\RedirectResponse
     {
+        // share_url in der Datenbank löschen
         $track->share_url = null;
         $track->save();
 
+        // Redirect to the show view of the track
         return to_route('tracks.show', $track);
     }
 
+    /**
+     * Zufälligen String generieren
+     *
+     * @param integer $length
+     * @return string
+     */
     public static function generateRandomString($length = 8)
     {
+        // Quelle: https://stackoverflow.com/a/4356295
+        // Alle möglichen Zeichen als String
         $characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $charactersLength = strlen($characters);
+        // Leeren String initialisieren
         $randomString = '';
+        // Für die Länge des Strings zufällige Zeichen auswählen
         for ($i = 0; $i < $length; $i++) {
             $randomString .= $characters[rand(0, $charactersLength - 1)];
         }
+        // Zufälligen String zurückgeben
         return $randomString;
     }
 }

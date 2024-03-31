@@ -11,11 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // Tags Pivot Tabelle erstellen
         Schema::create('tag_track', function (Blueprint $table) {
             $table->unsignedBigInteger('track_id');
             $table->unsignedBigInteger('tag_id');
+
+            // Foreign Keys setzen
             $table->foreign('track_id')->references('id')->on('tracks');
             $table->foreign('tag_id')->references('id')->on('tags');
+
+            // Zusammengesetzten Primärschlüssel setzen
             $table->primary(['tag_id', 'track_id']);
             $table->timestamps();
         });
@@ -26,6 +31,7 @@ return new class extends Migration
      */
     public function down(): void
     {
+        // Tags Pivot Tabelle löschen
         Schema::dropIfExists('tag_track');
     }
 };
