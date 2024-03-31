@@ -34,12 +34,17 @@
     tracks.forEach((track) => {
         coordinates.push(...track.geojson.coordinates);
     });
-    bounds = coordinates.reduce(
-        (bounds, coord) => {
-            return bounds.extend(coord);
-        },
-        new LngLatBounds(coordinates[0], coordinates[0]),
-    );
+
+    function createBounds(coordinates) {
+        return coordinates.reduce(
+            (bounds, coord) => {
+                return bounds.extend(coord);
+            },
+            new LngLatBounds(coordinates[0], coordinates[0]),
+        );
+    }
+
+    bounds = createBounds(coordinates);
 
     const init = () => {
         const _map = new Map({
@@ -87,13 +92,18 @@
             );
         }
 
-        _map.on("load", () => {
+        _map.on("load", async () => {
             tracks.forEach((track) => {
                 let layerName = "track_" + track.id;
                 _map.addSource(layerName, {
                     type: "geojson",
                     data: track.geojson,
+                    // maxzoom: 20,
                 });
+                // _map.addSource(layerName, {
+                //     type: "geojson",
+                //     data: track.geojson,
+                // });
                 _map.addLayer({
                     id: layerName,
                     type: "line",
@@ -106,6 +116,7 @@
                         "line-color": "#ef562f",
                         "line-width": 5,
                     },
+                    minzoom: 10,
                 });
                 if (popups) {
                     _map.on("click", layerName, (e) => {
@@ -148,7 +159,55 @@
                         //     preserveScroll: false,
                         // });
                     });
+                    _map.on("mouseenter", layerName, () => {
+                        _map.getCanvas().style.cursor = "pointer";
+                    });
+
+                    _map.on("mouseleave", layerName, () => {
+                        _map.getCanvas().style.cursor = "";
+                    });
                 }
+            });
+            let image = await map.loadImage("/logo.png");
+
+            _map.addImage("marker", image.data);
+            tracks.forEach((track) => {
+                let layerName = "track_icon_" + track.id;
+                _map.addSource(layerName, {
+                    type: "geojson",
+                    data: {
+                        type: "Point",
+                        coordinates: track.geojson.coordinates[0],
+                    },
+                });
+                _map.addLayer({
+                    id: layerName,
+                    type: "symbol",
+                    source: layerName,
+                    layout: {
+                        "icon-image": "marker",
+                        "icon-size": 0.18,
+                        "icon-anchor": "bottom",
+                    },
+                    maxzoom: 10,
+                });
+                _map.on("mouseenter", layerName, () => {
+                    _map.getCanvas().style.cursor = "pointer";
+                });
+
+                _map.on("mouseleave", layerName, () => {
+                    _map.getCanvas().style.cursor = "";
+                });
+
+                _map.on("click", layerName, (event) => {
+                    _map.fitBounds(
+                        createBounds(track.geojson.coordinates),
+                        {
+                            padding: 100,
+                            duration: 2500,
+                        },
+                    );
+                });
             });
             _map.resize();
             if (bounds != null) {
@@ -180,14 +239,22 @@
 <style lang="postcss">
     @import "maplibre-gl/dist/maplibre-gl.css";
 
+    :global(.sht-popup) {
+        max-width: none !important;
+    }
     :global(.sht-popup) :global(.maplibregl-popup-content) {
         /* @apply bg-primary-600; */
         @apply font-sans;
+        @apply rounded-lg;
+        @apply p-3;
     }
     :global(.sht-popup) :global(.maplibregl-popup-close-button) {
         /* @apply mr-3; */
         @apply w-5 h-5;
         @apply flex justify-center items-center;
         @apply text-2xl;
+        /* @apply bg-primary-600 text-white align-middle; */
+        @apply rounded-full;
+        @apply -translate-x-4 translate-y-4;
     }
 </style>
