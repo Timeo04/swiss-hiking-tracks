@@ -18,8 +18,7 @@
     >
         <!-- Page Content -->
         <main
-            class="{className} flex flex-col gap-2 p-2 max-w-4xl xl:max-w-5xl w-full"
-            scroll-region
+            class="{className} flex flex-col gap-2 p-2 max-w-4xl xl:max-w-5xl w-full overflow-hidden"
         >
             <slot />
         </main>
