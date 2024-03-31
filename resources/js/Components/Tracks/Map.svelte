@@ -239,7 +239,7 @@
 <style lang="postcss">
     @import "maplibre-gl/dist/maplibre-gl.css";
 
-    :global(.sht-popup) {
+    :global(.maplibregl-popup) {
         max-width: none !important;
     }
     :global(.sht-popup) :global(.maplibregl-popup-content) {
