@@ -12,6 +12,7 @@
 
     export let images = [];
     export let track;
+    export let shared = false;
     let image_count = images.length;
     let swiper = null;
 
@@ -69,54 +70,58 @@
         <swiper-slide class="h-[500px] relative">
             <!-- <div class="h-[500px] rounded-xl"> -->
             <img src={image.url} alt="Bild" class="w-full rounded-2xl" />
-            <button
-                on:click={setHome(image.id)}
-                disabled={i == 0}
-                class="absolute top-4 left-4 text-gray-700 text-white mix-blend-difference grayscale"
-            >
-                {#if i == 0}
-                    <HomeSolid />
-                {:else}
-                    <HomeOutline />
-                {/if}
-            </button>
-            <button
-                on:click={deleteImage(image.id)}
-                class="absolute top-4 right-4"
-            >
-                <TrashBinOutline />
-            </button>
+            {#if !shared}
+                <button
+                    on:click={setHome(image.id)}
+                    disabled={i == 0}
+                    class="absolute top-4 left-4 text-white mix-blend-difference grayscale"
+                >
+                    {#if i == 0}
+                        <HomeSolid />
+                    {:else}
+                        <HomeOutline />
+                    {/if}
+                </button>
+                <button
+                    on:click={deleteImage(image.id)}
+                    class="absolute top-4 right-4"
+                >
+                    <TrashBinOutline />
+                </button>
+            {/if}
             <!-- </div> -->
         </swiper-slide>
     {/each}
-    <swiper-slide>
-        <div
-            class="flex justify-stretch items-stretch w-full rounded-2xl bg-gray-300 h-[500px]"
-        >
-            <button
-                on:click={() => imageForm.querySelector("input").click()}
-                class="p-20 w-full h-full flex-col gap-2 flex justify-center items-center"
+    {#if !shared}
+        <swiper-slide>
+            <div
+                class="flex justify-stretch items-stretch w-full rounded-2xl bg-gray-300 h-[500px]"
             >
-                <PlusSolid size="xl" />
-                <p>Bild hinzufügen</p>
-            </button>
-        </div>
+                <button
+                    on:click={() => imageForm.querySelector("input").click()}
+                    class="p-20 w-full h-full flex-col gap-2 flex justify-center items-center"
+                >
+                    <PlusSolid size="xl" />
+                    <p>Bild hinzufügen</p>
+                </button>
+            </div>
 
-        <form
-            on:submit|preventDefault={submitImage}
-            bind:this={imageForm}
-            class="hidden"
-        >
-            <input
-                on:input={function () {
-                    // console.log(this.files[0]);
-                    imageFiles = this.files;
-                    submitImage();
-                }}
-                bind:files={imageFiles}
-                type="file"
-                accept="image/*"
-            />
-        </form>
-    </swiper-slide>
+            <form
+                on:submit|preventDefault={submitImage}
+                bind:this={imageForm}
+                class="hidden"
+            >
+                <input
+                    on:input={function () {
+                        // console.log(this.files[0]);
+                        imageFiles = this.files;
+                        submitImage();
+                    }}
+                    bind:files={imageFiles}
+                    type="file"
+                    accept="image/*"
+                />
+            </form>
+        </swiper-slide>
+    {/if}
 </Swiper>

@@ -163,7 +163,7 @@
         <!-- AddInfo Map, Safety, Weather -->
 
         <!-- <Map {track} /> -->
-        <InformationsSwiper {track} />
+        <InformationsSwiper {track} {shared} />
 
         <!-- AddInfo Images, Comments, AddCommentOrImage -->
         <!-- <Carousel {route to components} let:Indicators>
@@ -172,7 +172,7 @@
 
         <!-- Platzhalter -->
 
-        <ImageSwiper {images} {track} />
+        <ImageSwiper {images} {track} {shared} />
 
         <!-- Tags -->
         <!-- Display Tags -->
