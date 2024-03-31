@@ -47,7 +47,7 @@
                         class="text-sm {route().current('dashboard')
                             ? 'text-primary-600 dark:text-primary-500'
                             : 'text-gray-500 dark:text-gray-400'} group-hover:text-primary-600 dark:group-hover:text-primary-500"
-                        >Home</span
+                        >Karte</span
                     >
                 </button>
                 <!-- svelte-ignore missing-declaration -->
