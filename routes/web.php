@@ -46,8 +46,16 @@ Route::get('/', function () {
 
 // Dashboard zurückgeben, wenn der User eingeloggt ist
 Route::get('/dashboard', function () {
+    $tracks = auth()->user()->tracks;
+    if ($tracks != []) {
+        foreach ($tracks as &$track) {
+            // $track = [...$track, 'image' => $track->getFirstMedia('images')];
+            $image = $track->getFirstMedia('images');
+            $track['image_url'] = $image != null ? $image->getUrl() : null;
+        }
+    }
     return Inertia::render('Dashboard', [
-        'tracks' => auth()->user()->tracks,
+        'tracks' => $tracks,
     ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
