@@ -1,16 +1,5 @@
 <script>
-    import { router } from "@inertiajs/svelte";
-
-    // export let track;
-    // export let geojson = track.geojson;
-    export let tracks = [];
-    // export let track;
-    // export let geojsons = [];
-    export let imageryBaseMap = false;
-    export let interactiveMap = true;
-    export let cooperativeGestures = true;
-    export let popups = false;
-
+    // Map-Komponenten importieren
     import {
         Map,
         NavigationControl,
@@ -20,21 +9,32 @@
         LngLatBounds,
         Popup,
     } from "maplibre-gl";
-
+    // Lifecycle-Funktionen importieren
     import { onDestroy, onMount } from "svelte";
+    // Popup-Inhalt-Komponente importieren
     import MapPopupContent from "./MapPopupContent.svelte";
 
+    // Übergabewerte initialisieren
+    export let tracks = [];
+    export let imageryBaseMap = false;
+    export let interactiveMap = true;
+    export let cooperativeGestures = true;
+    export let popups = false;
+
+    // Variablen deklarieren
     let mapContainer;
     let map;
     let startPos = [8.231726, 46.798473];
     let zoomLevel = 8;
     let bounds = null;
 
+    // Koordinaten aus Tracks extrahieren, um Bounds zu erstellen
     let coordinates = [];
     tracks.forEach((track) => {
         coordinates.push(...track.geojson.coordinates);
     });
 
+    // Bounds von Koordinaten erstellen
     function createBounds(coordinates) {
         return coordinates.reduce(
             (bounds, coord) => {
@@ -43,26 +43,29 @@
             new LngLatBounds(coordinates[0], coordinates[0]),
         );
     }
+    // Bounds erstellen falls Koordinaten vorhanden
+    if (coordinates.length > 0) bounds = createBounds(coordinates);
 
-    bounds = createBounds(coordinates);
-
+    // Map initialisieren
     const init = () => {
+        // Map-Instanz erstellen
         const _map = new Map({
             container: mapContainer,
-            style: imageryBaseMap
+            style: imageryBaseMap // SwissTopo Imagery oder Standard-Karte verwenden
                 ? "https://vectortiles.geo.admin.ch/styles/ch.swisstopo.leichte-basiskarte-imagery.vt/style.json"
                 : `https://vectortiles.geo.admin.ch/styles/ch.swisstopo.basemap.vt/style.json`,
-            center: startPos,
-            zoom: zoomLevel,
-            bounds: bounds,
+            center: startPos, // Startposition (falls keine Bounds vorhanden)
+            zoom: zoomLevel, // Start-Zoom-Level (falls keine Bounds vorhanden)
+            bounds: bounds, // Start-Bounds
             fitBoundsOptions: {
-                padding: 100,
+                padding: 100, // Abstand zum Rand bei bounds
             },
-            pitchWithRotate: false,
-            touchPitch: false,
+            pitchWithRotate: false, // Pitch mit Mausrad-Scrollen deaktivieren
+            touchPitch: false, // Pitch mit zwei Fingern deaktivieren
             hash: false,
-            cooperativeGestures: interactiveMap && cooperativeGestures,
+            cooperativeGestures: interactiveMap && cooperativeGestures, // Ggf. kooperative Gesten aktivieren
             locale: {
+                // Lokalisierung für kooperative Gesten
                 "CooperativeGesturesHandler.WindowsHelpText":
                     "Mit Strg + Maus bewegen und scrollen, um die Karte zu bewegen und zoomen.",
                 "CooperativeGesturesHandler.MacHelpText":
@@ -71,8 +74,9 @@
                     "Mit zwei Fingern Karte bewegen und zoomen.",
             },
             attributionControl: false,
-            interactive: interactiveMap,
+            interactive: interactiveMap, // Ggf. Interaktivität aktivieren
         });
+        // Kontroll-Elemente hinzufügen
         if (interactiveMap) {
             _map.addControl(new NavigationControl({}), "top-right");
             _map.addControl(
@@ -92,19 +96,18 @@
             );
         }
 
+        // Tracks hinzufügen
         _map.on("load", async () => {
             tracks.forEach((track) => {
+                // Für jeden Track
                 let layerName = "track_" + track.id;
                 _map.addSource(layerName, {
+                    // GeoJSON-Quelle hinzufügen
                     type: "geojson",
                     data: track.geojson,
-                    // maxzoom: 20,
                 });
-                // _map.addSource(layerName, {
-                //     type: "geojson",
-                //     data: track.geojson,
-                // });
                 _map.addLayer({
+                    // Linien-Layer hinzufügen
                     id: layerName,
                     type: "line",
                     source: layerName,
@@ -116,23 +119,20 @@
                         "line-color": "#ef562f",
                         "line-width": 5,
                     },
-                    minzoom: 10,
+                    minzoom: 10, // Ab Zoom-Level 10 sichtbar
                 });
+                // Popup hinzufügen falls aktiviert
                 if (popups) {
                     _map.on("click", layerName, (e) => {
-                        console.log("clicked", e, track);
-                        console.log(e.lngLat);
                         let popup = new Popup()
                             .setLngLat(e.lngLat)
                             .setText("")
                             .on("open", (e) => {
-                                console.log("popup opened");
-                                // console.log(this);
-                                console.log(e.target);
                                 let popupContentElement = e.target._content;
 
                                 let anchorElement = e.target._closeButton;
 
+                                // Svelte-Komponente für Popup-Inhalt erstellen
                                 let popupContentComponent = new MapPopupContent(
                                     {
                                         target: popupContentElement,
@@ -142,38 +142,29 @@
                                         },
                                     },
                                 );
-
-                                // Document.querySelector(".maplibregl-popup-content").classList.add("sht-popup");
                             })
-                            .on("close", (e) => {
-                                console.log("popup closed");
-                                // destroy popup
-                            })
-                            .addTo(_map)
+                            .addTo(_map) // Popup hinzufügen
                             .addClassName("sht-popup");
-
-                        // popup;
-
-                        // popup
-                        // router.visit(route("tracks.show", track.id), {
-                        //     preserveScroll: false,
-                        // });
                     });
+
+                    // Cursor-Änderung bei Hover
                     _map.on("mouseenter", layerName, () => {
                         _map.getCanvas().style.cursor = "pointer";
                     });
-
                     _map.on("mouseleave", layerName, () => {
                         _map.getCanvas().style.cursor = "";
                     });
                 }
             });
-            let image = await map.loadImage("/logo.png");
 
+            // Bild für Marker laden
+            let image = await map.loadImage("/logo.png");
             _map.addImage("marker", image.data);
             tracks.forEach((track) => {
+                // Für jeden Track
                 let layerName = "track_icon_" + track.id;
                 _map.addSource(layerName, {
+                    // GeoJSON-Punkt-Quelle für Marker hinzufügen
                     type: "geojson",
                     data: {
                         type: "Point",
@@ -189,26 +180,27 @@
                         "icon-size": 0.18,
                         "icon-anchor": "bottom",
                     },
-                    maxzoom: 10,
+                    maxzoom: 10, // Bis Zoom-Level 10 sichtbar
                 });
+
+                // Cursor-Änderung bei Hover
                 _map.on("mouseenter", layerName, () => {
                     _map.getCanvas().style.cursor = "pointer";
                 });
-
                 _map.on("mouseleave", layerName, () => {
                     _map.getCanvas().style.cursor = "";
                 });
 
+                // Bei Klick auf Track-Bounds zoomen
                 _map.on("click", layerName, (event) => {
-                    _map.fitBounds(
-                        createBounds(track.geojson.coordinates),
-                        {
-                            padding: 100,
-                            duration: 2500,
-                        },
-                    );
+                    _map.fitBounds(createBounds(track.geojson.coordinates), {
+                        padding: 100,
+                        duration: 2500,
+                    });
                 });
             });
+
+            // Kartengrösse anpassen
             _map.resize();
             if (bounds != null) {
                 _map.fitBounds(bounds, {
@@ -216,44 +208,49 @@
                 });
             }
         });
+
+        // Kartengrösse anpassen
         if (bounds != null) {
             _map.fitBounds(bounds, {
                 padding: 100,
             });
         }
 
+        // Map-Instanz speichern
         map = _map;
     };
 
+    // Map initialisieren
     onMount(() => {
         init();
     });
 
+    // Map entfernen
     onDestroy(() => {
         if (map != null) map.remove();
     });
 </script>
 
+<!-- Containter für Map -->
 <div class="map w-full h-full" data-testid="map" bind:this={mapContainer} />
 
 <style lang="postcss">
+    /* Maplibre-GL-Styles importieren */
     @import "maplibre-gl/dist/maplibre-gl.css";
 
+    /* Stil für Popups anpassen */
     :global(.maplibregl-popup) {
         max-width: none !important;
     }
     :global(.sht-popup) :global(.maplibregl-popup-content) {
-        /* @apply bg-primary-600; */
         @apply font-sans;
         @apply rounded-lg;
         @apply p-3;
     }
     :global(.sht-popup) :global(.maplibregl-popup-close-button) {
-        /* @apply mr-3; */
         @apply w-5 h-5;
         @apply flex justify-center items-center;
         @apply text-2xl;
-        /* @apply bg-primary-600 text-white align-middle; */
         @apply rounded-full;
         @apply -translate-x-4 translate-y-4;
     }

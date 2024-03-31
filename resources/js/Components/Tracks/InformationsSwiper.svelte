@@ -1,8 +1,10 @@
 <script>
+    // Komponenten importieren
     import Swiper from "@/Components/Swiper.svelte";
     import Map from "./Map.svelte";
-    import { Card } from "flowbite-svelte";
     import WeatherAddInfo from "../WeatherAddInfo.svelte";
+    // UI-Komponente importieren
+    import { Card } from "flowbite-svelte";
 
     export let track;
     let swiper = null;
@@ -10,18 +12,19 @@
 
 <Swiper bind:this={swiper}>
     <swiper-slide class="h-[500px] relative rounded-2xl overflow-clip">
+        <!-- Karte -->
         <Map tracks={[track]} />
     </swiper-slide>
     <swiper-slide
         class="h-[500px] bg-gray-300 relative rounded-2xl overflow-clip"
     >
-        <!-- <h3 class="text-2xl">Wetter</h3> -->
+        <!-- Wetter -->
         <WeatherAddInfo track={track}/>
     </swiper-slide>
     <swiper-slide
         class="h-[500px] bg-gray-300 relative rounded-2xl overflow-clip flex justify-center items-center"
     >
-        <!-- <h3 class="text-2xl">Sicherheit und Notfallnummern</h3> -->
+        <!-- Notfallinformationen -->
         <Card
             class="flex flex-col gap-2 justify-center items-center w-10/12 w-max-[400px] border-red-500 bg-gray-200 p-8 text-center"
         >
