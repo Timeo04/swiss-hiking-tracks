@@ -71,6 +71,7 @@ Route::prefix('/settings')->middleware('auth')->group(function () {
 // Tracks-Resource-Route-Gruppe, die nur eingeloggten Usern zur Verfügung steht
 Route::resource('tracks', TrackController::class)->middleware('auth')->where(['track' => '[0-9]+']);
 Route::get('tracks/{track}/gpx', [TrackController::class, 'gpx'])->name('tracks.gpx')->middleware('auth');
+Route::get('tracks/{track}/swisstopo', [TrackController::class, 'swisstopo'])->name('tracks.swisstopo')->middleware('auth');
 Route::post('tracks/{track}/image', [TrackController::class, 'storeImage'])->name('tracks.storeImage')->middleware('auth');
 Route::post('tracks/{track}/image/order', [TrackController::class, 'updateImageOrder'])->name('tracks.updateImageOrder')->middleware('auth');
 Route::delete('tracks/{track}/image/{image}', [TrackController::class, 'destroyImage'])->name('tracks.destroyImage')->middleware('auth');
