@@ -163,6 +163,19 @@ class TrackController extends Controller
         ]);
     }
 
+    public function swisstopo(Track $track)
+    {
+        $gpxUrl = route('tracks.gpx', $track);
+
+        // https://www.php.net/manual/en/function.base64-encode.php
+        $gpxUrlBase64 = rtrim(strtr(base64_encode($gpxUrl), '+/', '-_'), '=');
+
+        $swisstopoUrl = "https://swisstopo.app/u/";
+        $swisstopoUrl .= $gpxUrlBase64;
+
+        return redirect($swisstopoUrl);
+    }
+
     /**
      * Show the form for editing the specified resource.
      */
@@ -244,7 +257,7 @@ class TrackController extends Controller
         echo ($name);
         $track->tags()->attach($tagId);
     }
-  
+
     public function destroyImage(Request $request, Track $track, int $image): \Illuminate\Http\RedirectResponse
     {
         $images = $track->getMedia('images');
