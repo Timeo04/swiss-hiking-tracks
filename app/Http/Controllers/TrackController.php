@@ -24,9 +24,11 @@ class TrackController extends Controller
      */
     public function index(): \Inertia\Response
     {
+        $tracks = auth()->user()->tracks;
+        $tracks->load('tags');
         // Inertia-Response mit Übergabewert tracks (alle Tracks des Users) zurückgeben
         return Inertia::render('Tracks/Index', [
-            'tracks' => auth()->user()->tracks
+            'tracks' => $tracks
         ]);
     }
 
@@ -73,9 +75,13 @@ class TrackController extends Controller
      */
     public function show(Track $track): \Inertia\Response
     {
+        //Alle Tags des Tracks abrufen 
+        $track->load('tags');
+
         // Alle Bilder des Tracks abrufen und in ein Array mit id und URL umwandeln
         $images = $track->getMedia('images')->map(fn ($media) => ['id' => $media->id, 'url' => $media->getUrl()]);
         // Inertia-Response mit Übergabewert $track und $images zurückgeben
+
         return Inertia::render('Tracks/Show', [
             'track' => $track,
             'images' => $images,
@@ -291,12 +297,30 @@ class TrackController extends Controller
         // Suche nach dem Tag in der Datenbank oder erstelle ihn, falls er nicht existiert
         $tag = Tag::firstOrCreate(['name' => $name]);
 
-        // Hier erhältst du die ID des Tags, unabhängig davon, ob er neu erstellt wurde oder nicht
+        // ID des Tags, unabhängig davon, ob er neu erstellt wurde oder nicht
         $tagId = $tag->id;
 
-        echo ($name);
         $track->tags()->attach($tagId);
+
+        // Weiterleitung zur Track-Seite
+        return to_route('tracks.show', $track);
     }
+  
+    public function untag(Request $request, Track $track)
+    {
+        // Validate the request data
+        $request->validate([
+            'id' => ['required', 'integer'],
+        ]);
+
+        $tagId = $request->input('id');
+
+        $track->tags()->detach($tagId);
+
+        // Weiterleitung zur Track-Seite
+        return to_route('tracks.show', $track);
+    }
+
 
     /**
      * Bild von einem Track löschen
