@@ -4,7 +4,7 @@
     // Event-Dispatcher importieren
     import { createEventDispatcher } from "svelte";
     // Transitions importieren
-    import { fade } from "svelte/transition";
+    import { fade, slide } from "svelte/transition";
     import { sineOut, sineIn } from "svelte/easing";
 
     // Event-Dispatcher erstellen
@@ -74,7 +74,8 @@
         </div>
 
         <div
-            class="mb-6 bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:w-full sm:mx-auto {maxWidthClass()}"
+            class="fixed bottom-0 left-0 w-full sm:relative sm:mb-6 bg-white rounded-t-lg sm:rounded-lg overflow-hidden shadow-xl transform transition-all sm:w-full sm:mx-auto {maxWidthClass()}"
+            in:slide={{ duration: 300, easing: sineOut, axis: "y" }}
         >
             <slot />
         </div>

@@ -2,13 +2,29 @@
     // UI-Komponenten importieren
     import Avatar from "@/Components/Avatar.svelte";
     import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.svelte";
-    import { Button } from "flowbite-svelte";
+    import { Button, Range } from "flowbite-svelte";
     // Icon importieren
     import { ArrowRightToBracketOutline } from "flowbite-svelte-icons";
     // Funktion für Netzwerk-Requests importieren
-    import { router } from "@inertiajs/svelte";
-    
+    import { inertia, router, useForm } from "@inertiajs/svelte";
+
     export let auth;
+    export let images;
+    // Gehgeschwindigkeit aus dem Benutzerprofil laden
+    let hiking_speed = auth.user.hiking_speed ? auth.user.hiking_speed : 4.2;
+
+    // Formular initialisieren
+    let form = useForm({
+        hiking_speed: hiking_speed,
+    });
+
+    // Funktion zum Speichern der Gehgeschwindigkeit
+    function submit() {
+        // Per POST-Request Gehgeschwindigkeit speichern
+        $form.post(route("profile.setHikingSpeed"), {
+            preserveScroll: true, // Scroll-Position beibehalten
+        });
+    }
 </script>
 
 <AuthenticatedLayout {auth}>
@@ -45,4 +61,38 @@
             Profil bearbeiten
         </Button>
     </div>
+    <div
+        class="p-4 sm:p-8 bg-white shadow sm:rounded-lg flex flex-col gap-2 justify-start items-center"
+    >
+        <h2 class="font-bold text-lg">Gehgeschwindigkeit</h2>
+        <div class="w-full flex">
+            <!-- Range-Element für die Gehgeschwindigkeit -->
+            <Range
+                on:change={submit}
+                min="3"
+                max="6"
+                step="0.1"
+                bind:value={$form.hiking_speed}
+            />
+        </div>
+        <!-- Gehgeschwindigkeit anzeigen -->
+        <p class="text-center">
+            {$form.hiking_speed} km/h
+        </p>
+    </div>
+    <h2 class="text-xl font-bold text-center">Hochgeladene Bilder</h2>
+    <div class="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 gap-2">
+        <!-- Alle hochgeladenen Bilder mit Link zu zugehörigem Track anzeigen -->
+        {#each images as image}
+            <!-- svelte-ignore missing-declaration -->
+            <a href={route("tracks.show", image.track_id)} use:inertia>
+                <img
+                    class="rounded-lg object-cover w-full aspect-square"
+                    src={image.url}
+                    alt={image.title}
+                />
+            </a>
+        {/each}
+    </div>
+    <div class="h-10"></div>
 </AuthenticatedLayout>

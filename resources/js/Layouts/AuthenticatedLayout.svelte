@@ -2,6 +2,8 @@
     // Router für Buttons importieren
     import { router } from "@inertiajs/svelte";
 
+    export let className = "";
+
     // Icons für Bottom Navigation importieren
     import {
         HomeSolid,
@@ -15,7 +17,9 @@
         class="min-h-screen bg-gray-100 flex flex-col justify-start items-center"
     >
         <!-- Page Content -->
-        <main class="flex flex-col gap-2 p-2 max-w-5xl w-full">
+        <main
+            class="{className} flex flex-col gap-2 p-2 max-w-4xl xl:max-w-5xl w-full overflow-hidden"
+        >
             <slot />
         </main>
         <!-- Add Spacer to prevent content behind navbar -->
@@ -45,7 +49,7 @@
                         class="text-sm {route().current('dashboard')
                             ? 'text-primary-600 dark:text-primary-500'
                             : 'text-gray-500 dark:text-gray-400'} group-hover:text-primary-600 dark:group-hover:text-primary-500"
-                        >Home</span
+                        >Karte</span
                     >
                 </button>
                 <!-- svelte-ignore missing-declaration -->
