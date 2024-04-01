@@ -31,9 +31,11 @@
     import ElevationChart from "@/Components/Tracks/ElevationChart.svelte";
     import ImageSwiper from "@/Components/Tracks/ImageSwiper.svelte";
     import InformationsSwiper from "@/Components/Tracks/InformationsSwiper.svelte";
+    import { Badge } from "flowbite-svelte";
     import ShareModal from "@/Pages/Tracks/Partials/ShareModal.svelte";
     import Map from "@/Components/Tracks/Map.svelte";
     import DeleteModal from "./Partials/DeleteModal.svelte";
+
 
     // Übergabewerte initialisieren
     export let track;
@@ -237,6 +239,17 @@
                     {/if}
                 </div>
             </form>
+
+            <!-- ShareButton -->
+            <div>
+                {#each track.tags as tag}
+                    <Badge dismissable large on:close={() => router.post(route("tracks.untag", {track}),{
+                        id: tag.id
+                    },{
+                        preserveScroll: true
+                    })}>{tag.name}</Badge>
+                {/each}
+            </div>
 
             <!-- DeleteButton -->
             <div
