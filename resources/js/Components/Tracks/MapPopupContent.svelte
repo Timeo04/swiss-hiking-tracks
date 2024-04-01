@@ -1,6 +1,7 @@
 <script>
     // Inertia für Navigation importieren
     import { inertia } from "@inertiajs/svelte";
+    import { Badge } from "flowbite-svelte";
 
     export let track;
 </script>
@@ -16,23 +17,33 @@
     {/if}
     <!-- Titel -->
     <h3 class="font-bold text-lg text-center">{track.title}</h3>
+    <!-- Tags der Route -->
+    <div class="flex flex-row gap-2 justify-center items-center">
+        {#if track.tags != null}
+            {#each track.tags as tag}
+                <Badge>{tag.name}</Badge>
+            {/each}
+        {/if}
+    </div>
     <!-- Start- und Zielort -->
     <div class="mb-1 w-full grid grid-cols-3">
         <p class="text-gray-500 m-auto">
             {track.starting_location != null ? track.starting_location : ""}
         </p>
         <div class="m-auto">
-            <!-- Arrow left to right -->
-            <svg
-                width="24"
-                height="24"
-                xmlns="http://www.w3.org/2000/svg"
-                fill-rule="evenodd"
-                clip-rule="evenodd"
-                ><path
-                    d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z"
-                /></svg
-            >
+            {#if track.starting_location != null || track.destination_location != null}
+                <!-- Arrow left to right -->
+                <svg
+                    width="24"
+                    height="24"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill-rule="evenodd"
+                    clip-rule="evenodd"
+                    ><path
+                        d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z"
+                    /></svg
+                >
+            {/if}
         </div>
         <p class="text-gray-500 m-auto">
             {track.destination_location != null
