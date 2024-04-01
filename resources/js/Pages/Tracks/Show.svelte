@@ -1,23 +1,25 @@
 <script>
     // Layout importieren
     import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.svelte";
+    import ShareLayout from "@/Layouts/ShareLayout.svelte";
     // UI-Komponenten importieren
     import Modal from "@/Components/Modal.svelte";
     import DangerButton from "@/Components/DangerButton.svelte";
     import SecondaryButton from "@/Components/SecondaryButton.svelte";
-    // Icon importieren
+    import PrimaryButton from "@/Components/PrimaryButton.svelte";
+    import { FloatingLabelInput } from "flowbite-svelte";
+    // Transitions importieren
+    import { sineInOut } from "svelte/easing";
+    import { fade } from "svelte/transition";
+    // Icons importieren
     import {
         AngleUpOutline,
         ArrowDownOutline,
         ArrowLeftOutline,
         ArrowUpOutline,
     } from "flowbite-svelte-icons";
-    import { router } from "@inertiajs/svelte";
-    import { FloatingLabelInput } from "flowbite-svelte";
-    import { useForm, inertia } from "@inertiajs/svelte";
-    import PrimaryButton from "@/Components/PrimaryButton.svelte";
-    import { sineInOut } from "svelte/easing";
-    import { fade } from "svelte/transition";
+    // Funktionen für Netzwerk-Requests importieren
+    import { router, useForm } from "@inertiajs/svelte";
     // Funktion zum Berechnen der Länge importieren
     import {
         calculateLength,
@@ -25,32 +27,37 @@
         calculateDescent,
         calculateHikingTime,
     } from "@/utils/geojson/linestring";
+    // Komponenten importieren
     import ElevationChart from "@/Components/Tracks/ElevationChart.svelte";
     import ImageSwiper from "@/Components/Tracks/ImageSwiper.svelte";
     import InformationsSwiper from "@/Components/Tracks/InformationsSwiper.svelte";
     import ShareModal from "@/Components/Tracks/Modals/ShareModal.svelte";
-    import ShareLayout from "@/Layouts/ShareLayout.svelte";
+    import Map from "@/Components/Tracks/Map.svelte";
 
     export let track;
     export let auth = null;
     export let images;
     export let shared = false;
-    // Formular initialisieren
+
+    // Formular für Tags initialisieren
     let form = useForm({
-        name: track.kategorie,
+        name: "",
     });
 
+    // Layout bestimmen (geteilt oder eingeloggt)
     let layout = shared ? ShareLayout : AuthenticatedLayout;
 
+    // Variablen für Modals
     let confirmTrackDeletionModal = false;
     let shareModal = false;
 
+    // Länge, Aufstieg, Abstieg und Wanderzeit berechnen
     let distance = calculateLength(track.geojson);
     let ascent = calculateAscent(track.geojson);
     let descent = calculateDescent(track.geojson);
     let hikingTime = calculateHikingTime(
         track.geojson,
-        auth != null && auth.user != null ? auth.user.hiking_speed || 4.2 : 4.2,
+        auth != null && auth.user != null ? auth.user.hiking_speed || 4.2 : 4.2, // Wandergeschwindigkeit des Benutzers oder 4.2 km/h
     );
 
     // Modal schliessen
@@ -63,6 +70,7 @@
     <title>{track.title}</title>
 </svelte:head>
 
+<!-- Layout abhängig von eingeloggt oder geteilt -->
 <svelte:component this={layout} {auth} className="px-0">
     {#if !shared}
         <!-- Go back to Index.svelte-Page -->
@@ -84,6 +92,14 @@
             src={images[0].url}
             alt={track.title}
         />
+    {:else}
+        <div class="fixed top-0 left-0 z-0 object-cover w-screen h-screen">
+            <Map
+                tracks={[track]}
+                imageryBaseMap={true}
+                interactiveMap={false}
+            />
+        </div>
     {/if}
 
     <!-- Title -->
