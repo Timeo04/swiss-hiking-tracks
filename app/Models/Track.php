@@ -4,12 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+// Relationen importieren
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+// MediaLibrary importieren
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
-use Spatie\Image\Enums\Fit;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class Track extends Model implements HasMedia
 {
@@ -62,20 +62,14 @@ class Track extends Model implements HasMedia
         return $this->belongsToMany(Tag::class);
     }
 
-    // Media Functions
-    public function registerMediaConversions(Media $media = null): void
-    {
-        // $this
-        //     ->addMediaConversion('preview')
-        //     ->fit(Fit::Contain, 200, 200)
-        //     ->nonQueued();
-    }
-
+    /**
+     * Media collections registrieren
+     *
+     * @return void
+     */
     public function registerMediaCollections(): void
     {
+        // Media Collection für Bilder erstellen
         $this->addMediaCollection('images');
-
-        $this->addMediaCollection('main_image')
-            ->singleFile();
     }
 }

@@ -1,7 +1,6 @@
 <script>
-    import { Chart, Line } from "svelte-chartjs";
-    // Funktion zum Berechnen der Länge importieren
-    import { calculateHeightPoints } from "@/utils/geojson/linestring";
+    // Importieren und registrieren der Chart-Komponenten
+    import { Line } from "svelte-chartjs";
     import {
         Chart as ChartJS,
         Title,
@@ -13,10 +12,6 @@
         CategoryScale,
         Filler,
     } from "chart.js";
-    import colors from "tailwindcss/colors";
-
-    export let track;
-
     ChartJS.register(
         Title,
         Tooltip,
@@ -27,24 +22,32 @@
         PointElement,
         CategoryScale,
     );
+    // Funktion zum Berechnen der Länge importieren
+    import { calculateHeightPoints } from "@/utils/geojson/linestring";
+    // Tailwindcss Farben importieren
+    import colors from "tailwindcss/colors";
 
+    export let track;
+
+    // ChartJS-Standard-Aussehen anpassen
     ChartJS.defaults.color = colors.gray[500];
     ChartJS.defaults.font.size = 12;
     ChartJS.defaults.font.family =
         'Kanit, ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"';
-    // ChartJS.defaults.font.weight = "lighter";
 
+    // Höhenpunkte berechnen
     let heightPoints = calculateHeightPoints(track.geojson);
     let maxHeight = Math.max(...heightPoints.map((row) => row.height));
     let minHeight = Math.min(...heightPoints.map((row) => row.height));
 
+    // Daten und Optionen für die Distanz-Höhen-Diagramm
     let distanceData = {
         datasets: [
             {
                 label: "Höhe über Meer",
                 data: heightPoints.map((row) => ({
-                    y: row.height,
-                    x: row.distance / 1000,
+                    y: row.height, // Höhe in m ü. M.
+                    x: row.distance / 1000, // Distanz in km
                 })),
                 fill: "start",
 
@@ -111,5 +114,6 @@
 </script>
 
 <div class="w-full max-h-[350px] flex justify-center items-center">
+    <!-- Diagramm -->
     <Line data={distanceData} options={distanceOptions} />
 </div>

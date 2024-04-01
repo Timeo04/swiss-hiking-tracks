@@ -11,6 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // Tags Tabelle erstellen
         Schema::create('tags', function (Blueprint $table) {
             $table->id();
             $table->string('name');
@@ -24,6 +25,7 @@ return new class extends Migration
      */
     public function down(): void
     {
+        // Tags Tabelle löschen
         Schema::dropIfExists('tags');
     }
 };

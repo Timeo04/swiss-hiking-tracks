@@ -61,30 +61,49 @@ class ProfileController extends Controller
         return Redirect::to('/');
     }
 
+    /**
+     * Display the user's settings form.
+     *
+     * @param Request $request
+     * @return void
+     */
     public function settings(Request $request)
     {
+        // Get Tracks from User
         $tracks = $request->user()->tracks;
+        // Initialize empty images array
         $images = [];
+        // Loop through each track and get the images
         foreach ($tracks as $track) {
             $media = $track->getMedia('images');
             foreach ($media as $image) {
                 array_push($images, ['id' => $image->id, 'url' => $image->getUrl(), 'track_id' => $track->id]);
             }
         }
+        // Return the Inertia view with the images
         return Inertia::render('Profile/Settings', [
             'images' => $images,
         ]);
     }
 
+    /**
+     * Set the user's hiking speed.
+     *
+     * @param Request $request
+     * @return void
+     */
     public function setHikingSpeed(Request $request)
     {
+        // Validate the inputs
         $request->validate([
             'hiking_speed' => ['required', 'numeric', 'min:0'],
         ]);
 
+        // Set the user's hiking speed
         $request->user()->hiking_speed = $request->input('hiking_speed');
         $request->user()->save();
 
+        // Return redirect to settings route
         return to_route('settings');
     }
 }

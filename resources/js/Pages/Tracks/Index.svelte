@@ -68,7 +68,7 @@
     <!-- svelte-ignore missing-declaration -->
     <button
         on:click={() => router.visit(route("tracks.create"))}
-        class="group fixed bottom-20 right-4 p-0 w-12 h-12 border-primary-600 border-[3px] rounded-full hover:bg-primary-700 active:shadow-lg mouse shadow transition ease-in duration-200 focus:outline-none"
+        class="group fixed bottom-20 right-4 p-0 w-12 h-12 border-primary-600 border-[3px] rounded-full bg-white hover:bg-primary-700 active:shadow-lg mouse shadow transition ease-in duration-200 focus:outline-none"
     >
         <!-- Plus Icon -->
         <svg

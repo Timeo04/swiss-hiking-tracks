@@ -1,23 +1,25 @@
 <script>
     // Layout importieren
     import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.svelte";
+    import ShareLayout from "@/Layouts/ShareLayout.svelte";
     // UI-Komponenten importieren
     import Modal from "@/Components/Modal.svelte";
     import DangerButton from "@/Components/DangerButton.svelte";
     import SecondaryButton from "@/Components/SecondaryButton.svelte";
-    // Icon importieren
+    import PrimaryButton from "@/Components/PrimaryButton.svelte";
+    import { FloatingLabelInput } from "flowbite-svelte";
+    // Transitions importieren
+    import { sineInOut } from "svelte/easing";
+    import { fade } from "svelte/transition";
+    // Icons importieren
     import {
         AngleUpOutline,
         ArrowDownOutline,
         ArrowLeftOutline,
         ArrowUpOutline,
     } from "flowbite-svelte-icons";
-    import { router } from "@inertiajs/svelte";
-    import { FloatingLabelInput } from "flowbite-svelte";
-    import { useForm, inertia } from "@inertiajs/svelte";
-    import PrimaryButton from "@/Components/PrimaryButton.svelte";
-    import { sineInOut } from "svelte/easing";
-    import { fade } from "svelte/transition";
+    // Funktionen für Netzwerk-Requests importieren
+    import { router, useForm } from "@inertiajs/svelte";
     // Funktion zum Berechnen der Länge importieren
     import {
         calculateLength,
@@ -25,33 +27,41 @@
         calculateDescent,
         calculateHikingTime,
     } from "@/utils/geojson/linestring";
+    // Komponenten importieren
     import ElevationChart from "@/Components/Tracks/ElevationChart.svelte";
     import ImageSwiper from "@/Components/Tracks/ImageSwiper.svelte";
     import InformationsSwiper from "@/Components/Tracks/InformationsSwiper.svelte";
-    import ShareModal from "@/Components/Tracks/Modals/ShareModal.svelte";
-    import ShareLayout from "@/Layouts/ShareLayout.svelte";
     import { Badge } from "flowbite-svelte";
+    import ShareModal from "@/Pages/Tracks/Partials/ShareModal.svelte";
+    import Map from "@/Components/Tracks/Map.svelte";
+    import DeleteModal from "./Partials/DeleteModal.svelte";
 
+
+    // Übergabewerte initialisieren
     export let track;
     export let auth = null;
     export let images;
     export let shared = false;
-    // Formular initialisieren
+
+    // Formular für Tags initialisieren
     let form = useForm({
-        name: track.kategorie,
+        name: "",
     });
 
+    // Layout bestimmen (geteilt oder eingeloggt)
     let layout = shared ? ShareLayout : AuthenticatedLayout;
 
+    // Variablen für Modals
     let confirmTrackDeletionModal = false;
     let shareModal = false;
 
+    // Länge, Aufstieg, Abstieg und Wanderzeit berechnen
     let distance = calculateLength(track.geojson);
     let ascent = calculateAscent(track.geojson);
     let descent = calculateDescent(track.geojson);
     let hikingTime = calculateHikingTime(
         track.geojson,
-        auth != null && auth.user != null ? auth.user.hiking_speed || 4.2 : 4.2,
+        auth != null && auth.user != null ? auth.user.hiking_speed || 4.2 : 4.2, // Wandergeschwindigkeit des Benutzers oder 4.2 km/h
     );
 
     // Modal schliessen
@@ -64,6 +74,7 @@
     <title>{track.title}</title>
 </svelte:head>
 
+<!-- Layout abhängig von eingeloggt oder geteilt -->
 <svelte:component this={layout} {auth} className="px-0">
     {#if !shared}
         <!-- Go back to Index.svelte-Page -->
@@ -80,11 +91,21 @@
 
     <!-- Background -->
     {#if images.length > 0}
+        <!-- Erstes Bild falls Bilder vorhanden -->
         <img
             class="fixed top-0 left-0 z-0 object-cover w-screen h-screen"
             src={images[0].url}
             alt={track.title}
         />
+    {:else}
+        <!-- Nicht interaktives Luftbild falls keine Bilder vorhanden -->
+        <div class="fixed top-0 left-0 z-0 object-cover w-screen h-screen">
+            <Map
+                tracks={[track]}
+                imageryBaseMap={true}
+                interactiveMap={false}
+            />
+        </div>
     {/if}
 
     <!-- Title -->
@@ -104,34 +125,38 @@
             </div>
             <!-- Track info, StartLocation, EndLocation, Length, estimatedDuration, HeightDifference -->
             <div class="w-full h-20 grid grid-cols-3">
-                <!-- <div class="w-full h-20 flex flex-col justify-around "> -->
-                <!-- <div class="flex justify-around "> -->
+                <!-- Startort -->
                 <p class="text-gray-500 m-auto">
                     {track.starting_location != null
                         ? track.starting_location
                         : ""}
                 </p>
+                <!-- Arrow left to right -->
                 <div class="m-auto">
-                    <svg
-                        width="24"
-                        height="24"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill-rule="evenodd"
-                        clip-rule="evenodd"
-                        ><path
-                            d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z"
-                        /></svg
-                    >
-                    <!-- Arrow left to right -->
+                    {#if track.starting_location != null || track.destination_location != null}
+                        <svg
+                            width="24"
+                            height="24"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill-rule="evenodd"
+                            clip-rule="evenodd"
+                            ><path
+                                d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z"
+                            /></svg
+                        >
+                    {/if}
                 </div>
+                <!-- Zielort -->
                 <p class="text-gray-500 m-auto">
                     {track.destination_location != null
                         ? track.destination_location
                         : ""}
                 </p>
+                <!-- Distanz -->
                 <p class="text-gray-500 m-auto">
                     {Math.round(distance / 10) / 100} km
                 </p>
+                <!-- Wanderzeit -->
                 <p class="m-auto text-gray-500">
                     {#if hikingTime < 60}
                         {Math.round(hikingTime)} min
@@ -141,6 +166,7 @@
                         )} min
                     {/if}
                 </p>
+                <!-- Höhendifferenzen -->
                 <p class="m-auto text-gray-500">
                     <span>
                         <ArrowUpOutline
@@ -158,22 +184,15 @@
         </div>
 
         <div class="w-full">
+            <!-- Höhendiagramm -->
             <ElevationChart {track} />
         </div>
 
-        <!-- AddInfo Map, Safety, Weather -->
+        <!-- Zusatzinformationen-Komponente (Karte, Wetter, Sicherheit) -->
+        <InformationsSwiper {track} {shared} />
 
-        <!-- <Map {track} /> -->
-        <InformationsSwiper {track} />
-
-        <!-- AddInfo Images, Comments, AddCommentOrImage -->
-        <!-- <Carousel {route to components} let:Indicators>
-            <Indicators />
-        </Carousel> -->
-
-        <!-- Platzhalter -->
-
-        <ImageSwiper {images} {track} />
+        <!-- Bilder-Komponente -->
+        <ImageSwiper {images} {track} {shared} />
 
         <!-- Tags -->
         <!-- Display Tags -->
@@ -200,8 +219,6 @@
                         type="text"
                         required
                         bind:value={$form.name}
-                        autofocus
-                        autocomplete="Kategorie"
                     >
                         Kategorie
                     </FloatingLabelInput>
@@ -222,6 +239,7 @@
                     {/if}
                 </div>
             </form>
+
             <!-- ShareButton -->
             <div>
                 {#each track.tags as tag}
@@ -232,10 +250,12 @@
                     })}>{tag.name}</Badge>
                 {/each}
             </div>
+
             <!-- DeleteButton -->
             <div
                 class="flex flex-col gap-2 justify-start items-stretch md:items-center"
             >
+                <!-- Delete Button -->
                 <button
                     type="button"
                     class="w-full bg-primary-700 hover:bg-primary-500 flex justify-center items-center text-black border border-red-500 bg-transparent shadow-md font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none"
@@ -244,6 +264,7 @@
                     Löschen
                 </button>
 
+                <!-- Edit Button -->
                 <!-- svelte-ignore missing-declaration -->
                 <button
                     type="button"
@@ -253,6 +274,7 @@
                     Bearbeiten
                 </button>
 
+                <!-- Share Button -->
                 <button
                     type="button"
                     class="w-full bg-primary-700 hover:bg-primary-500 flex justify-center items-center text-black border border-red-500 bg-transparent shadow-md font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none"
@@ -260,41 +282,28 @@
                 >
                     Teilen
                 </button>
+
+                <!-- Open in Swisstopo Button -->
+                <!-- svelte-ignore missing-declaration -->
+                <button
+                    type="button"
+                    class="w-full bg-primary-700 hover:bg-primary-500 flex justify-center items-center text-black border border-red-500 bg-transparent shadow-md font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none"
+                    on:click={() =>
+                        (window.location.href = route("tracks.swisstopo", {
+                            track,
+                        }))}
+                >
+                    In SwissTopo öffnen
+                </button>
             </div>
         {/if}
 
         <!-- Platzhalter -->
         <div class="w-full h-12"></div>
     </div>
+
     <!-- Delete-Modal -->
-    <Modal bind:open={confirmTrackDeletionModal} on:close={closeModal}>
-        <div class="p-6">
-            <h2 class="text-lg font-medium text-gray-900">
-                Möchten Sie die Route "{track.title}" wirklich löschen?
-            </h2>
-
-            <p class="mt-1 text-sm text-gray-600">
-                Wird die Route gelöscht, werden auch alle dazugehörigen Daten
-                dauerhaft entfernt.
-            </p>
-
-            <div class="mt-6 flex justify-end">
-                <!-- Close Modal -->
-                <SecondaryButton on:click={closeModal}
-                    >Abbrechen</SecondaryButton
-                >
-
-                <!-- Delete Track -->
-                <!-- svelte-ignore missing-declaration -->
-                <DangerButton
-                    className="ms-3"
-                    on:click={router.delete(route("tracks.destroy", { track }))}
-                >
-                    Route löschen
-                </DangerButton>
-            </div>
-        </div>
-    </Modal>
+    <DeleteModal {track} bind:open={confirmTrackDeletionModal} />
 
     <!-- Share-Modal -->
     <ShareModal {track} bind:open={shareModal} />

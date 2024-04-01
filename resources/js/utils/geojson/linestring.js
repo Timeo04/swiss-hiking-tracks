@@ -1,4 +1,10 @@
+/**
+ * LineString-Objekt validieren
+ * @param {*} geojson 
+ * @returns {Boolean}
+ */
 function validateLineString(geojson) {
+    // Falls das GeoJSON-Objekt kein LineString ist, weniger als 2 Koordinaten hat oder nicht alle Koordinaten gültig sind, wird ein Fehler erzeugt
     if (geojson.type !== 'LineString' ||
         geojson.coordinates.length < 2 ||
         !geojson.coordinates.every(coordinate => Array.isArray(coordinate) && coordinate.length >= 2)) {
@@ -30,14 +36,20 @@ function calculateDistanceBetweenCoordinates([lat1, lon1], [lat2, lon2]) {
     return R * c; // in metres
 }
 
+/**
+ * Distanzen zwischen Koordinaten in einem GeoJSON-Objekt vom Typ LineString berechnen
+ * @param {*} geojson 
+ * @returns {Array} - Distanzen zwischen Koordinaten in Metern
+ */
 function calculateDistances(geojson) {
     let distances = [];
+    // Für jede Koordinate die Distanz zum nächsten Punkt berechnen
     for (let i = 0; i < geojson.coordinates.length - 1; i++) {
         const [lon1, lat1] = geojson.coordinates[i];
         const [lon2, lat2] = geojson.coordinates[i + 1];
         distances.push(calculateDistanceBetweenCoordinates([lat1, lon1], [lat2, lon2]));
     }
-    console.log(distances);
+    // Distanzen-Array zurückgeben
     return distances;
 }
 
@@ -47,11 +59,11 @@ function calculateDistances(geojson) {
  * @returns {Number} - Die kürzeste Entfernung zwischen zwei Koordinaten in Metern
  */
 export function getMinDistance(geojson) {
+    // LineString validieren
     validateLineString(geojson);
+    // Distanzen zwischen Koordinaten berechnen
     const distances = calculateDistances(geojson);
-    console.log("Min distance: ", Math.min(...distances), "meters");
-    console.log("Max distance: ", Math.max(...distances), "meters");
-    console.log("Average distance: ", distances.reduce((a, b) => a + b, 0) / distances.length, "meters");
+    // Kleinste Distanz zurückgeben
     return Math.min(...distances);
 }
 
@@ -61,68 +73,86 @@ export function getMinDistance(geojson) {
  * @returns {Number} - Die Gesamtlänge des LineStrings in Metern
  */
 export function calculateLength(geojson) {
+    // LineString validieren
     validateLineString(geojson);
+    // Distanzen zwischen Koordinaten berechnen
     const distances = calculateDistances(geojson);
+    // Alle Distanzen addieren und zurückgeben
     return distances.reduce((a, b) => a + b, 0);
 }
 
+
 export function calculateHeightPoints(geojson) {
+    // Linestring validieren
     validateLineString(geojson);
+    // Distanzen zwischen Koordinaten berechnen
     const distances = calculateDistances(geojson);
+    // Ersten Höhenpunkt hinzufügen
     let heightPoints = [{ distance: 0, height: geojson.coordinates[0][2] }];
     distances.forEach((distance, index) => {
+        // Höhenpunkt hinzufügen
         heightPoints.push({ distance: distance + heightPoints[index].distance, height: geojson.coordinates[index + 1][2] });
     });
-    console.log(heightPoints);
+    // Höhenpunkte zurückgeben
     return heightPoints;
 }
 
+/**
+ * Anstieg in Metern berechnen
+ * @param {*} geojson 
+ * @returns {Number} - Anstieg in Metern
+ */
 export function calculateAscent(geojson) {
+    // Höhenpunkte berechnen
     const heightPoints = calculateHeightPoints(geojson);
+    // Anstieg berechnen
     let ascent = 0;
     for (let i = 0; i < heightPoints.length - 1; i++) {
+        // Anstieg zwischen zwei Punkten berechnen und addieren
         if (heightPoints[i].height < heightPoints[i + 1].height) {
             ascent += heightPoints[i + 1].height - heightPoints[i].height;
         }
     }
+    // Anstieg in Metern zurückgeben
     return ascent;
 }
 
+/**
+ * Abstieg in Metern berechnen
+ * @param {*} geojson 
+ * @returns {Number} - Abstieg in Metern
+ */
 export function calculateDescent(geojson) {
+    // Höhenpunkte berechnen
     const heightPoints = calculateHeightPoints(geojson);
+    // Abstieg berechnen
     let descent = 0;
     for (let i = 0; i < heightPoints.length - 1; i++) {
+        // Abstieg zwischen zwei Punkten berechnen und addieren
         if (heightPoints[i].height > heightPoints[i + 1].height) {
             descent += heightPoints[i].height - heightPoints[i + 1].height;
         }
     }
+    // Abstieg in Metern zurückgeben
     return descent;
 }
 
+/**
+ * Wanderzeit in Minuten berechnen
+ * @param {*} geojson 
+ * @param {Number} speed 
+ * @returns {Number} - Wanderzeit in Minuten
+ */
 export function calculateHikingTime(geojson, speed = 4.2) {
+    // Länge, Aufstieg und Abstieg berechnen
     const length = calculateLength(geojson);
     const ascent = calculateAscent(geojson);
     const descent = calculateDescent(geojson);
 
-    // https://www.wanderwege-infrastruktur.ch/de/downloads/hilfsmittel-signalisation
-    // const c0 = 14.271;
-    // const c1 = 0.36992;
-    // const c2 = 0.025922;
-    // const c3 = -0.0014384;
-    // const c4 = 0.000032105;
-    // const c5 = 0.0000081542;
-    // const c6 = -0.000000090261;
-    // const c7 = -0.000000020757;
-    // const c8 = 0.00000000010192;
-    // const c9 = 0.000000000028588;
-    // const c10 = -0.000000000000057466;
-    // const c11 = -0.000000000000021842;
-    // const c12 = 1.5176E-17;
-    // const c13 = 8.6894E-18;
-    // const c14 = -1.3584E-21;
-    // const c15 = -1.4026E-21;
-
+    // Leistungskilometer berechnen
     let lkm = (length / 1000) + (ascent / 100) + (descent / 200);
+    // Wanderzeit berechnen
     let t = lkm / speed;
+    // Wanderzeit in Minuten zurückgeben
     return t * 60;
-}
+} 5

@@ -4,10 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+// Tag model importieren, um auf die Datenbank zugreifen zu können
 use App\Models\Tag;
-use DOMDocument;
-// Inertia importieren
-use Inertia\Inertia;
 
 class TagController extends Controller
 {

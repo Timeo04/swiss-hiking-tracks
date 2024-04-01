@@ -11,8 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // Users Tabelle anpassen
         Schema::table('users', function (Blueprint $table) {
             $table->after('email', function ($table) {
+                // Spalte hiking_speed hinzufügen
                 $table->float('hiking_speed')->default(4.2);
             });
         });
@@ -23,7 +25,9 @@ return new class extends Migration
      */
     public function down(): void
     {
+        // Users Tabelle anpassen
         Schema::table('users', function (Blueprint $table) {
+            // Spalte hiking_speed entfernen
             $table->dropColumn('hiking_speed');
         });
     }
