@@ -46,6 +46,7 @@
     // Bounds erstellen falls Koordinaten vorhanden
     if (coordinates.length > 0) bounds = createBounds(coordinates);
 
+    // Add Popup to Map at given coordinates
     function addPopup(map, track, lngLat) {
         new Popup()
             .setLngLat(lngLat)
