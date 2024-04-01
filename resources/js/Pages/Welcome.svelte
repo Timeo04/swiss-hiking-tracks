@@ -1,17 +1,18 @@
 <script>
     // Layout importieren
-    import ApplicationLogo from "@/Components/ApplicationLogo.svelte";
-    import PrimaryButton from "@/Components/PrimaryButton.svelte";
     import GuestLayout from "@/Layouts/GuestLayout.svelte";
+    // UI-Komponenten importieren
+    import PrimaryButton from "@/Components/PrimaryButton.svelte";
+    // Funktionen für Netzwerk-Requests importieren
     import { inertia, router } from "@inertiajs/svelte";
-    import { Button } from "flowbite-svelte";
 
     const route = window.route;
+    // Übergabewerte initialisieren
     export let canLogin;
     export let canRegister;
     export let auth;
     export let errors;
-    console.log(errors);
+    console.error(errors);
     export let laravelVersion;
     export let phpVersion;
 </script>
@@ -20,8 +21,10 @@
     <title>Willkommen</title>
 </svelte:head>
 
+<!-- Links oben rechts anzeigen -->
 <div class="fixed top-0 right-0 p-6 text-end">
     {#if auth.user != null}
+        <!-- Falls der User eingeloggt ist -->
         <a
             use:inertia
             href={route("dashboard")}
@@ -29,6 +32,7 @@
             >Dashboard</a
         >
     {:else}
+        <!-- Falls der User noch nicht eingeloggt ist -->
         {#if canLogin}
             <a
                 use:inertia
@@ -65,6 +69,7 @@
             </p>
         </div>
 
+        <!-- Buttons mit Aktionen anzeigen -->
         {#if auth.user != null}
             <PrimaryButton
                 className="mt-4 justify-center w-full"
@@ -95,7 +100,7 @@
             <div
                 class="w-full text-center text-sm text-gray-500 dark:text-gray-400"
             >
-                Laravel v{laravelVersion} (PHP v{phpVersion})
+                Laravel v{laravelVersion} (PHP v{phpVersion}) <!-- Laravel- und PHP-Version anzeigen -->
             </div>
         </div>
     </div>
