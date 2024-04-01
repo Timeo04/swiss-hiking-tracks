@@ -8,6 +8,7 @@
     export let auth;
     export let tracks;
 
+    // Get all Tags used in tracks
     let allTags = [];
     tracks.forEach((track) => {
         allTags.push(...track.tags);
@@ -15,6 +16,9 @@
     let allTagsUnique = allTags.filter(function (tag, index) {
         return allTags.findIndex((v) => v.id == tag.id) == index;
     });
+
+    // Variable to store the active Tag
+    let activeTagId = null;
 </script>
 
 <svelte:head>
@@ -23,44 +27,67 @@
 
 <AuthenticatedLayout {auth}>
     <h1 class="py-10 text-2xl font-semibold text-center">Routen</h1>
-    {#each allTagsUnique as tag}
-        <Badge>{tag.name}</Badge>
-    {/each}
+    <div class="flex flex-row gap-2 align-center justify-center">
+        <!-- Show all Tags -->
+        {#each allTagsUnique as tag}
+            <button
+                on:click={() => {
+                    if (activeTagId == tag.id) {
+                        activeTagId = null;
+                        return;
+                    }
+                    activeTagId = tag.id;
+                }}
+                class="cursor-pointer"
+            >
+                <Badge border={activeTagId==tag.id}>{tag.name}</Badge>
+            </button>
+        {/each}
+    </div>
     {#if tracks == null || tracks.length === 0}
         <p class="text-center">Keine Routen vorhanden</p>
     {:else}
         <div class="flex flex-col gap-2 p-2">
             <!-- Show all Tracks -->
             {#each tracks as track}
-                <div
-                    class="flex items-center justify-between p-4 gap-2 bg-white rounded-lg shadow-md"
-                >
-                    <div class="flex items-center">
-                        <div class="ml-4">
-                            <h2 class="text-xl font-semibold">{track.title}</h2>
-                            <!-- Show Start- and Destination-Location if defined -->
-                            <p class="text-gray-500">
-                                {track.starting_location != null
-                                    ? track.starting_location + " - "
-                                    : ""}{track.destination_location != null
-                                    ? track.destination_location
-                                    : ""}
-                            </p>
-                            <div>
-                                {#each track.tags as tag}
-                                    <Badge>{tag.name}</Badge>
-                                {/each}
+                {#if activeTagId == null || track.tags.find((tag) => tag.id == activeTagId) != null}
+                    <div
+                        class="flex items-center justify-between p-4 gap-2 bg-white rounded-lg shadow-md"
+                    >
+                        <div class="flex items-center">
+                            <div class="ml-4">
+                                <h2 class="text-xl font-semibold">
+                                    {track.title}
+                                </h2>
+                                <!-- Show Start- and Destination-Location if defined -->
+                                <p class="text-gray-500">
+                                    {track.starting_location != null
+                                        ? track.starting_location + " - "
+                                        : ""}{track.destination_location != null
+                                        ? track.destination_location
+                                        : ""}
+                                </p>
+                                <div
+                                    class="flex flex-row gap-2 items-center justify-start"
+                                >
+                                    <!-- Show Tags -->
+                                    {#each track.tags as tag}
+                                        <Badge>{tag.name}</Badge>
+                                    {/each}
+                                </div>
                             </div>
                         </div>
+                        <!-- svelte-ignore missing-declaration -->
+                        <button
+                            use:inertia={{
+                                href: route("tracks.show", { track }),
+                            }}
+                            class="px-4 py-2 text-white bg-primary-600 rounded-lg"
+                        >
+                            Öffnen
+                        </button>
                     </div>
-                    <!-- svelte-ignore missing-declaration -->
-                    <button
-                        use:inertia={{ href: route("tracks.show", { track }) }}
-                        class="px-4 py-2 text-white bg-primary-600 rounded-lg"
-                    >
-                        Öffnen
-                    </button>
-                </div>
+                {/if}
             {/each}
         </div>
     {/if}
