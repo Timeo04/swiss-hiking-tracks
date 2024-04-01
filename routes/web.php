@@ -11,9 +11,9 @@
 * - https://tailwindcss.com/docs
 * 
 * Grobe Aufteilung des Codes:
-* - Cedric: Authentifizierung, Profil/Settings, Geo-Daten-Verarbeitung, Datenbank
-* - Lea: Grundlegende Operationen (CRUD, insb. bearbeiten, löschen) für Tracks
-* - Yannis: Layout, Detail-Seite, Design, Kartenausschnitte
+* - Cedric: Authentifizierung, Profil/Settings, Geo-Daten-Verarbeitung, Datenbank, Bilder für Tracks, PopUps bei Karte
+* - Lea: Grundlegende Operationen (CRUD, insb. bearbeiten, löschen) für Tracks, Tags hinzufügen und löschen
+* - Yannis: Layout, Detail-Seite, Design, Kartenausschnitte, Wetter anzeigen
 */
 
 use App\Http\Controllers\ProfileController;
