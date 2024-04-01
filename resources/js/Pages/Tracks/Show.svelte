@@ -122,11 +122,13 @@
             </div>
             <!-- Track info, StartLocation, EndLocation, Length, estimatedDuration, HeightDifference -->
             <div class="w-full h-20 grid grid-cols-3">
+                <!-- Startort -->
                 <p class="text-gray-500 m-auto">
                     {track.starting_location != null
                         ? track.starting_location
                         : ""}
                 </p>
+                <!-- Arrow left to right -->
                 <div class="m-auto">
                     {#if track.starting_location != null || track.destination_location != null}
                         <svg
@@ -140,16 +142,18 @@
                             /></svg
                         >
                     {/if}
-                    <!-- Arrow left to right -->
                 </div>
+                <!-- Zielort -->
                 <p class="text-gray-500 m-auto">
                     {track.destination_location != null
                         ? track.destination_location
                         : ""}
                 </p>
+                <!-- Distanz -->
                 <p class="text-gray-500 m-auto">
                     {Math.round(distance / 10) / 100} km
                 </p>
+                <!-- Wanderzeit -->
                 <p class="m-auto text-gray-500">
                     {#if hikingTime < 60}
                         {Math.round(hikingTime)} min
@@ -159,6 +163,7 @@
                         )} min
                     {/if}
                 </p>
+                <!-- Höhendifferenzen -->
                 <p class="m-auto text-gray-500">
                     <span>
                         <ArrowUpOutline
@@ -176,21 +181,14 @@
         </div>
 
         <div class="w-full">
+            <!-- Höhendiagramm -->
             <ElevationChart {track} />
         </div>
 
-        <!-- AddInfo Map, Safety, Weather -->
-
-        <!-- <Map {track} /> -->
+        <!-- Zusatzinformationen-Komponente (Karte, Wetter, Sicherheit) -->
         <InformationsSwiper {track} {shared} />
 
-        <!-- AddInfo Images, Comments, AddCommentOrImage -->
-        <!-- <Carousel {route to components} let:Indicators>
-            <Indicators />
-        </Carousel> -->
-
-        <!-- Platzhalter -->
-
+        <!-- Bilder-Komponente -->
         <ImageSwiper {images} {track} {shared} />
 
         <!-- Tags -->
@@ -238,12 +236,12 @@
                     {/if}
                 </div>
             </form>
-            <!-- ShareButton -->
 
             <!-- DeleteButton -->
             <div
                 class="flex flex-col gap-2 justify-start items-stretch md:items-center"
             >
+                <!-- Delete Button -->
                 <button
                     type="button"
                     class="w-full bg-primary-700 hover:bg-primary-500 flex justify-center items-center text-black border border-red-500 bg-transparent shadow-md font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none"
@@ -252,6 +250,7 @@
                     Löschen
                 </button>
 
+                <!-- Edit Button -->
                 <!-- svelte-ignore missing-declaration -->
                 <button
                     type="button"
@@ -261,6 +260,7 @@
                     Bearbeiten
                 </button>
 
+                <!-- Share Button -->
                 <button
                     type="button"
                     class="w-full bg-primary-700 hover:bg-primary-500 flex justify-center items-center text-black border border-red-500 bg-transparent shadow-md font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none"
@@ -269,6 +269,7 @@
                     Teilen
                 </button>
 
+                <!-- Open in Swisstopo Button -->
                 <!-- svelte-ignore missing-declaration -->
                 <button
                     type="button"
