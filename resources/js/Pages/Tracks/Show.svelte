@@ -34,6 +34,7 @@
     import ShareModal from "@/Components/Tracks/Modals/ShareModal.svelte";
     import Map from "@/Components/Tracks/Map.svelte";
 
+    // Übergabewerte initialisieren
     export let track;
     export let auth = null;
     export let images;
@@ -87,12 +88,14 @@
 
     <!-- Background -->
     {#if images.length > 0}
+        <!-- Erstes Bild falls Bilder vorhanden -->
         <img
             class="fixed top-0 left-0 z-0 object-cover w-screen h-screen"
             src={images[0].url}
             alt={track.title}
         />
     {:else}
+        <!-- Nicht interaktives Luftbild falls keine Bilder vorhanden -->
         <div class="fixed top-0 left-0 z-0 object-cover w-screen h-screen">
             <Map
                 tracks={[track]}
@@ -119,24 +122,24 @@
             </div>
             <!-- Track info, StartLocation, EndLocation, Length, estimatedDuration, HeightDifference -->
             <div class="w-full h-20 grid grid-cols-3">
-                <!-- <div class="w-full h-20 flex flex-col justify-around "> -->
-                <!-- <div class="flex justify-around "> -->
                 <p class="text-gray-500 m-auto">
                     {track.starting_location != null
                         ? track.starting_location
                         : ""}
                 </p>
                 <div class="m-auto">
-                    <svg
-                        width="24"
-                        height="24"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill-rule="evenodd"
-                        clip-rule="evenodd"
-                        ><path
-                            d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z"
-                        /></svg
-                    >
+                    {#if track.starting_location != null || track.destination_location != null}
+                        <svg
+                            width="24"
+                            height="24"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill-rule="evenodd"
+                            clip-rule="evenodd"
+                            ><path
+                                d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z"
+                            /></svg
+                        >
+                    {/if}
                     <!-- Arrow left to right -->
                 </div>
                 <p class="text-gray-500 m-auto">
