@@ -215,8 +215,6 @@
                         type="text"
                         required
                         bind:value={$form.name}
-                        autofocus
-                        autocomplete="Kategorie"
                     >
                         Kategorie
                     </FloatingLabelInput>
