@@ -2,7 +2,7 @@
     // Komponenten importieren
     import Swiper from "@/Components/Swiper.svelte";
     import Map from "./Map.svelte";
-    import WeatherAddInfo from "../WeatherAddInfo.svelte";
+    import WeatherAddInfo from "./WeatherAddInfo.svelte";
     // UI-Komponente importieren
     import { Card } from "flowbite-svelte";
 
