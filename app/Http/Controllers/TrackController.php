@@ -24,9 +24,11 @@ class TrackController extends Controller
      */
     public function index(): \Inertia\Response
     {
+        $tracks = auth()->user()->tracks;
+        $tracks->load('tags');
         // Inertia-Response mit Übergabewert tracks (alle Tracks des Users) zurückgeben
         return Inertia::render('Tracks/Index', [
-            'tracks' => auth()->user()->tracks
+            'tracks' => $tracks
         ]);
     }
 
@@ -73,6 +75,7 @@ class TrackController extends Controller
      */
     public function show(Track $track): \Inertia\Response
     {
+        $track->load('tags');
         // Inertia-Response mit Übergabewert $track zurückgeben
         return Inertia::render('Tracks/Show', [
             'track' => $track,
@@ -247,6 +250,21 @@ class TrackController extends Controller
         return to_route('tracks.show', $track);
     }
   
+    public function untag(Request $request, Track $track)
+    {
+        // Validate the request data
+        $request->validate([
+            'id' => ['required', 'integer'],
+        ]);
+
+        $tagId = $request->input('id');
+
+        $track->tags()->detach($tagId);
+
+        // Weiterleitung zur Track-Seite
+        return to_route('tracks.show', $track);
+    }
+
     public function destroyImage(Request $request, Track $track, int $image): \Illuminate\Http\RedirectResponse
     {
         $images = $track->getMedia('images');

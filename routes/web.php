@@ -77,4 +77,7 @@ Route::resource('tags', TagController::class)->middleware('auth');
 //Route-Gruppe Verbindung Tags mit Tracks, die nur eingeloggten Usern zur Verfügung steht
 Route::post('tracks/{track}/tag', [TrackController::class, 'tag'])->name('tracks.tag')->middleware('auth');
 
+//Route-Gruppe Verbindung Tags mit Tracks aufheben, die nur eingeloggten Usern zur Verfügung steht
+Route::post('tracks/{track}/untag', [TrackController::class, 'untag'])->name('tracks.untag')->middleware('auth');
+
 require __DIR__ . '/auth.php';

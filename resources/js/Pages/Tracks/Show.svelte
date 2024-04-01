@@ -30,6 +30,7 @@
     import InformationsSwiper from "@/Components/Tracks/InformationsSwiper.svelte";
     import ShareModal from "@/Components/Tracks/Modals/ShareModal.svelte";
     import ShareLayout from "@/Layouts/ShareLayout.svelte";
+    import { Badge } from "flowbite-svelte";
 
     export let track;
     export let auth = null;
@@ -222,7 +223,15 @@
                 </div>
             </form>
             <!-- ShareButton -->
-
+            <div>
+                {#each track.tags as tag}
+                    <Badge dismissable large on:close={() => router.post(route("tracks.untag", {track}),{
+                        id: tag.id
+                    },{
+                        preserveScroll: true
+                    })}>{tag.name}</Badge>
+                {/each}
+            </div>
             <!-- DeleteButton -->
             <div
                 class="flex flex-col gap-2 justify-start items-stretch md:items-center"

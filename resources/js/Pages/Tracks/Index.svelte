@@ -3,6 +3,7 @@
     import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.svelte";
     // Funktionen für Netzwerk-Requests importieren
     import { router, inertia } from "@inertiajs/svelte";
+    import { Badge } from "flowbite-svelte";
     
     export let auth;
     export let tracks;
@@ -13,7 +14,7 @@
 </svelte:head>
 
 <AuthenticatedLayout {auth}>
-    <h1 class="py-10 text-2xl font-semibold text-center">Wanderungen</h1>
+    <h1 class="py-10 text-2xl font-semibold text-center">Routen</h1>
     {#if tracks == null || tracks.length === 0}
         <p class="text-center">Keine Routen vorhanden</p>
     {:else}
@@ -34,6 +35,11 @@
                                     ? track.destination_location
                                     : ""}
                             </p>
+                            <div>
+                                {#each track.tags as tag}
+                                    <Badge>{tag.name}</Badge>
+                                {/each}
+                            </div>
                         </div>
                     </div>
                     <!-- svelte-ignore missing-declaration -->
