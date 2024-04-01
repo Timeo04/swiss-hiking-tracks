@@ -4,9 +4,17 @@
     // Funktionen für Netzwerk-Requests importieren
     import { router, inertia } from "@inertiajs/svelte";
     import { Badge } from "flowbite-svelte";
-    
+
     export let auth;
     export let tracks;
+
+    let allTags = [];
+    tracks.forEach((track) => {
+        allTags.push(...track.tags);
+    });
+    let allTagsUnique = allTags.filter(function (tag, index) {
+        return allTags.findIndex((v) => v.id == tag.id) == index;
+    });
 </script>
 
 <svelte:head>
@@ -15,6 +23,9 @@
 
 <AuthenticatedLayout {auth}>
     <h1 class="py-10 text-2xl font-semibold text-center">Routen</h1>
+    {#each allTagsUnique as tag}
+        <Badge>{tag.name}</Badge>
+    {/each}
     {#if tracks == null || tracks.length === 0}
         <p class="text-center">Keine Routen vorhanden</p>
     {:else}
