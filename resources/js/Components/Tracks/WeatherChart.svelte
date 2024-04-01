@@ -1,5 +1,6 @@
 <script>
-    import { Chart, Line, Bar } from "svelte-chartjs";
+    // Chart-Komponenten importieren und registrieren
+    import { Bar } from "svelte-chartjs";
     import {
         Chart as ChartJS,
         Title,
@@ -12,25 +13,6 @@
         CategoryScale,
         Filler,
     } from "chart.js";
-
-    export let foreCastData;
-    export let currentTime;
-    
-    let time = [];
-    const timePattern = /\d{2}:\d{2}/;
-
-    currentTime = currentTime.match(timePattern)[0];
-
-    foreCastData.minutely_15.time.forEach((times) => {
-        time.push(times.match(timePattern)[0]);
-    });
-
-    let foreCastTemp = [];
-    foreCastTemp = foreCastData.minutely_15.temperature_2m;
-
-    let foreCastPrecipitation = [];
-    foreCastPrecipitation = foreCastData.minutely_15.precipitation;
-
     ChartJS.register(
         Title,
         Tooltip,
@@ -43,6 +25,27 @@
         CategoryScale,
     );
 
+    // Übergabewerte initialisieren
+    export let foreCastData;
+    export let currentTime;
+
+    // Aktuelle Zeit auslesen
+    let time = [];
+    const timePattern = /\d{2}:\d{2}/;
+    currentTime = currentTime.match(timePattern)[0];
+
+    // Zeitpunkte auslesen
+    foreCastData.minutely_15.time.forEach((times) => {
+        time.push(times.match(timePattern)[0]);
+    });
+
+    // Werte für Temperatur und Niederschlag auslesen
+    let foreCastTemp = [];
+    foreCastTemp = foreCastData.minutely_15.temperature_2m;
+    let foreCastPrecipitation = [];
+    foreCastPrecipitation = foreCastData.minutely_15.precipitation;
+
+    // Daten für das Diagramm vorbereiten
     let forecastData = {
         labels: time,
         datasets: [
@@ -50,7 +53,7 @@
                 type: "line",
                 label: "Temperatur (C°)",
                 data: foreCastTemp,
-                borderColor: "#EF562F",                
+                borderColor: "#EF562F",
                 yAxisID: "y1",
             },
             {
@@ -63,6 +66,7 @@
             },
         ],
     };
+    // Optionen für das Diagramm festlegen
     const forecastOptions = {
         plugins: {
             legend: {
@@ -87,7 +91,7 @@
                 },
                 ticks: {
                     callback: (value) => time[value],
-                },  
+                },
             },
             y1: {
                 title: {
@@ -125,5 +129,6 @@
 </script>
 
 <div class="w-full h-full max-h-[400px] flex justify-center items-center">
+    <!-- Graph anzeigen -->
     <Bar data={forecastData} options={forecastOptions} />
 </div>
