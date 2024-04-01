@@ -98,7 +98,7 @@ class TrackController extends Controller
         // Get Track by share_url
         $track = Track::where('share_url', $track_share_url)->firstOrFail();
 
-        // Alle Tags des Tracks abrufen
+        // Alle Tags der Tracks abrufen
         $track->load('tags');
 
         // Inertia-Response mit Übergabewert $track zurückgeben
