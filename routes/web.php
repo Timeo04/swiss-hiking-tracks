@@ -2,7 +2,7 @@
 
 /*
 * Projektname: SwissHikingTracks
-* Datum: 13.03.2024
+* Datum: 01.04.2024
 * Autor*innen: Lea Geissmann, Yannis Bontempi, Cedric Bolleter
 * Hauptquellen:
 * - https://laravel.com/docs/
@@ -12,7 +12,7 @@
 * 
 * Grobe Aufteilung des Codes:
 * - Cedric: Authentifizierung, Profil/Settings, Geo-Daten-Verarbeitung, Datenbank, Bilder für Tracks, PopUps bei Karte
-* - Lea: Grundlegende Operationen (CRUD, insb. bearbeiten, löschen) für Tracks, Tags hinzufügen und löschen
+* - Lea: Grundlegende Operationen (CRUD, insb. bearbeiten, löschen) für Tracks, Tags hinzufügen, anzeigen und löschen
 * - Yannis: Layout, Detail-Seite, Design, Kartenausschnitte, Wetter anzeigen
 */
 
