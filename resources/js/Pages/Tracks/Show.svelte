@@ -31,8 +31,9 @@
     import ElevationChart from "@/Components/Tracks/ElevationChart.svelte";
     import ImageSwiper from "@/Components/Tracks/ImageSwiper.svelte";
     import InformationsSwiper from "@/Components/Tracks/InformationsSwiper.svelte";
-    import ShareModal from "@/Components/Tracks/Modals/ShareModal.svelte";
+    import ShareModal from "@/Pages/Tracks/Partials/ShareModal.svelte";
     import Map from "@/Components/Tracks/Map.svelte";
+    import DeleteModal from "./Partials/DeleteModal.svelte";
 
     // Übergabewerte initialisieren
     export let track;
@@ -287,35 +288,9 @@
         <!-- Platzhalter -->
         <div class="w-full h-12"></div>
     </div>
+
     <!-- Delete-Modal -->
-    <Modal bind:open={confirmTrackDeletionModal} on:close={closeModal}>
-        <div class="p-6">
-            <h2 class="text-lg font-medium text-gray-900">
-                Möchten Sie die Route "{track.title}" wirklich löschen?
-            </h2>
-
-            <p class="mt-1 text-sm text-gray-600">
-                Wird die Route gelöscht, werden auch alle dazugehörigen Daten
-                dauerhaft entfernt.
-            </p>
-
-            <div class="mt-6 flex justify-end">
-                <!-- Close Modal -->
-                <SecondaryButton on:click={closeModal}
-                    >Abbrechen</SecondaryButton
-                >
-
-                <!-- Delete Track -->
-                <!-- svelte-ignore missing-declaration -->
-                <DangerButton
-                    className="ms-3"
-                    on:click={router.delete(route("tracks.destroy", { track }))}
-                >
-                    Route löschen
-                </DangerButton>
-            </div>
-        </div>
-    </Modal>
+    <DeleteModal {track} bind:open={confirmTrackDeletionModal} />
 
     <!-- Share-Modal -->
     <ShareModal {track} bind:open={shareModal} />
