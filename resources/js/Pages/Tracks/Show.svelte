@@ -3,11 +3,8 @@
     import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.svelte";
     import ShareLayout from "@/Layouts/ShareLayout.svelte";
     // UI-Komponenten importieren
-    import Modal from "@/Components/Modal.svelte";
-    import DangerButton from "@/Components/DangerButton.svelte";
-    import SecondaryButton from "@/Components/SecondaryButton.svelte";
     import PrimaryButton from "@/Components/PrimaryButton.svelte";
-    import { FloatingLabelInput } from "flowbite-svelte";
+    import { FloatingLabelInput, Badge } from "flowbite-svelte";
     // Transitions importieren
     import { sineInOut } from "svelte/easing";
     import { fade } from "svelte/transition";
@@ -31,11 +28,9 @@
     import ElevationChart from "@/Components/Tracks/ElevationChart.svelte";
     import ImageSwiper from "@/Components/Tracks/ImageSwiper.svelte";
     import InformationsSwiper from "@/Components/Tracks/InformationsSwiper.svelte";
-    import { Badge } from "flowbite-svelte";
     import ShareModal from "@/Pages/Tracks/Partials/ShareModal.svelte";
     import Map from "@/Components/Tracks/Map.svelte";
     import DeleteModal from "./Partials/DeleteModal.svelte";
-
 
     // Übergabewerte initialisieren
     export let track;
@@ -63,11 +58,6 @@
         track.geojson,
         auth != null && auth.user != null ? auth.user.hiking_speed || 4.2 : 4.2, // Wandergeschwindigkeit des Benutzers oder 4.2 km/h
     );
-
-    // Modal schliessen
-    function closeModal() {
-        confirmTrackDeletionModal = false;
-    }
 </script>
 
 <svelte:head>
@@ -195,7 +185,26 @@
         <ImageSwiper {images} {track} {shared} />
 
         <!-- Tags -->
-        <!-- Display Tags -->
+        <div
+            class="flex flex-row items-center justify-start self-stretch gap-2"
+        >
+            {#each track.tags as tag}
+                <!-- svelte-ignore missing-declaration -->
+                <Badge
+                    dismissable={!shared}
+                    on:close={() =>
+                        router.post(
+                            route("tracks.untag", { track }),
+                            {
+                                id: tag.id,
+                            },
+                            {
+                                preserveScroll: true,
+                            },
+                        )}>{tag.name}</Badge
+                >
+            {/each}
+        </div>
 
         {#if !shared}
             <!-- AddTags -->
@@ -210,17 +219,17 @@
                         },
                     },
                 )}
-                class="mt-6 space-y-6"
             >
-                <div>
+                <div class="flex flex-row gap-2 w-full pb-2 justify-stretch items-stretch">
                     <FloatingLabelInput
                         style="outlined"
                         id="kategorie"
                         type="text"
+                        size="sm"
                         required
                         bind:value={$form.name}
                     >
-                        Kategorie
+                        Kategorie hinzufügen
                     </FloatingLabelInput>
                 </div>
 
@@ -228,7 +237,6 @@
                     <PrimaryButton disabled={$form.processing}
                         >Speichern</PrimaryButton
                     >
-
                     {#if $form.recentlySuccessful}
                         <p
                             transition:fade={{ easing: sineInOut }}
@@ -240,18 +248,6 @@
                 </div>
             </form>
 
-            <!-- ShareButton -->
-            <div>
-                {#each track.tags as tag}
-                    <Badge dismissable large on:close={() => router.post(route("tracks.untag", {track}),{
-                        id: tag.id
-                    },{
-                        preserveScroll: true
-                    })}>{tag.name}</Badge>
-                {/each}
-            </div>
-
-            <!-- DeleteButton -->
             <div
                 class="flex flex-col gap-2 justify-start items-stretch md:items-center"
             >
