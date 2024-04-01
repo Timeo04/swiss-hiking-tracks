@@ -46,6 +46,28 @@
     // Bounds erstellen falls Koordinaten vorhanden
     if (coordinates.length > 0) bounds = createBounds(coordinates);
 
+    function addPopup(map, track, lngLat) {
+        new Popup()
+            .setLngLat(lngLat)
+            .setText("")
+            .on("open", (e) => {
+                let popupContentElement = e.target._content;
+
+                let anchorElement = e.target._closeButton;
+
+                // Svelte-Komponente für Popup-Inhalt erstellen
+                let popupContentComponent = new MapPopupContent({
+                    target: popupContentElement,
+                    anchor: anchorElement,
+                    props: {
+                        track,
+                    },
+                });
+            })
+            .addTo(map) // Popup hinzufügen
+            .addClassName("sht-popup");
+    }
+
     // Map initialisieren
     const init = () => {
         // Map-Instanz erstellen
@@ -121,30 +143,10 @@
                     },
                     minzoom: 10, // Ab Zoom-Level 10 sichtbar
                 });
-                // Popup hinzufügen falls aktiviert
+                // Popup bei Klick hinzufügen falls aktiviert
                 if (popups) {
                     _map.on("click", layerName, (e) => {
-                        let popup = new Popup()
-                            .setLngLat(e.lngLat)
-                            .setText("")
-                            .on("open", (e) => {
-                                let popupContentElement = e.target._content;
-
-                                let anchorElement = e.target._closeButton;
-
-                                // Svelte-Komponente für Popup-Inhalt erstellen
-                                let popupContentComponent = new MapPopupContent(
-                                    {
-                                        target: popupContentElement,
-                                        anchor: anchorElement,
-                                        props: {
-                                            track,
-                                        },
-                                    },
-                                );
-                            })
-                            .addTo(_map) // Popup hinzufügen
-                            .addClassName("sht-popup");
+                        addPopup(_map, track, e.lngLat);
                     });
 
                     // Cursor-Änderung bei Hover
@@ -160,10 +162,11 @@
             // Bild für Marker laden
             let image = await map.loadImage("/logo.png");
             _map.addImage("marker", image.data);
+
             tracks.forEach((track) => {
                 // Für jeden Track
-                let layerName = "track_icon_" + track.id;
-                _map.addSource(layerName, {
+                let iconLayerName = "track_icon_" + track.id;
+                _map.addSource(iconLayerName, {
                     // GeoJSON-Punkt-Quelle für Marker hinzufügen
                     type: "geojson",
                     data: {
@@ -172,9 +175,9 @@
                     },
                 });
                 _map.addLayer({
-                    id: layerName,
+                    id: iconLayerName,
                     type: "symbol",
-                    source: layerName,
+                    source: iconLayerName,
                     layout: {
                         "icon-image": "marker",
                         "icon-size": 0.18,
@@ -184,19 +187,31 @@
                 });
 
                 // Cursor-Änderung bei Hover
-                _map.on("mouseenter", layerName, () => {
+                _map.on("mouseenter", iconLayerName, () => {
                     _map.getCanvas().style.cursor = "pointer";
                 });
-                _map.on("mouseleave", layerName, () => {
+                _map.on("mouseleave", iconLayerName, () => {
                     _map.getCanvas().style.cursor = "";
                 });
 
                 // Bei Klick auf Track-Bounds zoomen
-                _map.on("click", layerName, (event) => {
+                _map.on("click", iconLayerName, (event) => {
                     _map.fitBounds(createBounds(track.geojson.coordinates), {
                         padding: 100,
                         duration: 2500,
                     });
+                    if (popups) {
+                        let coords =
+                            track.geojson.coordinates[
+                                Math.floor(track.geojson.coordinates.length / 2)
+                            ];
+                        setTimeout(() => {
+                            addPopup(_map, track, {
+                                lng: coords[0],
+                                lat: coords[1],
+                            });
+                        }, 2500);
+                    }
                 });
             });
 
