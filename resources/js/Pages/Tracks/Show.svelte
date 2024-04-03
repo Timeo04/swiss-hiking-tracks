@@ -186,7 +186,7 @@
 
         <!-- Tags -->
         <div
-            class="flex flex-row items-center justify-start self-stretch gap-2"
+            class="flex flex-wrap flex-row items-center justify-start self-stretch gap-2"
         >
             {#each track.tags as tag}
                 <!-- svelte-ignore missing-declaration -->

@@ -27,7 +27,7 @@
 
 <AuthenticatedLayout {auth}>
     <h1 class="py-10 text-2xl font-semibold text-center">Routen</h1>
-    <div class="flex flex-row gap-2 align-center justify-center">
+    <div class="flex flex-wrap flex-row gap-2 align-center justify-center">
         <!-- Show all Tags -->
         {#each allTagsUnique as tag}
             <button
@@ -68,7 +68,7 @@
                                         : ""}
                                 </p>
                                 <div
-                                    class="flex flex-row gap-2 items-center justify-start"
+                                    class="flex flex-wrap flex-row gap-2 items-center justify-start"
                                 >
                                     <!-- Show Tags -->
                                     {#each track.tags as tag}

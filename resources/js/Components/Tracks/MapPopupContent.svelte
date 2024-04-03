@@ -18,7 +18,7 @@
     <!-- Titel -->
     <h3 class="font-bold text-lg text-center">{track.title}</h3>
     <!-- Tags der Route -->
-    <div class="flex flex-row gap-2 justify-center items-center">
+    <div class="flex flex-wrap flex-row gap-2 justify-center items-center">
         {#if track.tags != null}
             {#each track.tags as tag}
                 <Badge>{tag.name}</Badge>
