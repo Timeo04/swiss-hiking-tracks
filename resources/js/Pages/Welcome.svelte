@@ -11,8 +11,7 @@
     export let canLogin;
     export let canRegister;
     export let auth;
-    export let errors;
-    console.error(errors);
+    // export let errors;
     export let laravelVersion;
     export let phpVersion;
 </script>
