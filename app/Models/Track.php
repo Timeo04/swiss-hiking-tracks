@@ -26,7 +26,6 @@ class Track extends Model implements HasMedia
         'title',
         'starting_location',
         'destination_location',
-        // 'gpx_file',
         'geojson',
         'public',
         'share_url',
